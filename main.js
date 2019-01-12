@@ -48,7 +48,7 @@ function init() {
 	setInterval(tick,100)
 }
 function displayUpdate() {
-	update('num',game.number)
+	update('num',format(game.number))
 	for(i=1;i<7;i++) {
 		update(i+'amt',format(game['gen'+i].amt))
 		if(i!=6) {
