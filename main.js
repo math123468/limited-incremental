@@ -5,37 +5,37 @@ function reset() {
 			cost:10,
 			mult:1,
 			amt:0,
-			costInc:10
+			costInc:Math.pow(10,0.25)
 		},
 		gen2:{
 			cost:1000,
 			mult:1,
 			amt:0,
-			costInc:100
+			costInc:Math.pow(10,0.5)
 		},
 		gen3:{
 			cost:1e5,
 			mult:1,
 			amt:0,
-			costInc:1000
+			costInc:Math.pow(10,0.75)
 		},
 		gen4:{
 			cost:1e8,
 			mult:1,
 			amt:0,
-			costInc:1e5
+			costInc:Math.pow(10,1.25)
 		},
 		gen5:{
 			cost:1e12,
 			mult:1,
 			amt:0,
-			costInc:1e8
+			costInc:100
 		},
 		gen6:{
 			cost:1e17,
 			mult:1,
 			amt:0,
-			costInc:1e13
+			costInc:Math.pow(10,3.25)
 		},
 	}
 	return game
@@ -63,6 +63,7 @@ function buyGen(i) {
 		game.number -= game['gen'+i].cost
 		game['gen'+i].cost *= game['gen'+i].costInc
 		game['gen'+i].mult *= 1.1
+		game['gen'+i].amt ++
 	}
 }
 function abbreviate(i,short) {
