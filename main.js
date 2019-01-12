@@ -109,11 +109,11 @@ function format(num) {
 	return Math.round(1000*m*Math.pow(10,e-e2))/1000+abbreviate(e2/3-1,true)
 }
 function tick() {
-	game.number += game.gen1.amount * game.gen1.mult / 10
-	game.gen1 += game.gen2.amount * game.gen2.mult / 10
-	game.gen2 += game.gen3.amount * game.gen3.mult / 10
-	game.gen3 += game.gen4.amount * game.gen4.mult / 10
-	game.gen4 += game.gen5.amount * game.gen5.mult / 10
-	game.gen5 += game.gen6.amount * game.gen6.mult / 10
+	game.number.amt += game.gen1.amt * game.gen1.mult / 10
+	game.gen1.amt += game.gen2.amt * game.gen2.mult / 10
+	game.gen2.amt += game.gen3.amt * game.gen3.mult / 10
+	game.gen3.amt += game.gen4.amt * game.gen4.mult / 10
+	game.gen4.amt += game.gen5.amt * game.gen5.mult / 10
+	game.gen5.amt += game.gen6.amt * game.gen6.mult / 10
 	displayUpdate()
 }
