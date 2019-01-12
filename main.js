@@ -1,1 +1,41 @@
-
+function reset() { 
+	var game = {
+		number:0,
+		gen1:{
+			cost:10,
+			mult:1,
+			amt:0,
+			costInc:10
+		},
+		gen2:{
+			cost:1000,
+			mult:1,
+			amt:0,
+			costInc:100
+		},
+		gen3:{
+			cost:1e5,
+			mult:1,
+			amt:0,
+			costInc:1000
+		},
+		gen4:{
+			cost:1e8,
+			mult:1,
+			amt:0,
+			costInc:1e5
+		},
+		gen5:{
+			cost:1e12,
+			mult:1,
+			amt:0,
+			costInc:1e8
+		},
+		gen6:{
+			cost:1e17,
+			mult:1,
+			amt:0,
+			costInc:1e13
+		},
+	}
+}
