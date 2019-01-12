@@ -38,4 +38,79 @@ function reset() {
 			costInc:1e13
 		},
 	}
+	return game
+}
+function update(what,withWhat) {
+	document.getElementById(what).innerHTML = withWhat
+}
+function init() {
+	var game = reset()
+	setInterval(tick,100)
+}
+function displayUpdate() {
+	for(i=1;i<7;i++) {
+		update(i+'amt',format(game['gen'+i].amount))
+		update(i+'persec',format(game['gen'+(i+1)].amount * game['gen'+(i+1)].mult))
+		update('mult'+i,format(game['gen'+i].mult))
+		update('cost'+i,format(game['gen'+i].cost))
+	}
+}
+function buyGen(num) {
+	if(game.number >= game['gen'+i].cost) {
+		game.number -= game['gen'+i].cost
+		game['gen'+i].cost *= game['gen'+i].costInc
+		game['gen'+i].mult *= 1.1
+	}
+}
+function abbreviate(i,short) {
+	if(short) {
+		if(i==0) return "K"; // thousand
+		if(i==1) return "M"; // million
+		if(i==2) return "B"; // billion
+		if(i==8) return "Oc";
+		if(i==9) return "No";
+	}
+	var returning = ''
+	var units = ["","U","D","T","Qd","Qt","Sx","Sp","O","N"]; // prefixes for ones place
+	var tens = ["","Dc","Vg","Tg","Qa","Qi","Se","St","Og","Nn"]; // prefixes for tens place
+	var hundreds = ["","Ce","Dn","Tc","Qe","Qu","Sc","Si","Oe","Ne"]
+	var thousands = ['','MI-','MC-','NA-']
+	var i2=Math.floor(i/10);
+	var i3=Math.floor(i2/10);
+	var unit = units[i%10];
+	var ten = tens[i2%10];
+	var hundred = hundreds[i3%10];
+	returning = unit+ten+hundred
+	for(j=Math.floor(Math.log(i)/Math.log(1000));j>0;j--) {
+		var k = Math.floor(i/Math.pow(1000,j)) % 1000
+		if(k === 1) {
+			returning = thousands[j] + returning
+			continue
+		}
+		var blah = thousands[j]
+		returning = abbreviate(k,false) + blah + returning
+	}
+	return returning;
+}
+function format(num) {
+	if(num <= 1000) {
+		return Math.round(num * 10000)/10000
+	}
+	var e = Math.floor(Math.log10(a));
+	var e2 = 3*Math.floor(e/3)
+	var m = Math.round(Math.pow(10,Math.log10(a)-e)*1000)/1000;
+	if (m>9.9995) { // would round up to 10; this avoids a problem
+		m = 1;
+		e++;
+	}
+	return Math.round(1000*m*Math.pow(10,e-e2))/1000+abbreviate(e2/3-1,true)
+}
+function tick() {
+	game.number += game.gen1.amount * game.gen1.mult / 10
+	game.gen1 += game.gen2.amount * game.gen2.mult / 10
+	game.gen2 += game.gen3.amount * game.gen3.mult / 10
+	game.gen3 += game.gen4.amount * game.gen4.mult / 10
+	game.gen4 += game.gen5.amount * game.gen5.mult / 10
+	game.gen5 += game.gen6.amount * game.gen6.mult / 10
+	displayUpdate()
 }
