@@ -43,8 +43,8 @@ function reset() {
 function update(what,withWhat) {
 	document.getElementById(what).innerHTML = withWhat
 }
+var game = reset()
 function init() {
-	var game = reset()
 	setInterval(tick,100)
 }
 function displayUpdate() {
