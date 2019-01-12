@@ -1,6 +1,6 @@
 function reset() { 
 	var game = {
-		number:0,
+		number:10,
 		gen1:{
 			cost:10,
 			mult:1,
@@ -48,6 +48,7 @@ function init() {
 	setInterval(tick,100)
 }
 function displayUpdate() {
+	update('num',game.number)
 	for(i=1;i<7;i++) {
 		update(i+'amt',format(game['gen'+i].amount))
 		update(i+'persec',format(game['gen'+(i+1)].amount * game['gen'+(i+1)].mult))
