@@ -109,7 +109,7 @@ function format(num) {
 	return Math.round(1000*m*Math.pow(10,e-e2))/1000+abbreviate(e2/3-1,true)
 }
 function tick() {
-	game.number.amt += game.gen1.amt * game.gen1.mult / 10
+	game.number += game.gen1.amt * game.gen1.mult / 10
 	game.gen1.amt += game.gen2.amt * game.gen2.mult / 10
 	game.gen2.amt += game.gen3.amt * game.gen3.mult / 10
 	game.gen3.amt += game.gen4.amt * game.gen4.mult / 10
