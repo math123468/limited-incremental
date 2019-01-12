@@ -50,15 +50,15 @@ function init() {
 function displayUpdate() {
 	update('num',game.number)
 	for(i=1;i<7;i++) {
-		update(i+'amt',format(game['gen'+i].amount))
+		update(i+'amt',format(game['gen'+i].amt))
 		if(i!=6) {
-			update(i+'persec',format(game['gen'+(i+1)].amount * game['gen'+(i+1)].mult))
+			update(i+'persec',format(game['gen'+(i+1)].amt * game['gen'+(i+1)].mult))
 		}
 		update('mult'+i,format(game['gen'+i].mult))
 		update('cost'+i,format(game['gen'+i].cost))
 	}
 }
-function buyGen(num) {
+function buyGen(i) {
 	if(game.number >= game['gen'+i].cost) {
 		game.number -= game['gen'+i].cost
 		game['gen'+i].cost *= game['gen'+i].costInc
