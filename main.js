@@ -8,31 +8,31 @@ function reset() {
 			costInc:Math.pow(10,0.25)
 		},
 		gen2:{
-			cost:1000,
+			cost:100,
 			mult:1,
 			amt:0,
 			costInc:Math.pow(10,0.5)
 		},
 		gen3:{
-			cost:1e5,
+			cost:1e4,
 			mult:1,
 			amt:0,
 			costInc:Math.pow(10,0.75)
 		},
 		gen4:{
-			cost:1e8,
+			cost:1e7,
 			mult:1,
 			amt:0,
 			costInc:Math.pow(10,1.25)
 		},
 		gen5:{
-			cost:1e12,
+			cost:1e11,
 			mult:1,
 			amt:0,
 			costInc:100
 		},
 		gen6:{
-			cost:1e17,
+			cost:1e16,
 			mult:1,
 			amt:0,
 			costInc:Math.pow(10,3.25)
