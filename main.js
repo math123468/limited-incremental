@@ -51,7 +51,9 @@ function displayUpdate() {
 	update('num',game.number)
 	for(i=1;i<7;i++) {
 		update(i+'amt',format(game['gen'+i].amount))
-		update(i+'persec',format(game['gen'+(i+1)].amount * game['gen'+(i+1)].mult))
+		if(i!=6) {
+			update(i+'persec',format(game['gen'+(i+1)].amount * game['gen'+(i+1)].mult))
+		}
 		update('mult'+i,format(game['gen'+i].mult))
 		update('cost'+i,format(game['gen'+i].cost))
 	}
@@ -97,9 +99,9 @@ function format(num) {
 	if(num <= 1000) {
 		return Math.round(num * 10000)/10000
 	}
-	var e = Math.floor(Math.log10(a));
+	var e = Math.floor(Math.log10(num));
 	var e2 = 3*Math.floor(e/3)
-	var m = Math.round(Math.pow(10,Math.log10(a)-e)*1000)/1000;
+	var m = Math.round(Math.pow(10,Math.log10(num)-e)*1000)/1000;
 	if (m>9.9995) { // would round up to 10; this avoids a problem
 		m = 1;
 		e++;
