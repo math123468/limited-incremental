@@ -46,7 +46,7 @@ function update(what,withWhat) {
 var game = reset()
 function init() {
 	setInterval(tick,100)
-	setInterval(save,30000)
+	setInterval(save,3000)
 	if(localStorage.getItem('limitedIncrementalSave')!=null) load(localStorage.getItem('limitedIncrementalSave'))
 }
 function displayUpdate() {
