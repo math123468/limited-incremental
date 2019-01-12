@@ -47,7 +47,7 @@ var game = reset()
 function init() {
 	setInterval(tick,100)
 	setInterval(save,30000)
-	if(localStorage.getItem('save')!=null) load(localStorage.getItem('save'))
+	if(localStorage.getItem('limitedIncrementalSave')!=null) load(localStorage.getItem('limitedIncrementalSave'))
 }
 function displayUpdate() {
 	update('num',format(game.number))
@@ -121,7 +121,7 @@ function tick() {
 	displayUpdate()
 }
 function save() { //save game
-	localStorage.setItem('save',btoa(JSON.stringify(game)))
+	localStorage.setItem('limitedIncrementalSave',btoa(JSON.stringify(game)))
 }
 function load(save) {
 	try {
