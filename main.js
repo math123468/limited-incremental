@@ -46,6 +46,8 @@ function update(what,withWhat) {
 var game = reset()
 function init() {
 	setInterval(tick,100)
+	setInterval(save,30000)
+	if(localStorage.getItem('save')!=null) load(localStorage.getItem('save'))
 }
 function displayUpdate() {
 	update('num',format(game.number))
@@ -117,4 +119,14 @@ function tick() {
 	game.gen4.amt += game.gen5.amt * game.gen5.mult / 10
 	game.gen5.amt += game.gen6.amt * game.gen6.mult / 10
 	displayUpdate()
+}
+function save() { //save game
+	localStorage.setItem('save',btoa(JSON.stringify(game)))
+}
+function load(save) {
+	try {
+		game=JSON.parse(atob(save))
+	} catch (e) {
+		console.log('Your save failed to load: '+e)
+	}
 }
