@@ -1,6 +1,12 @@
 function reset() { 
 	var game = {
 		number:10,
+		upgrades1:[],
+		upgrades2:[],
+		upgrades3:[],
+		upgrades4:[],
+		upgrades5:[],
+		upgrades6:[],
 		gen1:{
 			cost:10,
 			mult:1,
@@ -43,6 +49,12 @@ function reset() {
 function update(what,withWhat) {
 	document.getElementById(what).innerHTML = withWhat
 }
+function hide(what) {
+	document.getElementById(what).style.display = 'none'
+}
+function show(what) {
+	document.getElementById(what).style.display = 'block'
+}
 var game = reset()
 function init() {
 	setInterval(tick,100)
@@ -60,6 +72,25 @@ function displayUpdate() {
 		update('cost'+i,format(game['gen'+i].cost,0))
 	}
 }
+function checkIfUpgradesUnlocked() {
+	if(game.gen6.amt > 0) {
+		show('upgrades')
+		hide('tier2')
+		for(i=0;i<game.upgrades1.length();i++) {
+			hide('up'+game.upgrades1[i])
+		}
+	}
+	var good = 1
+	for(i=0;i<6;i++) {
+		if(!(game.upgrades1.includes(i))) good = 0
+	}
+	if(good === 1) {
+		show('tier2')
+		for(i=0;i<game.upgrades2.length();i++) {
+			hide('up'+game.upgrades2[i])
+		}
+	}
+}
 function buyGen(i) {
 	if(game.number >= game['gen'+i].cost) {
 		game.number -= game['gen'+i].cost
@@ -67,6 +98,32 @@ function buyGen(i) {
 		game['gen'+i].mult *= 1.5
 		game['gen'+i].amt ++
 	}
+}
+function buyUp(num,tier) {
+	if(tier === 1) {
+		if(game.num >= 1e21) {
+			game['gen'+num].mult *= 2
+			game.num -= 1e21
+			game.upgrades1.push(num)
+		}	
+	}
+	else if(tier === 2) {
+		if(game.num >= 1e27) {
+			num = String(num)
+			game['gen'+num[0]].mult *= 2
+			game['gen'+num[1]].mult *= 2
+			game.num -= 1e27
+			game.upgrades2.push(num)
+		}
+	}
+}
+function increaseGens() {
+	game.number += game.gen1.amt * game.gen1.mult / 10
+	game.gen1.amt += game.gen2.amt * game.gen2.mult / 10
+	game.gen2.amt += game.gen3.amt * game.gen3.mult / 10
+	game.gen3.amt += game.gen4.amt * game.gen4.mult / 10
+	game.gen4.amt += game.gen5.amt * game.gen5.mult / 10
+	game.gen5.amt += game.gen6.amt * game.gen6.mult / 10
 }
 function abbreviate(i,short) {
 	if(short) {
@@ -112,13 +169,9 @@ function format(num,decimals) {
 	return Math.round(1000*m*Math.pow(10,e-e2))/1000+abbreviate(e2/3-1,true)
 }
 function tick() {
-	game.number += game.gen1.amt * game.gen1.mult / 10
-	game.gen1.amt += game.gen2.amt * game.gen2.mult / 10
-	game.gen2.amt += game.gen3.amt * game.gen3.mult / 10
-	game.gen3.amt += game.gen4.amt * game.gen4.mult / 10
-	game.gen4.amt += game.gen5.amt * game.gen5.mult / 10
-	game.gen5.amt += game.gen6.amt * game.gen6.mult / 10
+	increaseGens()
 	displayUpdate()
+	checkIfUpgradesUnlocked()
 }
 function save() { //save game
 	localStorage.setItem('limitedIncrementalSave',btoa(JSON.stringify(game)))
@@ -126,6 +179,14 @@ function save() { //save game
 function load(save) {
 	try {
 		game=JSON.parse(atob(save))
+		if(game.upgrades1 === undefined) {
+			game.upgrades1 = []
+			game.upgrades2 = []
+			game.upgrades3 = []
+			game.upgrades4 = []
+			game.upgrades5 = []
+			game.upgrades6 = []
+		}
 	} catch (e) {
 		console.log('Your save failed to load: '+e)
 	}
