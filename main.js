@@ -101,18 +101,18 @@ function buyGen(i) {
 }
 function buyUp(num,tier) {
 	if(tier === 1) {
-		if(game.num >= 1e21) {
+		if(game.number >= 1e21) {
 			game['gen'+num].mult *= 2
-			game.num -= 1e21
+			game.number -= 1e21
 			game.upgrades1.push(num)
 		}	
 	}
 	else if(tier === 2) {
-		if(game.num >= 1e27) {
+		if(game.number >= 1e27) {
 			num = String(num)
 			game['gen'+num[0]].mult *= 2
 			game['gen'+num[1]].mult *= 2
-			game.num -= 1e27
+			game.number -= 1e27
 			game.upgrades2.push(num)
 		}
 	}
