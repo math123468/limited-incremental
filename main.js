@@ -64,7 +64,7 @@ function buyGen(i) {
 	if(game.number >= game['gen'+i].cost) {
 		game.number -= game['gen'+i].cost
 		game['gen'+i].cost *= game['gen'+i].costInc
-		game['gen'+i].mult *= 1.5
+		game['gen'+i].mult *= 1.25
 		game['gen'+i].amt ++
 	}
 }
