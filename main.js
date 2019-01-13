@@ -5,37 +5,37 @@ function reset() {
 			cost:10,
 			mult:1,
 			amt:0,
-			costInc:Math.pow(10,0.25)
+			costInc:Math.pow(10,0.5)
 		},
 		gen2:{
 			cost:100,
 			mult:1,
 			amt:0,
-			costInc:Math.pow(10,0.5)
+			costInc:10
 		},
 		gen3:{
 			cost:1e4,
 			mult:1,
 			amt:0,
-			costInc:Math.pow(10,0.75)
+			costInc:Math.pow(10,1.5)
 		},
 		gen4:{
 			cost:1e7,
 			mult:1,
 			amt:0,
-			costInc:Math.pow(10,1.25)
+			costInc:Math.pow(10,2.5)
 		},
 		gen5:{
 			cost:1e11,
 			mult:1,
 			amt:0,
-			costInc:100
+			costInc:1e4
 		},
 		gen6:{
 			cost:1e16,
 			mult:1,
 			amt:0,
-			costInc:Math.pow(10,3.25)
+			costInc:Math.pow(10,6.5)
 		},
 	}
 	return game
