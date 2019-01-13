@@ -50,14 +50,14 @@ function init() {
 	if(localStorage.getItem('limitedIncrementalSave')!=null) load(localStorage.getItem('limitedIncrementalSave'))
 }
 function displayUpdate() {
-	update('num',format(game.number))
+	update('num',format(game.number,0))
 	for(i=1;i<7;i++) {
-		update(i+'amt',format(game['gen'+i].amt))
+		update(i+'amt',format(game['gen'+i].amt,0))
 		if(i!=6) {
-			update(i+'persec',format(game['gen'+(i+1)].amt * game['gen'+(i+1)].mult))
+			update(i+'persec',format(game['gen'+(i+1)].amt * game['gen'+(i+1)].mult,2))
 		}
-		update('mult'+i,format(game['gen'+i].mult))
-		update('cost'+i,format(game['gen'+i].cost))
+		update('mult'+i,format(game['gen'+i].mult,4))
+		update('cost'+i,format(game['gen'+i].cost,0))
 	}
 }
 function buyGen(i) {
@@ -98,9 +98,9 @@ function abbreviate(i,short) {
 	}
 	return returning;
 }
-function format(num) {
+function format(num,decimals) {
 	if(num <= 1000) {
-		return Math.round(num * 10000)/10000
+		return Math.round(num * Math.pow(10,decimals))/Math.pow(10,decimals)
 	}
 	var e = Math.floor(Math.log10(num));
 	var e2 = 3*Math.floor(e/3)
