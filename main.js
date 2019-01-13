@@ -76,7 +76,7 @@ function checkIfUpgradesUnlocked() {
 	if(game.gen6.amt > 0) {
 		show('upgrades')
 		hide('tier2')
-		for(i=0;i<game.upgrades1.length();i++) {
+		for(i=0;i<game.upgrades1.length;i++) {
 			hide('up'+game.upgrades1[i])
 		}
 	}
@@ -86,7 +86,7 @@ function checkIfUpgradesUnlocked() {
 	}
 	if(good === 1) {
 		show('tier2')
-		for(i=0;i<game.upgrades2.length();i++) {
+		for(i=0;i<game.upgrades2.length;i++) {
 			hide('up'+game.upgrades2[i])
 		}
 	}
