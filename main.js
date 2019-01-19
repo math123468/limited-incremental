@@ -124,8 +124,6 @@ function buyUp(num,tier) {
 			game.upgrades2.push(num)
 		}
 	}
-	else if(tier === 3) {
-		if(game.number >= 
 }
 function increaseGens() {
 	game.number += game.gen1.amt * game.gen1.mult / 10
