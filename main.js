@@ -96,7 +96,7 @@ function buyGen(i) {
 		game.number -= game['gen'+i].cost
 		game['gen'+i].cost *= game['gen'+i].costInc
 		game['gen'+i].mult *= 1.5
-		game['gen'+i].costInc *= Math.pow(10,0.25)
+		if(game['gen'+i].cost >= 1e33) game['gen'+i].costInc *= Math.pow(10,0.25)
 		game['gen'+i].amt ++
 	}
 }
