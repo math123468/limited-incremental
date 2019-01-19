@@ -96,7 +96,15 @@ function buyGen(i) {
 		game.number -= game['gen'+i].cost
 		game['gen'+i].cost *= game['gen'+i].costInc
 		game['gen'+i].mult *= 1.5
+		game['gen'+i].costInc *= Math.pow(10,0.25)
 		game['gen'+i].amt ++
+	}
+}
+function buyMax() {
+	for(i=6;i>0;i++) {
+		while(game.number >= game['gen'+i].cost) {
+			buyGen(i)
+		}
 	}
 }
 function buyUp(num,tier) {
@@ -116,6 +124,8 @@ function buyUp(num,tier) {
 			game.upgrades2.push(num)
 		}
 	}
+	else if(tier === 3) {
+		if(game.number >= 
 }
 function increaseGens() {
 	game.number += game.gen1.amt * game.gen1.mult / 10
