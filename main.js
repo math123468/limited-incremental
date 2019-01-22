@@ -81,7 +81,7 @@ function checkIfUpgradesUnlocked() {
 		}
 	}
 	var good = 1
-	for(i=0;i<6;i++) {
+	for(i=1;i<7;i++) {
 		if(!(game.upgrades1.includes(i))) good = 0
 	}
 	if(good === 1) {
@@ -101,7 +101,7 @@ function buyGen(i) {
 	}
 }
 function buyMax() {
-	for(i=6;i>0;i++) {
+	for(i=6;i>0;i--) {
 		while(game.number >= game['gen'+i].cost) {
 			buyGen(i)
 		}
