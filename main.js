@@ -76,6 +76,7 @@ function checkIfUpgradesUnlocked() {
 	if(game.gen6.amt > 0) {
 		show('upgrades')
 		hide('tier2')
+		hide('tier3')
 		for(i=0;i<game.upgrades1.length;i++) {
 			hide('up'+game.upgrades1[i])
 		}
