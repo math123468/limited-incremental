@@ -90,6 +90,20 @@ function checkIfUpgradesUnlocked() {
 			hide('up'+game.upgrades2[i])
 		}
 	}
+	good = 1
+	for(i=1;i<7;i++) {
+		for(j=1;j<7;j++) {
+			if(j > i) {
+				if(!(game.upgrades2.includes(10*i+j))) good = 0
+			}
+		}
+	}
+	if(good === 1) {
+		show('tier3')
+		for(i=0;i<game.upgrades3.length;i++) {
+			hide('up'+game.upgrades3[i])
+		}
+	}
 }
 function buyGen(i) {
 	if(game.number >= game['gen'+i].cost) {
@@ -122,6 +136,16 @@ function buyUp(num,tier) {
 			game['gen'+num[1]].mult *= 2
 			game.number -= 1e27
 			game.upgrades2.push(num)
+		}
+	}
+	else if(tier === 3) {
+		if(game.number >= 1e51) {
+			num = String(num)
+			game['gen'+num[0]].mult *= 2
+			game['gen'+num[1]].mult *= 2
+			game['gen'+num[2]].mult *= 2
+			game.number -= 1e51
+			game.upgrades3.push(num)
 		}
 	}
 }
