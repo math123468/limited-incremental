@@ -113,6 +113,7 @@ function checkIfUpgradesUnlocked() {
 				if(j > i && k > j) {
 					if(!(game.upgrades3.includes(String(100*i+10*j+k)))) good = 0
 				}
+			}
 		}
 	}
 	if(good === 1) {
