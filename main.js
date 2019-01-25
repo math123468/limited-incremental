@@ -77,6 +77,7 @@ function checkIfUpgradesUnlocked() {
 		show('upgrades')
 		hide('tier2')
 		hide('tier3')
+		hide('tier4')
 		for(i=0;i<game.upgrades1.length;i++) {
 			hide('up'+game.upgrades1[i])
 		}
@@ -95,7 +96,7 @@ function checkIfUpgradesUnlocked() {
 	for(i=1;i<7;i++) {
 		for(j=1;j<7;j++) {
 			if(j > i) {
-				if(!(game.upgrades2.includes(10*i+j))) good = 0
+				if(!(game.upgrades2.includes(String(10*i+j)))) good = 0
 			}
 		}
 	}
@@ -103,6 +104,21 @@ function checkIfUpgradesUnlocked() {
 		show('tier3')
 		for(i=0;i<game.upgrades3.length;i++) {
 			hide('up'+game.upgrades3[i])
+		}
+	}
+	good = 1
+	for(i=1;i<7;i++) {
+		for(j=1;j<7;j++) {
+			for(k=1;k<7;k++) {
+				if(j > i && k > j) {
+					if(!(game.upgrades3.includes(String(100*i+10*j+k)))) good = 0
+				}
+		}
+	}
+	if(good === 1) {
+		show('tier4')
+		for(i=0;i<game.upgrades4.length;i++) {
+			hide('up'+game.upgrades4[i])
 		}
 	}
 }
@@ -124,13 +140,16 @@ function buyMax() {
 }
 function buyUp(num,tier) {
 	if(tier === 1) {
-		if(game.number >= 1e21) {
+		var cost = 1e21 * Math.pow(2,num-1)
+		if(game.number >= cost) {
 			game['gen'+num].mult *= 2
-			game.number -= 1e21
+			game.number -= cost
 			game.upgrades1.push(num)
 		}	
 	}
 	else if(tier === 2) {
+		var pos = [12,13,14,15,16,23,24,25,26,34,35,36,45,46,56].indexOf(num)
+		
 		if(game.number >= 1e27) {
 			num = String(num)
 			game['gen'+num[0]].mult *= 2
@@ -140,12 +159,14 @@ function buyUp(num,tier) {
 		}
 	}
 	else if(tier === 3) {
-		if(game.number >= 1e51) {
+		var pos = [123,124,125,126,134,135,136,145,146,156,234,235,236,245,246,256,345,346,356,456].indexOf(num)
+		var cost = 1e51 * Math.pow(3,pos)
+		if(game.number >= cost) {
 			num = String(num)
 			game['gen'+num[0]].mult *= 2
 			game['gen'+num[1]].mult *= 2
 			game['gen'+num[2]].mult *= 2
-			game.number -= 1e51
+			game.number -= cost
 			game.upgrades3.push(num)
 		}
 	}
