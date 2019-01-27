@@ -159,7 +159,7 @@ function checkIfUpgradesUnlocked() {
 	if(good === 1) {
 		show('tier6')
 		for(i=0;i<game.upgrades6.length;i++) {
-			hide('up'+game.upgrades5[i])
+			hide('up'+game.upgrades6[i])
 		}
 	}
 }
