@@ -78,6 +78,8 @@ function checkIfUpgradesUnlocked() {
 		hide('tier2')
 		hide('tier3')
 		hide('tier4')
+		hide('tier5')
+		hide('tier6')
 		for(i=0;i<game.upgrades1.length;i++) {
 			hide('up'+game.upgrades1[i])
 		}
@@ -120,6 +122,44 @@ function checkIfUpgradesUnlocked() {
 		show('tier4')
 		for(i=0;i<game.upgrades4.length;i++) {
 			hide('up'+game.upgrades4[i])
+		}
+	}
+	good = 1
+	for(i=1;i<7;i++) {
+		for(j=1;j<7;j++) {
+			for(k=1;k<7;k++) {
+				for(l=1;l<7;l++) {
+					if(j > i && k > j && l > k) {
+						if(!(game.upgrades4.includes(String(1000*i+100*j+10*k+l)))) good = 0
+					}
+				}
+			}
+		}
+	}
+	if(good === 1) {
+		show('tier5')
+		for(i=0;i<game.upgrades5.length;i++) {
+			hide('up'+game.upgrades5[i])
+		}
+	}
+	good = 1
+	for(i=1;i<7;i++) {
+		for(j=1;j<7;j++) {
+			for(k=1;k<7;k++) {
+				for(l=1;l<7;l++) {
+					for(m=1;m<7;m++) {
+						if(j > i && k > j && l > k && m > l) {
+							if(!(game.upgrades5.includes(String(10000*i+1000*j+100*k+10*l+m)))) good = 0
+						}
+					}
+				}
+			}
+		}
+	}
+	if(good === 1) {
+		show('tier6')
+		for(i=0;i<game.upgrades6.length;i++) {
+			hide('up'+game.upgrades5[i])
 		}
 	}
 }
@@ -182,6 +222,29 @@ function buyUp(num,tier) {
 			game['gen'+num[3]].mult *= 2
 			game.number -= cost
 			game.upgrades4.push(num)
+		}
+	}
+	else if(tier === 5) {
+		var pos = [12345,12346,12356,12456,13456,23456].indexOf(num)
+		var cost = [1e96,1e97,1e98,1e99,1e100,1e101][pos]
+		if(game.number >= cost) {
+			num = String(num)
+			game['gen'+num[0]].mult *= 2
+			game['gen'+num[1]].mult *= 2
+			game['gen'+num[2]].mult *= 2
+			game['gen'+num[3]].mult *= 2
+			game['gen'+num[4]].mult *= 2
+			game.number -= cost
+			game.upgrades5.push(num)
+		}
+	}
+	else if(tier === 6) {
+		if(game.number >= 1e108) {
+			game.number -= 1e108
+			game.upgrades6.push(num)
+			for(i=1;i<7;i++) {
+				game['gen'+i].mult *= 2
+			}
 		}
 	}
 }
