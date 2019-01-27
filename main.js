@@ -150,18 +150,18 @@ function buyUp(num,tier) {
 	}
 	else if(tier === 2) {
 		var pos = [12,13,14,15,16,23,24,25,26,34,35,36,45,46,56].indexOf(num)
-		
-		if(game.number >= 1e27) {
+		var cost = [1e27,5e27,2.5e28,1.25e29,6.25e29,1e30,2e30,4e30,8e30,1.6e31][pos]
+		if(game.number >= cost) {
 			num = String(num)
 			game['gen'+num[0]].mult *= 2
 			game['gen'+num[1]].mult *= 2
-			game.number -= 1e27
+			game.number -= cost
 			game.upgrades2.push(num)
 		}
 	}
 	else if(tier === 3) {
 		var pos = [123,124,125,126,134,135,136,145,146,156,234,235,236,245,246,256,345,346,356,456].indexOf(num)
-		var cost = 1e51 * Math.pow(3,pos)
+		var cost = [1e51,3e51,9e51,2.7e52,8.1e52,2.43e53,1e54,3e54,9e54,2.7e55,8.1e55,2.43e56,1e57,3e57,9e57,2.7e58,8.1e58,2.43e59,2e60,3e60][pos]
 		if(game.number >= cost) {
 			num = String(num)
 			game['gen'+num[0]].mult *= 2
@@ -169,6 +169,19 @@ function buyUp(num,tier) {
 			game['gen'+num[2]].mult *= 2
 			game.number -= cost
 			game.upgrades3.push(num)
+		}
+	}
+	else if(tier === 4) {
+		var pos = [1234,1235,1236,1245,1246,1256,1345,1346,1356,1456,2345,2346,2356,2456,3456].indexOf(num)
+		var cost = [1e75,5e75,2.5e76,1.25e77,6.25e77,1e78,5e78,2.5e79,1.25e80,6.25e80,1e81,5e81,2.5e82,1.25e83,6.25e83][pos]
+		if(game.number >= cost) {
+			num = String(num)
+			game['gen'+num[0]].mult *= 2
+			game['gen'+num[1]].mult *= 2
+			game['gen'+num[2]].mult *= 2
+			game['gen'+num[3]].mult *= 2
+			game.number -= cost
+			game.upgrades4.push(num)
 		}
 	}
 }
