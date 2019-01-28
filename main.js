@@ -81,10 +81,10 @@ function displayUpdate() {
 	}
 }
 function changeTab(tab) {
-	game.activeTab = tab
-	show(tab)
 	hide('gens')
 	hide('upgrades')
+	game.activeTab = tab
+	show(tab)
 }
 function checkIfUpgradesUnlocked() {
 	if(game.gen6.amt > 0) {
