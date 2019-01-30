@@ -177,6 +177,7 @@ function checkIfUpgradesUnlocked() {
 			hide('up'+game.upgrades6[i])
 		}
 	}
+	upgradeClasses()
 }
 function upgradeClasses() {
 	for(i=0;i<game.possibleUps.length;i++) {
