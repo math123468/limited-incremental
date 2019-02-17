@@ -184,24 +184,24 @@ function upgradeClasses() {
 		var up = game.possibleUps[i]
 		if(up < 10) {
 			if(game.upgrades1.includes(up)) {
-				changeClass('up'+up,'button')
+				updateClass('up'+up,'button')
 			}
 			else if(game.number >= returnUpgradeCost(up,1)) {
-				changeClass('up'+up,'red')
+				updateClass('up'+up,'red')
 			}
 			else {
-				changeClass('up'+up,'green')
+				updateClass('up'+up,'green')
 			}
 		}
 		else {
 			if(game['upgrades'+String(up).length].includes(String(up))) {
-				changeClass('up' + up,'button')
+				updateClass('up' + up,'button')
 			}
 			else if(game.number >= returnUpgradeCost(up,String(up).length)) {
-				changeClass('up'+up,'red')
+				updateClass('up'+up,'red')
 			}
 			else {
-				changeClass('up'+up,'green')
+				updateClass('up'+up,'green')
 			}
 		}
 	}
