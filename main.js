@@ -241,7 +241,7 @@ function buyUp(num,tier) {
 	}
 	else if(tier === 2) {
 		var pos = [12,13,14,15,16,23,24,25,26,34,35,36,45,46,56].indexOf(num)
-		var cost = [1e27,5e27,2.5e28,1.25e29,6.25e29,1e30,2e30,4e30,8e30,1.6e31][pos]
+		var cost = [1e27,5e27,2.5e28,1.25e29,6.25e29,1e30,5e30,2.5e31,1.25e32,6.25e32,1e33,2e33,4e33,8e33,1.6e34][pos]
 		if(game.number >= cost) {
 			num = String(num)
 			game['gen'+num[0]].mult *= 2
