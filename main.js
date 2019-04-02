@@ -105,9 +105,6 @@ function checkIfUpgradesUnlocked() {
 	}
 	if(good === 1) {
 		show('tier2')
-		for(i=0;i<game.upgrades2.length;i++) {
-			hide('up'+game.upgrades2[i])
-		}
 	}
 	good = 1
 	for(i=1;i<7;i++) {
@@ -119,9 +116,6 @@ function checkIfUpgradesUnlocked() {
 	}
 	if(good === 1) {
 		show('tier3')
-		for(i=0;i<game.upgrades3.length;i++) {
-			hide('up'+game.upgrades3[i])
-		}
 	}
 	good = 1
 	for(i=1;i<7;i++) {
@@ -135,9 +129,6 @@ function checkIfUpgradesUnlocked() {
 	}
 	if(good === 1) {
 		show('tier4')
-		for(i=0;i<game.upgrades4.length;i++) {
-			hide('up'+game.upgrades4[i])
-		}
 	}
 	good = 1
 	for(i=1;i<7;i++) {
@@ -153,9 +144,6 @@ function checkIfUpgradesUnlocked() {
 	}
 	if(good === 1) {
 		show('tier5')
-		for(i=0;i<game.upgrades5.length;i++) {
-			hide('up'+game.upgrades5[i])
-		}
 	}
 	good = 1
 	for(i=1;i<7;i++) {
@@ -173,9 +161,6 @@ function checkIfUpgradesUnlocked() {
 	}
 	if(good === 1) {
 		show('tier6')
-		for(i=0;i<game.upgrades6.length;i++) {
-			hide('up'+game.upgrades6[i])
-		}
 	}
 	upgradeClasses()
 }
