@@ -1,7 +1,7 @@
 function reset() { 
 	var game = {
 		number:10,
-		version:'v0.2A',
+		version:currentVer,
 		activeTab:'gens',
 		possibleUps:[1,2,3,4,5,6,12,13,14,15,16,23,24,25,26,34,35,36,45,46,56,123,124,125,126,134,135,136,145,146,156,234,235,236,245,246,256,345,346,356,456,1234,1235,1236,1245,1246,1256,1345,1346,1356,1456,2345,2346,2356,2456,3456,12345,12346,12356,12456,13456,23456,123456],
 		upgrades1:[],
@@ -10,6 +10,7 @@ function reset() {
 		upgrades4:[],
 		upgrades5:[],
 		upgrades6:[],
+		synergies:[],
 		gen1:{
 			cost:10,
 			mult:1,
@@ -65,7 +66,8 @@ function updateClass(what,whatClass) {
 	element.classList.add(whatClass)
 }
 var game = reset()
-update('commit','v0.2A-2')
+var currentVer = 'v0.2B'
+update('commit','v0.2B-1')
 function init() {
 	setInterval(tick,100)
 	setInterval(save,3000)
@@ -370,7 +372,8 @@ function load(save) {
 			game.activeTab = 'gens'
 			game.possibleUps = [1,2,3,4,5,6,12,13,14,15,16,23,24,25,26,34,35,36,45,46,56,123,124,125,126,134,135,136,145,146,156,234,235,236,245,246,256,345,346,356,456,1234,1235,1236,1245,1246,1256,1345,1346,1356,1456,2345,2346,2356,2456,3456,12345,12346,12356,12456,13456,23456,123456]
 		}
-		if(game.version === undefined) game.version = 'v0.2A'
+		if(game.version === undefined) game.version = currentVer
+		if(game.synergies === undefined) game.synergies = []
 	} catch (e) {
 		console.log('Your save failed to load: '+e)
 	}
