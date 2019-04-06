@@ -67,7 +67,7 @@ function updateClass(what,whatClass) {
 }
 var game = reset()
 var currentVer = 'v0.2B'
-update('commit','v0.2B-3')
+update('commit','v0.2B-4')
 function init() {
 	setInterval(tick,100)
 	setInterval(save,3000)
@@ -100,6 +100,7 @@ function changeTab(tab) {
 	hide('gens')
 	hide('upgrades')
 	hide('syn')
+	hide('options')
 	game.activeTab = tab
 	show(tab)
 }
@@ -116,15 +117,13 @@ function checkIfUpgradesUnlocked() {
 	}
 	if(game.gen6.amt > 0) {
 		show('upgrades')
+		show('tier1')
 		hide('upunlock')
 		hide('tier2')
 		hide('tier3')
 		hide('tier4')
 		hide('tier5')
 		hide('tier6')
-		for(i=0;i<game.upgrades1.length;i++) {
-			hide('up'+game.upgrades1[i])
-		}
 	}
 	var good = 1
 	for(i=1;i<7;i++) {
