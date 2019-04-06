@@ -1,6 +1,7 @@
 function reset() { 
 	var game = {
 		number:10,
+		version:'v0.2A',
 		activeTab:'gens',
 		possibleUps:[1,2,3,4,5,6,12,13,14,15,16,23,24,25,26,34,35,36,45,46,56,123,124,125,126,134,135,136,145,146,156,234,235,236,245,246,256,345,346,356,456,1234,1235,1236,1245,1246,1256,1345,1346,1356,1456,2345,2346,2356,2456,3456,12345,12346,12356,12456,13456,23456,123456],
 		upgrades1:[],
@@ -64,6 +65,7 @@ function updateClass(what,whatClass) {
 	element.classList.add(whatClass)
 }
 var game = reset()
+update('commit','v0.2A-2')
 function init() {
 	setInterval(tick,100)
 	setInterval(save,3000)
@@ -87,6 +89,16 @@ function changeTab(tab) {
 	show(tab)
 }
 function checkIfUpgradesUnlocked() {
+	if(game.gen6.amt === 0) {
+		show('upunlock')
+		hide('tier1')
+		hide('tier2')
+		hide('tier3')
+		hide('tier4')
+		hide('tier5')
+		hide('tier6')
+		return
+	}
 	if(game.gen6.amt > 0) {
 		show('upgrades')
 		hide('upunlock')
@@ -218,7 +230,7 @@ function returnUpgradeCost(num,tier) {
 function buyUp(num,tier) {
 	if(tier === 1) {
 		var cost = 1e21 * Math.pow(2,num-1)
-		if(game.number >= cost) {
+		if(game.number >= cost && !game.upgrades1.includes(num)) {
 			game['gen'+num].mult *= 2
 			game.number -= cost
 			game.upgrades1.push(num)
@@ -227,7 +239,7 @@ function buyUp(num,tier) {
 	else if(tier === 2) {
 		var pos = [12,13,14,15,16,23,24,25,26,34,35,36,45,46,56].indexOf(num)
 		var cost = [1e27,5e27,2.5e28,1.25e29,6.25e29,1e30,5e30,2.5e31,1.25e32,6.25e32,1e33,2e33,4e33,8e33,1.6e34][pos]
-		if(game.number >= cost) {
+		if(game.number >= cost && !game.upgrades2.includes(String(num))) {
 			num = String(num)
 			game['gen'+num[0]].mult *= 2
 			game['gen'+num[1]].mult *= 2
@@ -358,6 +370,7 @@ function load(save) {
 			game.activeTab = 'gens'
 			game.possibleUps = [1,2,3,4,5,6,12,13,14,15,16,23,24,25,26,34,35,36,45,46,56,123,124,125,126,134,135,136,145,146,156,234,235,236,245,246,256,345,346,356,456,1234,1235,1236,1245,1246,1256,1345,1346,1356,1456,2345,2346,2356,2456,3456,12345,12346,12356,12456,13456,23456,123456]
 		}
+		if(game.version === undefined) game.version = 'v0.2A'
 	} catch (e) {
 		console.log('Your save failed to load: '+e)
 	}
