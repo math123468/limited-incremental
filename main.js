@@ -67,11 +67,23 @@ function updateClass(what,whatClass) {
 }
 var game = reset()
 var currentVer = 'v0.2B'
-update('commit','v0.2B-2')
+update('commit','v0.2B-3')
 function init() {
 	setInterval(tick,100)
 	setInterval(save,3000)
 	if(localStorage.getItem('limitedIncrementalSave')!=null) load(localStorage.getItem('limitedIncrementalSave'))
+}
+function userImport() {
+	var save = window.prompt('Paste your save data here.')
+	load(save)
+}
+function userExport() {
+	window.alert('localStorage.getItem("limitedIncrementalSave")')
+}
+function hardreset() {
+	if(window.confirm('Are you sure you want to reset?') && window.confirm('This will reset all of your progress!!!') && window.confirm('You will gain no bonus from doing this')) {
+		game = reset()
+	}
 }
 function displayUpdate() {
 	update('num',format(game.number,0))
