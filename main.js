@@ -67,7 +67,7 @@ function updateClass(what,whatClass) {
 }
 var game = reset()
 var currentVer = 'v0.2B'
-update('commit','v0.2B-1')
+update('commit','v0.2B-2')
 function init() {
 	setInterval(tick,100)
 	setInterval(save,3000)
@@ -87,6 +87,7 @@ function displayUpdate() {
 function changeTab(tab) {
 	hide('gens')
 	hide('upgrades')
+	hide('syn')
 	game.activeTab = tab
 	show(tab)
 }
@@ -377,4 +378,6 @@ function load(save) {
 	} catch (e) {
 		console.log('Your save failed to load: '+e)
 	}
+}
+function loadBackup(point) {
 }
