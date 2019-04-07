@@ -89,7 +89,7 @@ function init() {
 	setInterval(tick,100)
 	setInterval(save,3000)
 	if(localStorage.getItem('limitedIncrementalSave')!=null) load(localStorage.getItem('limitedIncrementalSave'))
-	update('commit','v0.1C-3')
+	update('commit','v0.1C-4')
 }
 function userImport() {
 	var save = window.prompt('Paste your save data here.')
@@ -424,7 +424,7 @@ function tick() {
 	increaseGens()
 	displayUpdate()
 	if(game.activeTab === 'upgrades') checkIfUpgradesUnlocked()
-	if(game.activeTab === 'syn') chackIfSynergiesUnlocked()
+	if(game.activeTab === 'syn') checkIfSynergiesUnlocked()
 }
 function save() { //save game
 	localStorage.setItem('limitedIncrementalSave',btoa(JSON.stringify(game)))
