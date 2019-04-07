@@ -15,6 +15,7 @@ function reset() {
 			cost:10,
 			baseMult:1,
 			upgradeMult:1,
+			synMult:1,
 			mult:1,
 			amt:0,
 			costInc:Math.pow(10,0.5)
@@ -23,6 +24,7 @@ function reset() {
 			cost:100,
 			baseMult:1,
 			upgradeMult:1,
+			synMult:1,
 			mult:1,
 			amt:0,
 			costInc:10
@@ -31,6 +33,7 @@ function reset() {
 			cost:1e4,
 			baseMult:1,
 			upgradeMult:1,
+			synMult:1,
 			mult:1,
 			amt:0,
 			costInc:Math.pow(10,1.5)
@@ -39,6 +42,7 @@ function reset() {
 			cost:1e7,
 			baseMult:1,
 			upgradeMult:1,
+			synMult:1,
 			mult:1,
 			amt:0,
 			costInc:Math.pow(10,2.5)
@@ -47,6 +51,7 @@ function reset() {
 			cost:1e11,
 			baseMult:1,
 			upgradeMult:1,
+			synMult:1,
 			mult:1,
 			amt:0,
 			costInc:1e4
@@ -55,6 +60,7 @@ function reset() {
 			cost:1e16,
 			baseMult:1,
 			upgradeMult:1,
+			synMult:1,
 			mult:1,
 			amt:0,
 			costInc:Math.pow(10,6.5)
@@ -83,14 +89,14 @@ function init() {
 	setInterval(tick,100)
 	setInterval(save,3000)
 	if(localStorage.getItem('limitedIncrementalSave')!=null) load(localStorage.getItem('limitedIncrementalSave'))
-	update('commit','v0.2B-5')
+	update('commit','v0.1C-1')
 }
 function userImport() {
 	var save = window.prompt('Paste your save data here.')
 	load(save)
 }
 function userExport() {
-	window.alert('localStorage.getItem("limitedIncrementalSave")')
+	window.alert(localStorage.getItem("limitedIncrementalSave"))
 }
 function hardreset() {
 	if(window.confirm('Are you sure you want to reset?') && window.confirm('This will reset all of your progress!!!') && window.confirm('You will gain no bonus from doing this')) {
@@ -229,6 +235,28 @@ function upgradeClasses() {
 		}
 	}
 }
+function checkIfSynergiesUnlocked() {
+	if(game.gen6.amt < 15) {
+		show('synunlock')
+		hide('class1syn')
+	}
+	else {
+		hide('synunlock')
+		show('class1syn')
+	}
+}
+function synergyClasses() {
+	for(i=1;i<7;i++) {
+		for(j=1;j<7;j++) {
+			if(j > i) {
+				var synNum = 10 * i + j
+				if(game.synergies.includes(synNum)) updateClass('up'+up,'button')
+				else if(game.number >= returnSynergyCost(synNum)) updateClass('up'+up,'red')
+				else updateClass('up'+up,'green')
+			}
+		}
+	}
+}
 function buyGen(i) {
 	if(game.number >= game['gen'+i].cost) {
 		game.number -= game['gen'+i].cost
@@ -243,6 +271,16 @@ function buyMax() {
 		while(game.number >= game['gen'+i].cost) {
 			buyGen(i)
 		}
+	}
+}
+function returnSynergyCost(synNum) {
+	return 1e123 * Math.pow(10,[12,13,14,15,16,23,24,25,26,34,35,36,45,46,56].indexOf(synNum))
+}
+function buySyn(gen1,gen2) {
+	var synNum = 10 * gen1 + gen2
+	var cost = returnSynergyCost(synNum)
+	if(game.number >= cost && !game.synergies.includes(synNum)) {
+		game['gen'+gen1].synMult = 2
 	}
 }
 function returnUpgradeCost(num,tier) {
@@ -324,7 +362,7 @@ function buyUp(num,tier) {
 }
 function increaseGens() {
 	for(i=1;i<7;i++) {
-		game['gen'+i].mult = game['gen'+i].baseMult * game['gen'+i].upgradeMult
+		game['gen'+i].mult = game['gen'+i].baseMult * game['gen'+i].upgradeMult * game['gen'+i].synMult
 	}
 	game.number += game.gen1.amt * game.gen1.mult / 10
 	game.gen1.amt += game.gen2.amt * game.gen2.mult / 10
@@ -380,6 +418,7 @@ function tick() {
 	increaseGens()
 	displayUpdate()
 	if(game.activeTab === 'upgrades') checkIfUpgradesUnlocked()
+	if(game.activeTab === 'syn') chackIfSynergiesUnlocked()
 }
 function save() { //save game
 	localStorage.setItem('limitedIncrementalSave',btoa(JSON.stringify(game)))
@@ -405,6 +444,11 @@ function load(save) {
 			for(i=1;i<7;i++) {
 				game['gen'+i].baseMult = 1
 				game['gen'+i].upgradeMult = 1
+			}
+		}
+		if(game.gen1.synMult === undefined) {
+			for(i=1;i<7;i++) {
+				game['gen'+i].synMult = 1
 			}
 		}
 	} catch (e) {
