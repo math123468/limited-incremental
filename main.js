@@ -89,7 +89,7 @@ function init() {
 	setInterval(tick,100)
 	setInterval(save,3000)
 	if(localStorage.getItem('limitedIncrementalSave')!=null) load(localStorage.getItem('limitedIncrementalSave'))
-	update('commit','v0.1C-4')
+	update('commit','v0.1C-5')
 }
 function userImport() {
 	var save = window.prompt('Paste your save data here.')
@@ -286,7 +286,7 @@ function buySyn(gen1,gen2) {
 }
 function returnUpgradeCost(num,tier) {
 	if(tier === 1) return 1e21 * Math.pow(2,num-1)
-	if(tier === 2) return [1e27,5e27,2.5e28,1.25e29,6.25e29,1e30,2e30,4e30,8e30,1.6e31][[12,13,14,15,16,23,24,25,26,34,35,36,45,46,56].indexOf(num)]
+	if(tier === 2) return [1e27,5e27,2.5e28,1.25e29,6.25e29,1e30,5e30,2.5e31,1.25e32,6.25e32,1e33,2e33,4e33,8e33,1.6e34][[12,13,14,15,16,23,24,25,26,34,35,36,45,46,56].indexOf(num)]
 	if(tier === 3) return [1e51,3e51,9e51,2.7e52,8.1e52,2.43e53,1e54,3e54,9e54,2.7e55,8.1e55,2.43e56,1e57,3e57,9e57,2.7e58,8.1e58,2.43e59,2e60,3e60][[123,124,125,126,134,135,136,145,146,156,234,235,236,245,246,256,345,346,356,456].indexOf(num)]
 	if(tier === 4) return [1e75,5e75,2.5e76,1.25e77,6.25e77,1e78,5e78,2.5e79,1.25e80,6.25e80,1e81,5e81,2.5e82,1.25e83,6.25e83][[1234,1235,1236,1245,1246,1256,1345,1346,1356,1456,2345,2346,2356,2456,3456].indexOf(num)]
 	if(tier === 5) return [1e96,1e97,1e98,1e99,1e100,1e101][[12345,12346,12356,12456,13456,23456].indexOf(num)]
