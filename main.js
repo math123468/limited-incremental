@@ -13,36 +13,48 @@ function reset() {
 		synergies:[],
 		gen1:{
 			cost:10,
+			baseMult:1,
+			upgradeMult:1,
 			mult:1,
 			amt:0,
 			costInc:Math.pow(10,0.5)
 		},
 		gen2:{
 			cost:100,
+			baseMult:1,
+			upgradeMult:1,
 			mult:1,
 			amt:0,
 			costInc:10
 		},
 		gen3:{
 			cost:1e4,
+			baseMult:1,
+			upgradeMult:1,
 			mult:1,
 			amt:0,
 			costInc:Math.pow(10,1.5)
 		},
 		gen4:{
 			cost:1e7,
+			baseMult:1,
+			upgradeMult:1,
 			mult:1,
 			amt:0,
 			costInc:Math.pow(10,2.5)
 		},
 		gen5:{
 			cost:1e11,
+			baseMult:1,
+			upgradeMult:1,
 			mult:1,
 			amt:0,
 			costInc:1e4
 		},
 		gen6:{
 			cost:1e16,
+			baseMult:1,
+			upgradeMult:1,
 			mult:1,
 			amt:0,
 			costInc:Math.pow(10,6.5)
@@ -67,11 +79,11 @@ function updateClass(what,whatClass) {
 }
 var game = reset()
 var currentVer = 'v0.2B'
-update('commit','v0.2B-4')
 function init() {
 	setInterval(tick,100)
 	setInterval(save,3000)
 	if(localStorage.getItem('limitedIncrementalSave')!=null) load(localStorage.getItem('limitedIncrementalSave'))
+	update('commit','v0.2B-5')
 }
 function userImport() {
 	var save = window.prompt('Paste your save data here.')
@@ -221,7 +233,7 @@ function buyGen(i) {
 	if(game.number >= game['gen'+i].cost) {
 		game.number -= game['gen'+i].cost
 		game['gen'+i].cost *= game['gen'+i].costInc
-		game['gen'+i].mult *= 1.5
+		game['gen'+i].baseMult *= 1.5
 		if(game['gen'+i].cost >= 1e33) game['gen'+i].costInc *= Math.pow(10,0.25)
 		game['gen'+i].amt ++
 	}
@@ -245,7 +257,7 @@ function buyUp(num,tier) {
 	if(tier === 1) {
 		var cost = 1e21 * Math.pow(2,num-1)
 		if(game.number >= cost && !game.upgrades1.includes(num)) {
-			game['gen'+num].mult *= 2
+			game['gen'+num].upgradeMult *= 2
 			game.number -= cost
 			game.upgrades1.push(num)
 		}	
@@ -255,8 +267,8 @@ function buyUp(num,tier) {
 		var cost = [1e27,5e27,2.5e28,1.25e29,6.25e29,1e30,5e30,2.5e31,1.25e32,6.25e32,1e33,2e33,4e33,8e33,1.6e34][pos]
 		if(game.number >= cost && !game.upgrades2.includes(String(num))) {
 			num = String(num)
-			game['gen'+num[0]].mult *= 2
-			game['gen'+num[1]].mult *= 2
+			game['gen'+num[0]].upgradeMult *= 2
+			game['gen'+num[1]].upgradeMult *= 2
 			game.number -= cost
 			game.upgrades2.push(num)
 		}
@@ -264,11 +276,11 @@ function buyUp(num,tier) {
 	else if(tier === 3) {
 		var pos = [123,124,125,126,134,135,136,145,146,156,234,235,236,245,246,256,345,346,356,456].indexOf(num)
 		var cost = [1e51,3e51,9e51,2.7e52,8.1e52,2.43e53,1e54,3e54,9e54,2.7e55,8.1e55,2.43e56,1e57,3e57,9e57,2.7e58,8.1e58,2.43e59,2e60,3e60][pos]
-		if(game.number >= cost) {
+		if(game.number >= cost && !game.upgrades3.includes(String(num))) {
 			num = String(num)
-			game['gen'+num[0]].mult *= 2
-			game['gen'+num[1]].mult *= 2
-			game['gen'+num[2]].mult *= 2
+			game['gen'+num[0]].upgradeMult *= 2
+			game['gen'+num[1]].upgradeMult *= 2
+			game['gen'+num[2]].upgradeMult *= 2
 			game.number -= cost
 			game.upgrades3.push(num)
 		}
@@ -276,12 +288,12 @@ function buyUp(num,tier) {
 	else if(tier === 4) {
 		var pos = [1234,1235,1236,1245,1246,1256,1345,1346,1356,1456,2345,2346,2356,2456,3456].indexOf(num)
 		var cost = [1e75,5e75,2.5e76,1.25e77,6.25e77,1e78,5e78,2.5e79,1.25e80,6.25e80,1e81,5e81,2.5e82,1.25e83,6.25e83][pos]
-		if(game.number >= cost) {
+		if(game.number >= cost && !game.upgrades4.includes(String(num))) {
 			num = String(num)
-			game['gen'+num[0]].mult *= 2
-			game['gen'+num[1]].mult *= 2
-			game['gen'+num[2]].mult *= 2
-			game['gen'+num[3]].mult *= 2
+			game['gen'+num[0]].upgradeMult *= 2
+			game['gen'+num[1]].upgradeMult *= 2
+			game['gen'+num[2]].upgradeMult *= 2
+			game['gen'+num[3]].upgradeMult *= 2
 			game.number -= cost
 			game.upgrades4.push(num)
 		}
@@ -289,28 +301,31 @@ function buyUp(num,tier) {
 	else if(tier === 5) {
 		var pos = [12345,12346,12356,12456,13456,23456].indexOf(num)
 		var cost = [1e96,1e97,1e98,1e99,1e100,1e101][pos]
-		if(game.number >= cost) {
+		if(game.number >= cost&& !game.upgrades5.includes(String(num))) {
 			num = String(num)
-			game['gen'+num[0]].mult *= 2
-			game['gen'+num[1]].mult *= 2
-			game['gen'+num[2]].mult *= 2
-			game['gen'+num[3]].mult *= 2
-			game['gen'+num[4]].mult *= 2
+			game['gen'+num[0]].upgradeMult *= 2
+			game['gen'+num[1]].upgradeMult *= 2
+			game['gen'+num[2]].upgradeMult *= 2
+			game['gen'+num[3]].upgradeMult *= 2
+			game['gen'+num[4]].upgradeMult *= 2
 			game.number -= cost
 			game.upgrades5.push(num)
 		}
 	}
 	else if(tier === 6) {
-		if(game.number >= 1e108) {
+		if(game.number >= 1e108&& !game.upgrades6.includes(String(num))) {
 			game.number -= 1e108
 			game.upgrades6.push(num)
 			for(i=1;i<7;i++) {
-				game['gen'+i].mult *= 2
+				game['gen'+i].upgradeMult *= 2
 			}
 		}
 	}
 }
 function increaseGens() {
+	for(i=1;i<7;i++) {
+		game['gen'+i].mult = game['gen'+i].baseMult * game['gen'+i].upgradeMult
+	}
 	game.number += game.gen1.amt * game.gen1.mult / 10
 	game.gen1.amt += game.gen2.amt * game.gen2.mult / 10
 	game.gen2.amt += game.gen3.amt * game.gen3.mult / 10
@@ -386,6 +401,12 @@ function load(save) {
 		}
 		if(game.version === undefined) game.version = currentVer
 		if(game.synergies === undefined) game.synergies = []
+		if(game.gen1.baseMult === undefined) {
+			for(i=1;i<7;i++) {
+				game['gen'+i].baseMult = 1
+				game['gen'+i].upgradeMult = 1
+			}
+		}
 	} catch (e) {
 		console.log('Your save failed to load: '+e)
 	}
