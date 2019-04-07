@@ -89,7 +89,7 @@ function init() {
 	setInterval(tick,100)
 	setInterval(save,3000)
 	if(localStorage.getItem('limitedIncrementalSave')!=null) load(localStorage.getItem('limitedIncrementalSave'))
-	update('commit','v0.1C-2')
+	update('commit','v0.1C-3')
 }
 function userImport() {
 	var save = window.prompt('Paste your save data here.')
@@ -280,7 +280,6 @@ function buySyn(gen1,gen2) {
 	var synNum = 10 * gen1 + gen2
 	var cost = returnSynergyCost(synNum)
 	if(game.number >= cost && !game.synergies.includes(synNum)) {
-		game['gen'+gen1].synMult = 2
 		game.number -= cost
 		game.synergies.push(synNum)
 	}
@@ -363,6 +362,11 @@ function buyUp(num,tier) {
 	}
 }
 function increaseGens() {
+	for(i=0;i<game.synergies.length;i++) {
+		var gen1 = String(game.synergies[i])[0]
+		var gen2 = String(game.synergies[i])[1]
+		game['gen'+gen1].synMult = 1 + Math.log10(game['gen'+gen2].amt)
+	}
 	for(i=1;i<7;i++) {
 		game['gen'+i].mult = game['gen'+i].baseMult * game['gen'+i].upgradeMult * game['gen'+i].synMult
 	}
