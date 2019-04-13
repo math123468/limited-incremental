@@ -89,7 +89,7 @@ function init() {
 	setInterval(tick,100)
 	setInterval(save,3000)
 	if(localStorage.getItem('limitedIncrementalSave')!=null) load(localStorage.getItem('limitedIncrementalSave'))
-	update('commit','v0.1C-5')
+	update('commit','v0.1C-6')
 }
 function userImport() {
 	var save = window.prompt('Paste your save data here.')
@@ -352,7 +352,7 @@ function buyUp(num,tier) {
 		}
 	}
 	else if(tier === 6) {
-		if(game.number >= 1e108&& !game.upgrades6.includes(String(num))) {
+		if(game.number >= 1e108&& !game.upgrades6.includes(num)) {
 			game.number -= 1e108
 			game.upgrades6.push(num)
 			for(i=1;i<7;i++) {
