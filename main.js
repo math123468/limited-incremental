@@ -95,7 +95,7 @@ function init() {
 	setInterval(tick,100)
 	setInterval(save,3000)
 	if(localStorage.getItem('limitedIncrementalSave')!=null) load(localStorage.getItem('limitedIncrementalSave'))
-	update('commit','v0.1D-4')
+	update('commit','v0.1D-5')
 }
 function userImport() {
 	var save = window.prompt('Paste your save data here.')
@@ -243,7 +243,7 @@ function upgradeClasses() {
 	}
 }
 function checkIfSynergiesUnlocked() {
-	if(game.gen6.amt < 15) {
+	if(game.gen6.amt < 14) {
 		show('synunlock')
 		hide('class1syn')
 	}
