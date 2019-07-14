@@ -69,7 +69,6 @@ function reset() {
 			cost:10,
 			upgrades:[],
 			amt:0,
-			unlocked:false
 		}
 	}
 	return game
@@ -95,7 +94,7 @@ function init() {
 	setInterval(tick,100)
 	setInterval(save,3000)
 	if(localStorage.getItem('limitedIncrementalSave')!=null) load(localStorage.getItem('limitedIncrementalSave'))
-	update('commit','v0.1D-9')
+	update('commit','v0.1D-10')
 }
 function userImport() {
 	var save = window.prompt('Paste your save data here.')
@@ -383,6 +382,7 @@ function increaseGens() {
 	for(i=0;i<game.synergies.length;i++) {
 		var gen1 = String(game.synergies[i])[0]
 		var gen2 = String(game.synergies[i])[1]
+		game['gen'+gen1].synMult = 1
 		game['gen'+gen1].synMult *= 1 + Math.log10(game['gen'+gen2].amt)
 	}
 	for(i=1;i<7;i++) {
@@ -476,6 +476,7 @@ function load(save) {
 				game['gen'+i].synMult = 1
 			}
 		}
+		if(game.negative === undefined) game.negative = reset().negative
 	} catch (e) {
 		console.log('Your save failed to load: '+e)
 	}
