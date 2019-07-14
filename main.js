@@ -95,7 +95,7 @@ function init() {
 	setInterval(tick,100)
 	setInterval(save,3000)
 	if(localStorage.getItem('limitedIncrementalSave')!=null) load(localStorage.getItem('limitedIncrementalSave'))
-	update('commit','v0.1D-8')
+	update('commit','v0.1D-9')
 }
 function userImport() {
 	var save = window.prompt('Paste your save data here.')
@@ -252,6 +252,16 @@ function checkIfSynergiesUnlocked() {
 		show('class1syn')
 	}
 	synergyClasses()
+}
+function checkIfNegativesUnlocked() {
+	if(game.gen6.amt < 6666) {
+		show('negunlock')
+		hide('neg1')
+	}
+	else {
+		hide('negunlock')
+		show('neg1')
+	}
 }
 function synergyClasses() {
 	for(i=1;i<7;i++) {
@@ -433,6 +443,7 @@ function tick() {
 	displayUpdate()
 	if(game.activeTab === 'upgrades') checkIfUpgradesUnlocked()
 	if(game.activeTab === 'syn') checkIfSynergiesUnlocked()
+	if(game.activeTab === 'neg') checkIfNegativesUnlocked()
 }
 function save() { //save game
 	localStorage.setItem('limitedIncrementalSave',btoa(JSON.stringify(game)))
