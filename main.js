@@ -95,7 +95,7 @@ function init() {
 	setInterval(tick,100)
 	setInterval(save,3000)
 	if(localStorage.getItem('limitedIncrementalSave')!=null) load(localStorage.getItem('limitedIncrementalSave'))
-	update('commit','v0.1D-7')
+	update('commit','v0.1D-8')
 }
 function userImport() {
 	var save = window.prompt('Paste your save data here.')
@@ -251,6 +251,7 @@ function checkIfSynergiesUnlocked() {
 		hide('synunlock')
 		show('class1syn')
 	}
+	synergyClasses()
 }
 function synergyClasses() {
 	for(i=1;i<7;i++) {
