@@ -94,7 +94,7 @@ function init() {
 	setInterval(tick,100)
 	setInterval(save,3000)
 	if(localStorage.getItem('limitedIncrementalSave')!=null) load(localStorage.getItem('limitedIncrementalSave'))
-	update('commit','v0.1D-14')
+	update('commit','v0.1D-15')
 }
 function userImport() {
 	var save = window.prompt('Paste your save data here.')
@@ -297,7 +297,7 @@ function buyMax() {
 	}
 }
 function returnSynergyCost(synNum) {
-	return 1e114 * Math.pow(10,[12,13,14,15,16,23,24,25,26,34,35,36,45,46,56].indexOf(synNum))
+	return 1e111 * Math.pow(10,[12,13,14,15,16,23,24,25,26,34,35,36,45,46,56].indexOf(synNum))
 }
 function buySyn(gen1,gen2) {
 	var synNum = 10 * gen1 + gen2
