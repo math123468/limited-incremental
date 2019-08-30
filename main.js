@@ -11,6 +11,15 @@ function reset() {
 		upgrades5:[],
 		upgrades6:[],
 		synergies:[],
+		gen0:{
+			cost:0,
+			baseMult:0,
+			upgradeMult:0,
+			synMult:0,
+			mult:0,
+			amt:0,
+			cosInc:0,
+		},
 		gen1:{
 			cost:10,
 			baseMult:1,
@@ -281,12 +290,12 @@ function buyGen(i) {
 		game['gen'+i].baseMult *= 1.5
 		if(game['gen'+i].cost >= 1e33) game['gen'+i].costInc *= Math.pow(10,0.25)
 		game['gen'+i].amt ++
-		game.gen1.costInc = Math.min(game.gen1.costInc,1e6)
-		game.gen2.costInc = Math.min(game.gen2.costInc,Math.pow(10,6.5))
-		game.gen3.costInc = Math.min(game.gen3.costInc,1e7)
-		game.gen4.costInc = Math.min(game.gen4.costInc,Math.pow(10,7.5))
-		game.gen5.costInc = Math.min(game.gen5.costInc,1e8)
-		game.gen6.costInc = Math.min(game.gen6.costInc,1e9)
+		game.gen1.costInc = Math.min(game.gen1.costInc,1e4)
+		game.gen2.costInc = Math.min(game.gen2.costInc,Math.pow(10,4.5))
+		game.gen3.costInc = Math.min(game.gen3.costInc,1e5)
+		game.gen4.costInc = Math.min(game.gen4.costInc,Math.pow(10,5.5))
+		game.gen5.costInc = Math.min(game.gen5.costInc,1e6)
+		game.gen6.costInc = Math.min(game.gen6.costInc,1e7)
 	}
 }
 function buyMax() {
