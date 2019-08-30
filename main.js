@@ -94,7 +94,7 @@ function init() {
 	setInterval(tick,100)
 	setInterval(save,3000)
 	if(localStorage.getItem('limitedIncrementalSave')!=null) load(localStorage.getItem('limitedIncrementalSave'))
-	update('commit','v0.1D-13')
+	update('commit','v0.1D-14')
 }
 function userImport() {
 	var save = window.prompt('Paste your save data here.')
@@ -281,12 +281,12 @@ function buyGen(i) {
 		game['gen'+i].baseMult *= 1.5
 		if(game['gen'+i].cost >= 1e33) game['gen'+i].costInc *= Math.pow(10,0.25)
 		game['gen'+i].amt ++
-		game.gen1.costInc = Math.min(game.gen1.costInc,1e6)
-		game.gen2.costInc = Math.min(game.gen2.costInc,Math.pow(10,6.5))
-		game.gen3.costInc = Math.min(game.gen3.costInc,1e7)
-		game.gen4.costInc = Math.min(game.gen4.costInc,Math.pow(10,7.5))
-		game.gen5.costInc = Math.min(game.gen5.costInc,1e8)
-		game.gen6.costInc = Math.min(game.gen6.costInc,1e9)
+		game.gen1.costInc = Math.min(game.gen1.costInc,1e4)
+		game.gen2.costInc = Math.min(game.gen2.costInc,Math.pow(10,4.5))
+		game.gen3.costInc = Math.min(game.gen3.costInc,1e5)
+		game.gen4.costInc = Math.min(game.gen4.costInc,Math.pow(10,5.5))
+		game.gen5.costInc = Math.min(game.gen5.costInc,1e6)
+		game.gen6.costInc = Math.min(game.gen6.costInc,1e7)
 	}
 }
 function buyMax() {
