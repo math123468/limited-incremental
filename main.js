@@ -76,6 +76,8 @@ function reset() {
 				two:0,
 				three:0,
 				four:0,
+				onePower:1,
+				twoPower:1,
 			},
 			amt:0,
 			mult:1,
@@ -143,11 +145,12 @@ function theme() {
 	}
 }
 function init() {
+	for(i=1;i<7;i++) game['gen'+i].actualCost = game['gen'+i].cost
 	changeNews()
 	setInterval(tick,100)
 	setInterval(save,3000)
 	if(localStorage.getItem('limitedIncrementalSave')!=null) load(localStorage.getItem('limitedIncrementalSave'))
-	update('commit','v0.1D-31')
+	update('commit','v0.1D-32')
 }
 function userImport() {
 	var save = window.prompt('Paste your save data here.')
@@ -345,10 +348,11 @@ function synergyClasses() {
 function buyGen(i) {
 	if(game.number >= game['gen'+i].cost) {
 		game.number -= game['gen'+i].cost
-		game['gen'+i].cost *= game['gen'+i].costInc
+		game['gen'+i].actualCost *= game['gen'+i].costInc
 		game['gen'+i].baseMult *= 1.5
 		if(game['gen'+i].cost >= 1e33) game['gen'+i].costInc *= Math.pow(10,0.25)
 		game['gen'+i].amt ++
+		game['gen'+i].cost = game['gen'+i].actualCost/game.negative.upgrades.onePower
 		game.gen1.costInc = Math.min(game.gen1.costInc,1e4)
 		game.gen2.costInc = Math.min(game.gen2.costInc,Math.pow(10,4.5))
 		game.gen3.costInc = Math.min(game.gen3.costInc,1e5)
@@ -473,7 +477,14 @@ function buyNeg() {
 	}
 }
 function checkForNegUpgrades() {
-	
+	if(game.negative.amt >= 6666 && game.negative.upgrades.one === 0) game.negative.upgrades.one = 1
+	if(game.negative.amt >= 6666 && game.negative.upgrades.two === 0) game.negative.upgrades.two = 1
+	if(game.negative.amt >= 6666 && game.negative.upgrades.three === 0) game.negative.upgrades.three = 1
+	if(game.negative.amt >= 6666 && game.negative.upgrades.four === 0) game.negative.upgrades.four = 1
+	if(game.negative.amt >= 6666 && game.negative.upgrades.one === 1) game.negative.upgrades.one = 2
+	if(game.negative.amt >= 6666 && game.negative.upgrades.two === 1) game.negative.upgrades.two = 2
+	if(game.negative.amt >= 6666 && game.negative.upgrades.three === 1) game.negative.upgrades.three = 2
+	if(game.negative.amt >= 6666 && game.negative.upgrades.four === 1) game.negative.upgrades.four = 2
 }
 function increaseGens() {
 	for(i=0;i<7;i++) {
@@ -486,13 +497,13 @@ function increaseGens() {
 	}
 	for(i=1;i<7;i++) {
 		if(game.achievements.includes('ach27') && game.achievements.includes('ach34')) {
-			game['gen'+i].mult = game['gen'+i].baseMult * game['gen'+i].upgradeMult * game['gen'+i].synMult * game.negative.negMult * 4
+			game['gen'+i].mult = game['gen'+i].baseMult * game['gen'+i].upgradeMult * game['gen'+i].synMult * game.negative.mult * game.negative.upgrades.twoPower * 4
 		}
 		else if(game.achievements.includes('ach27') || game.achievements.includes('ach34')) {
-			game['gen'+i].mult = game['gen'+i].baseMult * game['gen'+i].upgradeMult * game['gen'+i].synMult * game.negative.negMult * 2
+			game['gen'+i].mult = game['gen'+i].baseMult * game['gen'+i].upgradeMult * game['gen'+i].synMult * game.negative.mult * game.negative.upgrades.twoPower * 2
 		}
 		else {
-			game['gen'+i].mult = game['gen'+i].baseMult * game['gen'+i].upgradeMult * game['gen'+i].synMult * game.negative.negMult
+			game['gen'+i].mult = game['gen'+i].baseMult * game['gen'+i].upgradeMult * game['gen'+i].synMult * game.negative.mult * game.negative.upgrades.twoPower
 		}
 	}
 	game.number += game.gen1.amt * game.gen1.mult / 10
@@ -600,6 +611,10 @@ function load(save) {
 				three:0,
 				four:0,
 			}
+		}
+		if(game.negative.upgrades.onePower === undefined) {
+			game.negative.upgrades.onePower = 1
+			game.negative.upgrades.twoPower = 1
 		}
 		achieveClasses()
 	} catch (e) {
