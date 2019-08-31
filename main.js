@@ -116,7 +116,7 @@ function giveAchieve(number) {
 }
 function theme() {
 	if(game.theme === 'dark') game.theme = 'light'
-	if(game.theme === 'light') game.theme = 'dark'
+	else if(game.theme === 'light') game.theme = 'dark'
 	updateClass('navgen','nav')
 	updateClass('navupg','nav')
 	updateClass('navsyn','nav')
@@ -135,7 +135,7 @@ function init() {
 	setInterval(save,3000)
 	if(localStorage.getItem('limitedIncrementalSave')!=null) load(localStorage.getItem('limitedIncrementalSave'))
 	achieveClasses()
-	update('commit','v0.1D-27')
+	update('commit','v0.1D-28')
 }
 function userImport() {
 	var save = window.prompt('Paste your save data here.')
