@@ -147,7 +147,7 @@ function init() {
 	setInterval(tick,100)
 	setInterval(save,3000)
 	if(localStorage.getItem('limitedIncrementalSave')!=null) load(localStorage.getItem('limitedIncrementalSave'))
-	update('commit','v0.1D-30')
+	update('commit','v0.1D-31')
 }
 function userImport() {
 	var save = window.prompt('Paste your save data here.')
@@ -468,7 +468,7 @@ function buyNeg() {
 		game.negative.mult *= 1.05
 		update('negAmt',format(game.negative.amt,0))
 		update('negCost',format(game.negative.cost,0))
-		update('negBoost',format(Math.pow(1.05,game.negative.amt),3)
+		update('negBoost',format(Math.pow(1.05,game.negative.amt),3))
 		checkForNegUpgrades()
 	}
 }
