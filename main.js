@@ -102,7 +102,7 @@ function changeNews() {
 var game = reset()
 var currentVer = 'v0.1D'
 function giveAchieve(number) {
-	if(!game.achievements.includes(number) {
+	if(!game.achievements.includes(number)) {
 		game.achievements.push(number)
 		updateClass(number,'achievecomplete')
 	}
