@@ -12,6 +12,7 @@ function reset() {
 		upgrades5:[],
 		upgrades6:[],
 		synergies:[],
+		achievements:[],
 		gen1:{
 			cost:10,
 			baseMult:1,
@@ -88,7 +89,6 @@ function show(what) {
 function updateClass(what,whatClass) {
 	var element = document.getElementById(what)
 	element.className = ''
-	element.classList.add("button");
 	element.classList.add(whatClass)
 }
 function changeNews() {
@@ -98,11 +98,18 @@ function changeNews() {
 }
 var game = reset()
 var currentVer = 'v0.1D'
+function giveAchieve(number) {
+	if(!game.achievements.includes(number) {
+		game.achievements.push(number)
+		updateClass(number,'achievecomplete')
+	}
+}
 function init() {
+	changeNews()
 	setInterval(tick,100)
 	setInterval(save,3000)
 	if(localStorage.getItem('limitedIncrementalSave')!=null) load(localStorage.getItem('limitedIncrementalSave'))
-	update('commit','v0.1D-18')
+	update('commit','v0.1D-19')
 }
 function userImport() {
 	var save = window.prompt('Paste your save data here.')
@@ -296,6 +303,13 @@ function buyGen(i) {
 		game.gen4.costInc = Math.min(game.gen4.costInc,Math.pow(10,5.5))
 		game.gen5.costInc = Math.min(game.gen5.costInc,1e6)
 		game.gen6.costInc = Math.min(game.gen6.costInc,1e7)
+		if(i === 1) giveAchieve('ach11')
+		if(i === 1 && game.gen1.baseMult > 1.6) giveAchieve('ach12')
+		if(i === 2) giveAchieve('ach13')
+		if(i === 3) giveAchieve('ach14')
+		if(i === 4) giveAchieve('ach15')
+		if(i === 5) giveAchieve('ach16')
+		if(i === 6) giveAchieve('ach17')
 	}
 }
 function buyMax() {
