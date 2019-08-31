@@ -163,6 +163,7 @@ function displayUpdate() {
 function achieveClasses() {
 	for(i=0;i<game.achievements.length;i++) {
 		updateClass(game.achievements[i],'achievecomplete')
+		console.log(i)
 	}
 }
 function changeTab(tab) {
