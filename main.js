@@ -78,6 +78,7 @@ function reset() {
 				four:0,
 			},
 			amt:0,
+			mult:1,
 		}
 	}
 	return game
@@ -134,8 +135,7 @@ function init() {
 	setInterval(tick,100)
 	setInterval(save,3000)
 	if(localStorage.getItem('limitedIncrementalSave')!=null) load(localStorage.getItem('limitedIncrementalSave'))
-	achieveClasses()
-	update('commit','v0.1D-28')
+	update('commit','v0.1D-29')
 }
 function userImport() {
 	var save = window.prompt('Paste your save data here.')
@@ -452,6 +452,10 @@ function buyNeg() {
 		game.number -= game.negative.cost
 		game.negative.amt ++
 		game.negative.cost *= 10
+		game.negative.mult *= 1.05
+		update('negAmt',format(game.negative.amt,0))
+		update('negCost',format(game.negative.cost,0))
+		update('negBoost',format(Math.pow(1.05,game.negative.amt),3)
 		checkForNegUpgrades()
 	}
 }
@@ -469,13 +473,13 @@ function increaseGens() {
 	}
 	for(i=1;i<7;i++) {
 		if(game.achievements.includes('ach27') && game.achievements.includes('ach34')) {
-			game['gen'+i].mult = game['gen'+i].baseMult * game['gen'+i].upgradeMult * game['gen'+i].synMult * 4
+			game['gen'+i].mult = game['gen'+i].baseMult * game['gen'+i].upgradeMult * game['gen'+i].synMult * game.negative.negMult * 4
 		}
 		else if(game.achievements.includes('ach27') || game.achievements.includes('ach34')) {
-			game['gen'+i].mult = game['gen'+i].baseMult * game['gen'+i].upgradeMult * game['gen'+i].synMult * 2
+			game['gen'+i].mult = game['gen'+i].baseMult * game['gen'+i].upgradeMult * game['gen'+i].synMult * game.negative.negMult * 2
 		}
 		else {
-			game['gen'+i].mult = game['gen'+i].baseMult * game['gen'+i].upgradeMult * game['gen'+i].synMult
+			game['gen'+i].mult = game['gen'+i].baseMult * game['gen'+i].upgradeMult * game['gen'+i].synMult * game.negative.negMult
 		}
 	}
 	game.number += game.gen1.amt * game.gen1.mult / 10
@@ -584,6 +588,7 @@ function load(save) {
 				four:0,
 			}
 		}
+		achieveClasses()
 	} catch (e) {
 		console.log('Your save failed to load: '+e)
 	}
