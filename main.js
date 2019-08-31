@@ -75,8 +75,8 @@ function reset() {
 	}
 	return game
 }
-const news = ['Hi, guys!']
-const newsTimes = [2]
+const news = ['Hi, guys!','Once upon a time...','Much Number!']
+const newsTimes = [2,2.5,1.5]
 function update(what,withWhat) {
 	document.getElementById(what).innerHTML = withWhat
 }
@@ -94,7 +94,7 @@ function updateClass(what,whatClass) {
 function changeNews() {
 	var nextNewsNum = Math.floor(news.length * Math.random())
 	update('news',news[nextNewsNum])
-	setInterval('changeNews()',newsTimes[nextNewsNum] * 1000)
+	setTimeout('changeNews()',newsTimes[nextNewsNum] * 1000)
 }
 var game = reset()
 var currentVer = 'v0.1D'
@@ -109,7 +109,7 @@ function init() {
 	setInterval(tick,100)
 	setInterval(save,3000)
 	if(localStorage.getItem('limitedIncrementalSave')!=null) load(localStorage.getItem('limitedIncrementalSave'))
-	update('commit','v0.1D-19')
+	update('commit','v0.1D-20')
 }
 function userImport() {
 	var save = window.prompt('Paste your save data here.')
