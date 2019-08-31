@@ -116,14 +116,26 @@ function giveAchieve(number) {
 	}
 }
 function theme() {
-	if(game.theme === 'dark') game.theme = 'light'
-	else if(game.theme === 'light') game.theme = 'dark'
+	if(game.theme === 'dark') {
+		game.theme = 'light'
+		document.body.style = 'background-color:#000000'
+	}
+	else if(game.theme === 'light') {
+		game.theme = 'dark'
+		document.body.style = 'background-color:#FFFFFF'
+	}
+	update('theme','Theme: '+game.theme)
+	update('save','button')
+	update('import','button')
+	update('export','button')
+	update('hardreset','button')
 	updateClass('navgen','nav')
 	updateClass('navupg','nav')
 	updateClass('navsyn','nav')
 	updateClass('navneg','nav')
 	updateClass('navach','nav')
 	updateClass('navopt','nav')
+	for(i=1;i<7;i++) updateClass('buy'+i,'button')
 	for(i=1;i<4;i++) {
 		for(j=1;j<9;j++) {
 			updateClass('ach'+i+j,'achieve')
@@ -135,7 +147,7 @@ function init() {
 	setInterval(tick,100)
 	setInterval(save,3000)
 	if(localStorage.getItem('limitedIncrementalSave')!=null) load(localStorage.getItem('limitedIncrementalSave'))
-	update('commit','v0.1D-29')
+	update('commit','v0.1D-30')
 }
 function userImport() {
 	var save = window.prompt('Paste your save data here.')
