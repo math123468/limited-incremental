@@ -77,8 +77,8 @@ function reset() {
 	}
 	return game
 }
-const news = ['Hi, guys!','Once upon a time...','Much Number!','Next update in 5 days!','Upgrades boost different gens!','Synergies boost gens based on the amount of another!','Negative Numbers: Coming soon(TM)']
-const newsTimes = [2,2.5,1.5,3,3,3,3]
+const news = ['Hi, guys!','Once upon a time...','Much Number!','Next update in 5 days!','Upgrades boost different gens!','Synergies boost gens based on the amount of another!','Negative Numbers: Coming soon(TM)','aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa']
+const newsTimes = [2,2.5,1.5,3,3,3,3,30]
 function update(what,withWhat) {
 	document.getElementById(what).innerHTML = withWhat
 }
@@ -126,11 +126,11 @@ function theme() {
 }
 function init() {
 	changeNews()
-	achieveClasses()
 	setInterval(tick,100)
 	setInterval(save,3000)
 	if(localStorage.getItem('limitedIncrementalSave')!=null) load(localStorage.getItem('limitedIncrementalSave'))
-	update('commit','v0.1D-24')
+	achieveClasses()
+	update('commit','v0.1D-25')
 }
 function userImport() {
 	var save = window.prompt('Paste your save data here.')
