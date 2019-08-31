@@ -71,7 +71,12 @@ function reset() {
 		},
 		negative:{
 			cost:10,
-			upgrades:[],
+			upgrades:{
+				one:0,
+				two:0,
+				three:0,
+				four:0,
+			},
 			amt:0,
 		}
 	}
@@ -130,7 +135,7 @@ function init() {
 	setInterval(save,3000)
 	if(localStorage.getItem('limitedIncrementalSave')!=null) load(localStorage.getItem('limitedIncrementalSave'))
 	achieveClasses()
-	update('commit','v0.1D-26')
+	update('commit','v0.1D-27')
 }
 function userImport() {
 	var save = window.prompt('Paste your save data here.')
@@ -303,7 +308,7 @@ function checkIfSynergiesUnlocked() {
 	synergyClasses()
 }
 function checkIfNegativesUnlocked() {
-	if(game.gen6.amt < 6666) {
+	if(game.gen6.amt < 20) {
 		show('negunlock')
 		hide('neg1')
 	}
@@ -442,6 +447,17 @@ function buyUp(num,tier) {
 		}
 	}
 }
+function buyNeg() {
+	if(game.number >= game.negative.cost) {
+		game.number -= game.negative.cost
+		game.negative.amt ++
+		game.negative.cost *= 10
+		checkForNegUpgrades()
+	}
+}
+function checkForNegUpgrades() {
+	
+}
 function increaseGens() {
 	for(i=0;i<7;i++) {
 		game['gen'+i].synMult = 1
@@ -560,6 +576,14 @@ function load(save) {
 		if(game.timePlayed === undefined) game.timePlayed = 0
 		if(game.newsSeen === undefined) game.newsSeen = 0
 		if(game.theme === undefined) game.theme = 'dark'
+		if(game.negative.upgrades === []) {
+			game.negative.upgrades = {
+				one:0,
+				two:0,
+				three:0,
+				four:0,
+			}
+		}
 	} catch (e) {
 		console.log('Your save failed to load: '+e)
 	}
