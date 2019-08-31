@@ -3,16 +3,16 @@
 <head>
 <style>
 .dark {
-	background-color: #000000;
-}
-.dark:hover {
-	color: #000000;
-}
-.light {
 	background-color: #FFFFFF;
 }
+.dark:hover {
+	color: #FFFFFF;
+}
+.light {
+	background-color: #000000;
+}
 .light:hover {
-	color: #FFFFFF
+	color: #000000;
 }
 .button {
 	color: #00FFFF;
@@ -82,14 +82,14 @@ div {
 </head>
 <body style = 'background-color:#000000'>
 	<div id = 'commit'>v0.1D-1</div>
-	<div>HTML Commit 10</div><br>
+	<div>HTML Commit 11</div><br>
 	<font color = 'white'><div id = 'news'></div></font>
 	<script src = 'main.js' onload = 'init()'></script>
 	<h1><font color = 'white'>You have <div id = 'num'>0</div> number.</font></h1>
 	<font color = '#00FFFF'>
 		<div id = 'navbar'>
 			<button id = 'navgen' class = 'dark nav' onclick = 'changeTab("gens")'>Generators</button>
-			<button id = 'nayupg' class = 'dark nav' onclick = 'changeTab("upgrades")'>Upgrades</button>
+			<button id = 'navupg' class = 'dark nav' onclick = 'changeTab("upgrades")'>Upgrades</button>
 			<button id = 'navsyn' class = 'dark nav' onclick = 'changeTab("syn")'>Synergies</button>
 			<button id = 'navneg' class = 'dark nav' onclick = 'changeTab("negative")'>Negatives</button>
 			<button id = 'navach' class = 'dark nav' onclick = 'changeTab("achievs")'>Achievements</button>
