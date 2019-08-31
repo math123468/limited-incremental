@@ -126,10 +126,11 @@ function theme() {
 }
 function init() {
 	changeNews()
+	achieveClasses()
 	setInterval(tick,100)
 	setInterval(save,3000)
 	if(localStorage.getItem('limitedIncrementalSave')!=null) load(localStorage.getItem('limitedIncrementalSave'))
-	update('commit','v0.1D-22')
+	update('commit','v0.1D-23')
 }
 function userImport() {
 	var save = window.prompt('Paste your save data here.')
@@ -152,6 +153,11 @@ function displayUpdate() {
 		}
 		update('mult'+i,format(game['gen'+i].mult,4))
 		update('cost'+i,format(game['gen'+i].cost,0))
+	}
+}
+function achieveClasses() {
+	for(i=0;i<game.achievements.length;i++) {
+		updateClass(game.achievements[i],'achievecomplete')
 	}
 }
 function changeTab(tab) {
