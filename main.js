@@ -13,6 +13,7 @@ function reset() {
 		upgrades6:[],
 		synergies:[],
 		achievements:[],
+		newsSeen:0,
 		gen1:{
 			cost:10,
 			baseMult:1,
@@ -95,6 +96,8 @@ function changeNews() {
 	var nextNewsNum = Math.floor(news.length * Math.random())
 	update('news',news[nextNewsNum])
 	setTimeout('changeNews()',newsTimes[nextNewsNum] * 1000)
+	game.newsSeen ++
+	if(game.newsSeen === 500) giveAchieve('ach36')
 }
 var game = reset()
 var currentVer = 'v0.1D'
@@ -109,7 +112,7 @@ function init() {
 	setInterval(tick,100)
 	setInterval(save,3000)
 	if(localStorage.getItem('limitedIncrementalSave')!=null) load(localStorage.getItem('limitedIncrementalSave'))
-	update('commit','v0.1D-20')
+	update('commit','v0.1D-21')
 }
 function userImport() {
 	var save = window.prompt('Paste your save data here.')
@@ -156,6 +159,7 @@ function checkIfUpgradesUnlocked() {
 		return
 	}
 	if(game.gen6.amt > 0) {
+		giveAchieve('ach21')
 		show('upgrades')
 		show('tier1')
 		hide('upunlock')
@@ -170,6 +174,7 @@ function checkIfUpgradesUnlocked() {
 		if(!(game.upgrades1.includes(i))) good = 0
 	}
 	if(good === 1) {
+		giveAchieve('ach22')
 		show('tier2')
 	}
 	good = 1
@@ -181,6 +186,7 @@ function checkIfUpgradesUnlocked() {
 		}
 	}
 	if(good === 1) {
+		giveAchieve('ach23')
 		show('tier3')
 	}
 	good = 1
@@ -194,6 +200,7 @@ function checkIfUpgradesUnlocked() {
 		}
 	}
 	if(good === 1) {
+		giveAchieve('ach24')
 		show('tier4')
 	}
 	good = 1
@@ -209,6 +216,7 @@ function checkIfUpgradesUnlocked() {
 		}
 	}
 	if(good === 1) {
+		giveAchieve('ach25')
 		show('tier5')
 	}
 	good = 1
@@ -227,7 +235,9 @@ function checkIfUpgradesUnlocked() {
 	}
 	if(good === 1) {
 		show('tier6')
+		giveAchieve('ach26')
 	}
+	if(game.upgrades6.includes('123456')) giveAchieve('ach27')
 	upgradeClasses()
 }
 function upgradeClasses() {
@@ -264,6 +274,7 @@ function checkIfSynergiesUnlocked() {
 	}
 	else {
 		hide('synunlock')
+		giveAchieve('ach31')
 		show('class1syn')
 	}
 	synergyClasses()
@@ -329,6 +340,7 @@ function buySyn(gen1,gen2) {
 		game.number -= cost
 		game.synergies.push(synNum)
 	}
+	if(game.synergies.length = 15) giveAchieve('ach32')
 }
 function returnUpgradeCost(num,tier) {
 	if(tier === 1) return 1e21 * Math.pow(2,num-1)
@@ -417,7 +429,15 @@ function increaseGens() {
 		game['gen'+gen1].synMult *= 1 + Math.log10(game['gen'+gen2].amt)
 	}
 	for(i=1;i<7;i++) {
-		game['gen'+i].mult = game['gen'+i].baseMult * game['gen'+i].upgradeMult * game['gen'+i].synMult
+		if(game.achievements.includes('ach27') && game.achievements.includes('ach34')) {
+			game['gen'+i].mult = game['gen'+i].baseMult * game['gen'+i].upgradeMult * game['gen'+i].synMult * 4
+		}
+		else if(game.achievements.includes('ach27') || game.achievements.includes('ach34')) {
+			game['gen'+i].mult = game['gen'+i].baseMult * game['gen'+i].upgradeMult * game['gen'+i].synMult * 2
+		}
+		else {
+			game['gen'+i].mult = game['gen'+i].baseMult * game['gen'+i].upgradeMult * game['gen'+i].synMult
+		}
 	}
 	game.number += game.gen1.amt * game.gen1.mult / 10
 	game.gen1.amt += game.gen2.amt * game.gen2.mult / 10
@@ -425,6 +445,9 @@ function increaseGens() {
 	game.gen3.amt += game.gen4.amt * game.gen4.mult / 10
 	game.gen4.amt += game.gen5.amt * game.gen5.mult / 10
 	game.gen5.amt += game.gen6.amt * game.gen6.mult / 10
+	if(game.gen1.amt >= 1e100) giveAchieve('ach33')
+	if(game.gen6.mult >= 1e10) giveAchieve('ach34')
+	if(game.number >= 1e125) giveAchieve('ach35')
 }
 function abbreviate(i,short) {
 	if(short) {
@@ -471,6 +494,7 @@ function format(num,decimals) {
 }
 function tick() {
 	game.timePlayed += 0.1
+	if(game.timePlayed === 420) giveAchieve('ach28')
 	increaseGens()
 	displayUpdate()
 	if(game.activeTab === 'upgrades') checkIfUpgradesUnlocked()
@@ -509,6 +533,9 @@ function load(save) {
 			}
 		}
 		if(game.negative === undefined) game.negative = reset().negative
+		if(game.achievements === undefined) game.achievements = []
+		if(game.timePlayed === undefined) game.timePlayed = 0
+		if(game.newsSeen === undefined) game.newsSeen = 0
 	} catch (e) {
 		console.log('Your save failed to load: '+e)
 	}
