@@ -3,6 +3,7 @@ function reset() {
 		number:10,
 		version:currentVer,
 		activeTab:'gens',
+		timePlayed:0,
 		possibleUps:[1,2,3,4,5,6,12,13,14,15,16,23,24,25,26,34,35,36,45,46,56,123,124,125,126,134,135,136,145,146,156,234,235,236,245,246,256,345,346,356,456,1234,1235,1236,1245,1246,1256,1345,1346,1356,1456,2345,2346,2356,2456,3456,12345,12346,12356,12456,13456,23456,123456],
 		upgrades1:[],
 		upgrades2:[],
@@ -73,6 +74,8 @@ function reset() {
 	}
 	return game
 }
+const news = ['Hi, guys!']
+const newsTimes = [2]
 function update(what,withWhat) {
 	document.getElementById(what).innerHTML = withWhat
 }
@@ -88,13 +91,18 @@ function updateClass(what,whatClass) {
 	element.classList.add("button");
 	element.classList.add(whatClass)
 }
+function changeNews() {
+	var nextNewsNum = Math.floor(news.length * Math.random())
+	update('news',news[nextNewsNum])
+	setInterval('changeNews()',newsTimes[nextNewsNum] * 1000)
+}
 var game = reset()
 var currentVer = 'v0.1D'
 function init() {
 	setInterval(tick,100)
 	setInterval(save,3000)
 	if(localStorage.getItem('limitedIncrementalSave')!=null) load(localStorage.getItem('limitedIncrementalSave'))
-	update('commit','v0.1D-17')
+	update('commit','v0.1D-18')
 }
 function userImport() {
 	var save = window.prompt('Paste your save data here.')
@@ -448,6 +456,7 @@ function format(num,decimals) {
 	return Math.round(1000*m*Math.pow(10,e-e2))/1000+abbreviate(e2/3-1,true)
 }
 function tick() {
+	game.timePlayed += 0.1
 	increaseGens()
 	displayUpdate()
 	if(game.activeTab === 'upgrades') checkIfUpgradesUnlocked()
