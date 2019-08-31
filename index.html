@@ -20,13 +20,15 @@
 	background-color:#000000;
 	color:#00FF00;
 	text-align:center;
+	font-size:16px;
 }
 .achievecomplete {
 	width:170px;
 	height:170px;
-	background-color:#000000;
+	background-color:#FFFFFF;
 	color:#00FFFF;
 	text-align:center;
+	font-size:16px;
 }
 .big {
 	font-size:48px;
@@ -74,7 +76,7 @@ div {
 </head>
 <body style = 'background-color:#000000'>
 	<div id = 'commit'>v0.1D-1</div>
-	<div>HTML Commit 6</div><br>
+	<div>HTML Commit 7</div><br>
 	<font color = 'white'><div id = 'news'></div></font>
 	<script src = 'main.js' onload = 'init()'></script>
 	<h1><font color = 'white'>You have <div id = 'num'>0</div> number.</font></h1>
@@ -87,7 +89,7 @@ div {
 			<button class = 'nav' onclick = 'changeTab("achievs")'>Achievements</button>
 			<button class = 'nav' onclick = 'changeTab("options")'>Options</button>
 		</div>
-		<div id = 'achievs'>
+		<div id = 'achievs' style = 'display:none'>
 			<table>
 				<tr>
 					<td><button id = 'ach11' class = 'achieve' title = 'Buy a First Generator'>Getting started...</button></td>
@@ -99,9 +101,29 @@ div {
 					<td><button id = 'ach17' class = 'achieve' title = 'Buy a Sixth Generator'>The last one!</button></td>
 					<td><button id = 'ach18' class = 'achieve' title = 'Buy a Seventh Generator'>Hold up...</button></td>
 				</tr>
+				<tr>
+					<td><button id = 'ach21' class = 'achieve' title = 'Unlock Upgrades'>Upgrades!</button></td>
+					<td><button id = 'ach22' class = 'achieve' title = 'Buy all the tier one upgrades'>That was easy</button></td>
+					<td><button id = 'ach23' class = 'achieve' title = 'Buy all the tier two upgrades'>Wait, there's more?</button></td>
+					<td><button id = 'ach24' class = 'achieve' title = 'Buy all the tier three upgrades'>That's a lot of upgrades.</button></td>
+					<td><button id = 'ach25' class = 'achieve' title = 'Buy all the tier four upgrades'>That's even more upgrades!</button></td>
+					<td><button id = 'ach26' class = 'achieve' title = 'Buy all the tier five upgrades'>How many more?</button></td>
+					<td><button id = 'ach27' class = 'achieve' title = 'Buy all the upgrades. Reward: Doubles all gens.'>Only one more</button></td>
+					<td><button id = 'ach28' class = 'achieve' title = 'Play for seven minutes'>Seven minutes in heaven</button></td>
+				</tr>
+				<tr>
+					<td><button id = 'ach31' class = 'achieve' title = 'Unlock Synergies'>Gens boost... each other?</button></td>
+					<td><button id = 'ach32' class = 'achieve' title = 'Buy all the synergies'>Wait, that's all?</button></td>
+					<td><button id = 'ach33' class = 'achieve' title = 'Reach 1e100 First Generators'>That's a lot.</button></td>
+					<td><button id = 'ach34' class = 'achieve' title = 'Get all gen multipliers over 1e10. Reward: Doubles all gens.'>Multiplying multipliers!</button></td>
+					<td><button id = 'ach35' class = 'achieve' title = 'Reach 1e125 Number'>Much Number</button></td>
+					<td><button id = 'ach36' class = 'achieve' title = 'Encounter 500 news messages. Reward: Option to disable the news :)'>FAKE NEWS</button></td>
+					<td><button id = 'ach37' class = 'achieve' title = 'Change notations'>Noooo! Standard is the best!</button></td>
+					<td><button id = 'ach38' class = 'achieve' title = 'Change themes'>Light or dark?</button></td>
+				</tr>
 			</table>
 		</div>
-		<div id = 'options'>
+		<div id = 'options' style = 'display:none'>
 			<button class = 'button' onclick = 'save()'>Save</button>
 			<button class = 'button' onclick = 'userImport()'>Import</button>
 			<button class = 'button' onclick = 'userExport()'>Export</button>
