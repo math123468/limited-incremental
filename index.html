@@ -2,22 +2,31 @@
 <html>
 <head>
 <style>
+.dark {
+	background-color: #000000;
+}
+.dark:hover {
+	color: #000000;
+}
+.light {
+	background-color: #FFFFFF;
+}
+.light:hover {
+	color: #FFFFFF
+}
 .button {
 	color: #00FFFF;
-	background-color: #000000;
 	border: 2px solid #00FFFF;
 	text-align:center;
 	padding: 15px 32px;
 	font-size: 24px;
 }
 .button:hover {
-	color:#000000;
 	background-color: #00FFFF
 }
 .achieve {
 	width:170px;
 	height:170px;
-	background-color:#000000;
 	color:#00FF00;
 	text-align:center;
 	font-size:16px;
@@ -35,38 +44,32 @@
 }
 .nav {
 	color:#e842f4;
-	background-color: #000000;
 	borde: 2px solid #e842f4;
 	text-align:center;
 	padding: 15px 32px;
 	font-size:36px
 	}
 .nav:hover {
-	color:#000000;
 	background-color: #e842f4
 	}
 .green {
 	color: #00FF00;
-	background-color: #000000;
 	border: 2px solid #00FF00;
 	text-align:center;
 	padding: 15px 32px;
 	font-size: 24px
 	}
 .green:hover {
-	color:#000000;
 	background-color: #00FF00
 }
 .red {
 	color: #FF0000;
-	background-color: #000000;
 	border: 2px solid #FF0000;
 	text-align:center;
 	padding: 15px 32px;
 	font-size: 24px
 	}
 .red:hover {
-	color:#000000;
 	background-color: #FF0000
 }
 div {
@@ -76,7 +79,7 @@ div {
 </head>
 <body style = 'background-color:#000000'>
 	<div id = 'commit'>v0.1D-1</div>
-	<div>HTML Commit 7</div><br>
+	<div>HTML Commit 8</div><br>
 	<font color = 'white'><div id = 'news'></div></font>
 	<script src = 'main.js' onload = 'init()'></script>
 	<h1><font color = 'white'>You have <div id = 'num'>0</div> number.</font></h1>
@@ -124,6 +127,7 @@ div {
 			</table>
 		</div>
 		<div id = 'options' style = 'display:none'>
+			<button class = 'button' onclick = 'theme()' id = 'theme'>Theme: Dark</button>
 			<button class = 'button' onclick = 'save()'>Save</button>
 			<button class = 'button' onclick = 'userImport()'>Import</button>
 			<button class = 'button' onclick = 'userExport()'>Export</button>
