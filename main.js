@@ -4,6 +4,7 @@ function reset() {
 		version:currentVer,
 		activeTab:'gens',
 		timePlayed:0,
+		theme:'dark',
 		possibleUps:[1,2,3,4,5,6,12,13,14,15,16,23,24,25,26,34,35,36,45,46,56,123,124,125,126,134,135,136,145,146,156,234,235,236,245,246,256,345,346,356,456,1234,1235,1236,1245,1246,1256,1345,1346,1356,1456,2345,2346,2356,2456,3456,12345,12346,12356,12456,13456,23456,123456],
 		upgrades1:[],
 		upgrades2:[],
@@ -76,8 +77,8 @@ function reset() {
 	}
 	return game
 }
-const news = ['Hi, guys!','Once upon a time...','Much Number!']
-const newsTimes = [2,2.5,1.5]
+const news = ['Hi, guys!','Once upon a time...','Much Number!','Next update in 5 days!','Upgrades boost different gens!','Synergies boost gens based on the amount of another!','Negative Numbers: Coming soon(TM)']
+const newsTimes = [2,2.5,1.5,3,3,3,3]
 function update(what,withWhat) {
 	document.getElementById(what).innerHTML = withWhat
 }
@@ -90,6 +91,7 @@ function show(what) {
 function updateClass(what,whatClass) {
 	var element = document.getElementById(what)
 	element.className = ''
+	element.classList.add(game.theme)
 	element.classList.add(whatClass)
 }
 function changeNews() {
@@ -107,12 +109,27 @@ function giveAchieve(number) {
 		updateClass(number,'achievecomplete')
 	}
 }
+function theme() {
+	if(game.theme === 'dark') game.theme === 'light'
+	if(game.theme === 'light') game.theme === 'dark'
+	updateClass('navgen','nav')
+	updateClass('navupg','nav')
+	updateClass('navsyn','nav')
+	updateClass('navneg','nav')
+	updateClass('navach','nav')
+	updateClass('navopt','nav')
+	for(i=1;i<4;i++) {
+		for(j=1;j<9;j++) {
+			updateClass('ach'+i+j,'achieve')
+		}
+	}
+}
 function init() {
 	changeNews()
 	setInterval(tick,100)
 	setInterval(save,3000)
 	if(localStorage.getItem('limitedIncrementalSave')!=null) load(localStorage.getItem('limitedIncrementalSave'))
-	update('commit','v0.1D-21')
+	update('commit','v0.1D-22')
 }
 function userImport() {
 	var save = window.prompt('Paste your save data here.')
@@ -536,6 +553,7 @@ function load(save) {
 		if(game.achievements === undefined) game.achievements = []
 		if(game.timePlayed === undefined) game.timePlayed = 0
 		if(game.newsSeen === undefined) game.newsSeen = 0
+		if(game.theme === undefined) game.theme = 'dark'
 	} catch (e) {
 		console.log('Your save failed to load: '+e)
 	}
