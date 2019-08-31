@@ -94,7 +94,7 @@ function init() {
 	setInterval(tick,100)
 	setInterval(save,3000)
 	if(localStorage.getItem('limitedIncrementalSave')!=null) load(localStorage.getItem('limitedIncrementalSave'))
-	update('commit','v0.1D-15')
+	update('commit','v0.1D-16')
 }
 function userImport() {
 	var save = window.prompt('Paste your save data here.')
@@ -125,6 +125,7 @@ function changeTab(tab) {
 	hide('syn')
 	hide('negative')
 	hide('options')
+	hide('achieves')
 	game.activeTab = tab
 	show(tab)
 }
