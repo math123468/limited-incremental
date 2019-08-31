@@ -145,12 +145,12 @@ function theme() {
 	}
 }
 function init() {
-	for(i=1;i<7;i++) game['gen'+i].actualCost = game['gen'+i].cost
 	changeNews()
 	setInterval(tick,100)
 	setInterval(save,3000)
 	if(localStorage.getItem('limitedIncrementalSave')!=null) load(localStorage.getItem('limitedIncrementalSave'))
-	update('commit','v0.1D-32')
+	for(i=1;i<7;i++) game['gen'+i].actualCost = game['gen'+i].cost
+	update('commit','v0.1D-33')
 }
 function userImport() {
 	var save = window.prompt('Paste your save data here.')
