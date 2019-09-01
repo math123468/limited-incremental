@@ -150,7 +150,7 @@ function init() {
 	setInterval(save,3000)
 	if(localStorage.getItem('limitedIncrementalSave')!=null) load(localStorage.getItem('limitedIncrementalSave'))
 	for(i=1;i<7;i++) game['gen'+i].actualCost = game['gen'+i].cost
-	update('commit','v0.1D-33')
+	update('commit','v0.1D-34')
 }
 function userImport() {
 	var save = window.prompt('Paste your save data here.')
@@ -493,7 +493,7 @@ function increaseGens() {
 	for(i=0;i<game.synergies.length;i++) {
 		var gen1 = String(game.synergies[i])[0]
 		var gen2 = String(game.synergies[i])[1]
-		game['gen'+gen1].synMult *= 1 + Math.log10(game['gen'+gen2].amt) * 2
+		game['gen'+i].synMult *= 1 + Math.log10(game['gen'+gen2].amt) * 2
 	}
 	for(i=1;i<7;i++) {
 		if(game.achievements.includes('ach27') && game.achievements.includes('ach34')) {
