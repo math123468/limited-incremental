@@ -15,8 +15,10 @@ function reset() {
 		synergies:[],
 		achievements:[],
 		newsSeen:0,
+		gen0:{},
 		gen1:{
 			cost:10,
+			actualCost:10,
 			baseMult:1,
 			upgradeMult:1,
 			synMult:1,
@@ -26,6 +28,7 @@ function reset() {
 		},
 		gen2:{
 			cost:100,
+			actualCost:100,
 			baseMult:1,
 			upgradeMult:1,
 			synMult:1,
@@ -35,6 +38,7 @@ function reset() {
 		},
 		gen3:{
 			cost:1e4,
+			actualCost:1e4,
 			baseMult:1,
 			upgradeMult:1,
 			synMult:1,
@@ -44,6 +48,7 @@ function reset() {
 		},
 		gen4:{
 			cost:1e7,
+			actualCost:1e7,
 			baseMult:1,
 			upgradeMult:1,
 			synMult:1,
@@ -53,6 +58,7 @@ function reset() {
 		},
 		gen5:{
 			cost:1e11,
+			actualCost:1e11,
 			baseMult:1,
 			upgradeMult:1,
 			synMult:1,
@@ -62,6 +68,7 @@ function reset() {
 		},
 		gen6:{
 			cost:1e16,
+			actualCost:1e16,
 			baseMult:1,
 			upgradeMult:1,
 			synMult:1,
@@ -150,7 +157,7 @@ function init() {
 	setInterval(save,3000)
 	if(localStorage.getItem('limitedIncrementalSave')!=null) load(localStorage.getItem('limitedIncrementalSave'))
 	for(i=1;i<7;i++) game['gen'+i].actualCost = game['gen'+i].cost
-	update('commit','v0.1D-34')
+	update('commit','v0.1D-35')
 }
 function userImport() {
 	var save = window.prompt('Paste your save data here.')
@@ -385,7 +392,7 @@ function buySyn(gen1,gen2) {
 		game.number -= cost
 		game.synergies.push(synNum)
 	}
-	if(game.synergies.length = 15) giveAchieve('ach32')
+	if(game.synergies.length === 15) giveAchieve('ach32')
 }
 function returnUpgradeCost(num,tier) {
 	if(tier === 1) return 1e21 * Math.pow(2,num-1)
@@ -487,13 +494,13 @@ function checkForNegUpgrades() {
 	if(game.negative.amt >= 6666 && game.negative.upgrades.four === 1) game.negative.upgrades.four = 2
 }
 function increaseGens() {
-	for(i=0;i<7;i++) {
+	for(i=1;i<7;i++) {
 		game['gen'+i].synMult = 1
 	}
 	for(i=0;i<game.synergies.length;i++) {
 		var gen1 = String(game.synergies[i])[0]
 		var gen2 = String(game.synergies[i])[1]
-		game['gen'+i].synMult *= 1 + Math.log10(game['gen'+gen2].amt) * 2
+		game['gen'+gen1].synMult *= 1 + Math.log10(game['gen'+gen2].amt) * 2
 	}
 	for(i=1;i<7;i++) {
 		if(game.achievements.includes('ach27') && game.achievements.includes('ach34')) {
