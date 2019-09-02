@@ -127,29 +127,42 @@ function giveAchieve(number) {
 function theme() {
 	if(game.theme === 'dark') {
 		game.theme = 'light'
-		document.body.style = 'background-color:#000000'
+		document.body.style = 'background-color:#FFFFFF'
+		document.getElementById('commit').style = 'color:white'
+		document.getElementById('htmlcommit').style = 'color:white'
+		document.getElementById('news').style = 'color:black'
+		document.getElementById('numfull').style = 'color:black'
 	}
 	else if(game.theme === 'light') {
 		game.theme = 'dark'
-		document.body.style = 'background-color:#FFFFFF'
+		document.body.style = 'background-color:#000000'
+		document.getElementById('commit').style = 'color:black'
+		document.getElementById('htmlcommit').style = 'color:black'
+		document.getElementById('news').style = 'color:white'
+		document.getElementById('numfull').style = 'color:white'
 	}
 	update('theme','Theme: '+game.theme)
-	update('save','button')
-	update('import','button')
-	update('export','button')
-	update('hardreset','button')
+	updateClass('theme','button')
+	updateClass('max','button')
+	updateClass('save','button')
+	updateClass('import','button')
+	updateClass('export','button')
+	updateClass('hardreset','button')
 	updateClass('navgen','nav')
 	updateClass('navupg','nav')
 	updateClass('navsyn','nav')
 	updateClass('navneg','nav')
 	updateClass('navach','nav')
 	updateClass('navopt','nav')
+	updateClass('buyNeg','button big')
+	for(i=1;i<5;i++) for(j=1;j<3;j++) updateClass('neg' + i + j,'button')
 	for(i=1;i<7;i++) updateClass('buy'+i,'button')
 	for(i=1;i<4;i++) {
 		for(j=1;j<9;j++) {
 			updateClass('ach'+i+j,'achieve')
 		}
 	}
+	achieveClasses()
 }
 function init() {
 	changeNews()
@@ -157,7 +170,7 @@ function init() {
 	setInterval(save,3000)
 	if(localStorage.getItem('limitedIncrementalSave')!=null) load(localStorage.getItem('limitedIncrementalSave'))
 	for(i=1;i<7;i++) game['gen'+i].actualCost = game['gen'+i].cost
-	update('commit','v0.1D-35')
+	update('commit','v0.1D-36')
 }
 function userImport() {
 	var save = window.prompt('Paste your save data here.')
