@@ -117,6 +117,11 @@ function updateClass(what,whatClass) {
 		element.classList.add(whatClass)
 	}
 }
+function maxUpgrades() {
+	for(i=0;i<game.possibleUps.length) {
+		buyUp(game.possibleUps[i],String(game.possibleUps[1]).length)
+	}
+}
 function changeNews() {
 	var nextNewsNum = Math.floor(news.length * Math.random())
 	update('news',news[nextNewsNum])
@@ -184,7 +189,7 @@ function init() {
 	setInterval(save,3000)
 	if(localStorage.getItem('limitedIncrementalSave')!=null) load(localStorage.getItem('limitedIncrementalSave'))
 	for(i=1;i<7;i++) game['gen'+i].actualCost = game['gen'+i].cost
-	update('commit','v0.1D-38')
+	update('commit','v0.1D-39')
 }
 function userImport() {
 	var save = window.prompt('Paste your save data here.')
@@ -511,11 +516,23 @@ function buyNeg() {
 	}
 }
 function checkForNegUpgrades() {
-	if(game.negative.amt >= 150 && game.negative.upgrades.one === 0) game.negative.upgrades.one = 1
+	if(game.negative.amt >= 150 && game.negative.upgrades.one === 0) {
+		game.negative.upgrades.one = 1
+		game.negative.upgrades.onePower = 10
+		for(i=1;i<7;i++) {
+			game['gen'+i].cost /= 10
+		}
+	}
 	if(game.negative.amt >= 155 && game.negative.upgrades.two === 0) game.negative.upgrades.two = 1
 	if(game.negative.amt >= 160 && game.negative.upgrades.three === 0) game.negative.upgrades.three = 1
 	if(game.negative.amt >= 165 && game.negative.upgrades.four === 0) game.negative.upgrades.four = 1
-	if(game.negative.amt >= 175 && game.negative.upgrades.one === 1) game.negative.upgrades.one = 2
+	if(game.negative.amt >= 175 && game.negative.upgrades.one === 1) {
+		game.negative.upgrades.one = 2
+		for(i=1;i<7;i++) {
+			game['gen'+i].cost /= 1000
+		}
+		game.negative.uprades.onePower = 10000
+	}
 	if(game.negative.amt >= 185 && game.negative.upgrades.two === 1) game.negative.upgrades.two = 2
 	if(game.negative.amt >= 200 && game.negative.upgrades.three === 1) game.negative.upgrades.three = 2
 	if(game.negative.amt >= 215 && game.negative.upgrades.four === 1) game.negative.upgrades.four = 2
