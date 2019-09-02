@@ -107,8 +107,15 @@ function updateClass(what,whatClass) {
 	var element = document.getElementById(what)
 	element.className = ''
 	element.classList.add(game.theme)
-	whatClass = whatClass.split(' ')
-	for(i=0;i<whatClass.length;i++) element.classList.add(whatClass[i])
+	if(whatClass.split(' ').length > 1) {
+		whatClass = whatClass.split(' ')
+		for(i=0;i<whatClass.length;i++) {
+			element.classList.add(whatClass[i])
+		}
+	}
+	else {
+		element.classList.add(whatClass)
+	}
 }
 function changeNews() {
 	var nextNewsNum = Math.floor(news.length * Math.random())
@@ -177,7 +184,7 @@ function init() {
 	setInterval(save,3000)
 	if(localStorage.getItem('limitedIncrementalSave')!=null) load(localStorage.getItem('limitedIncrementalSave'))
 	for(i=1;i<7;i++) game['gen'+i].actualCost = game['gen'+i].cost
-	update('commit','v0.1D-37')
+	update('commit','v0.1D-38')
 }
 function userImport() {
 	var save = window.prompt('Paste your save data here.')
