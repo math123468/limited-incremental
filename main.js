@@ -107,7 +107,8 @@ function updateClass(what,whatClass) {
 	var element = document.getElementById(what)
 	element.className = ''
 	element.classList.add(game.theme)
-	element.classList.add(whatClass)
+	whatClass = whatClass.split(' ')
+	for(i=0;i<whatClass.length;i++) element.classList.add(whatClass[i])
 }
 function changeNews() {
 	var nextNewsNum = Math.floor(news.length * Math.random())
@@ -155,8 +156,14 @@ function theme() {
 	updateClass('navach','nav')
 	updateClass('navopt','nav')
 	updateClass('buyNeg','button big')
-	for(i=1;i<5;i++) for(j=1;j<3;j++) updateClass('neg' + i + j,'button')
-	for(i=1;i<7;i++) updateClass('buy'+i,'button')
+	for(i=1;i<5;i++) {
+		for(j=1;j<3;j++) {
+			updateClass('neg' + i + j,'button')
+		}
+	}
+	for(i=1;i<7;i++) {
+		updateClass('buy'+i,'button')
+	}
 	for(i=1;i<4;i++) {
 		for(j=1;j<9;j++) {
 			updateClass('ach'+i+j,'achieve')
@@ -170,7 +177,7 @@ function init() {
 	setInterval(save,3000)
 	if(localStorage.getItem('limitedIncrementalSave')!=null) load(localStorage.getItem('limitedIncrementalSave'))
 	for(i=1;i<7;i++) game['gen'+i].actualCost = game['gen'+i].cost
-	update('commit','v0.1D-36')
+	update('commit','v0.1D-37')
 }
 function userImport() {
 	var save = window.prompt('Paste your save data here.')
@@ -489,23 +496,24 @@ function buyNeg() {
 		game.number -= game.negative.cost
 		game.negative.amt ++
 		game.negative.cost *= 10
-		game.negative.mult *= 1.05
+		game.negative.mult *= 1.025
 		update('negAmt',format(game.negative.amt,0))
 		update('negCost',format(game.negative.cost,0))
-		update('negBoost',format(Math.pow(1.05,game.negative.amt),3))
+		update('negBoost',format(Math.pow(1.025,game.negative.amt),3))
 		checkForNegUpgrades()
 	}
 }
 function checkForNegUpgrades() {
-	if(game.negative.amt >= 6666 && game.negative.upgrades.one === 0) game.negative.upgrades.one = 1
-	if(game.negative.amt >= 6666 && game.negative.upgrades.two === 0) game.negative.upgrades.two = 1
-	if(game.negative.amt >= 6666 && game.negative.upgrades.three === 0) game.negative.upgrades.three = 1
-	if(game.negative.amt >= 6666 && game.negative.upgrades.four === 0) game.negative.upgrades.four = 1
-	if(game.negative.amt >= 6666 && game.negative.upgrades.one === 1) game.negative.upgrades.one = 2
-	if(game.negative.amt >= 6666 && game.negative.upgrades.two === 1) game.negative.upgrades.two = 2
-	if(game.negative.amt >= 6666 && game.negative.upgrades.three === 1) game.negative.upgrades.three = 2
-	if(game.negative.amt >= 6666 && game.negative.upgrades.four === 1) game.negative.upgrades.four = 2
+	if(game.negative.amt >= 150 && game.negative.upgrades.one === 0) game.negative.upgrades.one = 1
+	if(game.negative.amt >= 155 && game.negative.upgrades.two === 0) game.negative.upgrades.two = 1
+	if(game.negative.amt >= 160 && game.negative.upgrades.three === 0) game.negative.upgrades.three = 1
+	if(game.negative.amt >= 165 && game.negative.upgrades.four === 0) game.negative.upgrades.four = 1
+	if(game.negative.amt >= 175 && game.negative.upgrades.one === 1) game.negative.upgrades.one = 2
+	if(game.negative.amt >= 185 && game.negative.upgrades.two === 1) game.negative.upgrades.two = 2
+	if(game.negative.amt >= 200 && game.negative.upgrades.three === 1) game.negative.upgrades.three = 2
+	if(game.negative.amt >= 215 && game.negative.upgrades.four === 1) game.negative.upgrades.four = 2
 }
+
 function increaseGens() {
 	for(i=1;i<7;i++) {
 		game['gen'+i].synMult = 1
