@@ -3,6 +3,8 @@ function reset() {
 		number:10,
 		version:currentVer,
 		activeTab:'gens',
+		timePlayed:0,
+		theme:'dark',
 		possibleUps:[1,2,3,4,5,6,12,13,14,15,16,23,24,25,26,34,35,36,45,46,56,123,124,125,126,134,135,136,145,146,156,234,235,236,245,246,256,345,346,356,456,1234,1235,1236,1245,1246,1256,1345,1346,1356,1456,2345,2346,2356,2456,3456,12345,12346,12356,12456,13456,23456,123456],
 		upgrades1:[],
 		upgrades2:[],
@@ -11,6 +13,8 @@ function reset() {
 		upgrades5:[],
 		upgrades6:[],
 		synergies:[],
+		achievements:[],
+		newsSeen:0,
 		gen0:{
 			cost:0,
 			baseMult:0,
@@ -22,6 +26,7 @@ function reset() {
 		},
 		gen1:{
 			cost:10,
+			actualCost:10,
 			baseMult:1,
 			upgradeMult:1,
 			synMult:1,
@@ -31,6 +36,7 @@ function reset() {
 		},
 		gen2:{
 			cost:100,
+			actualCost:100,
 			baseMult:1,
 			upgradeMult:1,
 			synMult:1,
@@ -40,6 +46,7 @@ function reset() {
 		},
 		gen3:{
 			cost:1e4,
+			actualCost:1e4,
 			baseMult:1,
 			upgradeMult:1,
 			synMult:1,
@@ -49,6 +56,7 @@ function reset() {
 		},
 		gen4:{
 			cost:1e7,
+			actualCost:1e7,
 			baseMult:1,
 			upgradeMult:1,
 			synMult:1,
@@ -58,6 +66,7 @@ function reset() {
 		},
 		gen5:{
 			cost:1e11,
+			actualCost:1e11,
 			baseMult:1,
 			upgradeMult:1,
 			synMult:1,
@@ -67,6 +76,7 @@ function reset() {
 		},
 		gen6:{
 			cost:1e16,
+			actualCost:1e16,
 			baseMult:1,
 			upgradeMult:1,
 			synMult:1,
@@ -76,12 +86,24 @@ function reset() {
 		},
 		negative:{
 			cost:10,
-			upgrades:[],
+			upgrades:{
+				one:0,
+				two:0,
+				three:0,
+				four:0,
+				onePower:1,
+				twoPower:1,
+				threePower:1.025,
+				fourPower:2,
+			},
 			amt:0,
+			mult:1,
 		}
 	}
 	return game
 }
+const news = ['Hi, guys!','Once upon a time...','Much Number!','Next update in 5 days!','Upgrades boost different gens!','Synergies boost gens based on the amount of another!','Negative Numbers: Coming soon(TM)','aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa']
+const newsTimes = [2,2.5,1.5,3,3,3,3,30]
 function update(what,withWhat) {
 	document.getElementById(what).innerHTML = withWhat
 }
@@ -94,16 +116,90 @@ function show(what) {
 function updateClass(what,whatClass) {
 	var element = document.getElementById(what)
 	element.className = ''
-	element.classList.add("button");
-	element.classList.add(whatClass)
+	element.classList.add(game.theme)
+	if(whatClass.split(' ').length > 1) {
+		whatClass = whatClass.split(' ')
+		for(i=0;i<whatClass.length;i++) {
+			element.classList.add(whatClass[i])
+		}
+	}
+	else {
+		element.classList.add(whatClass)
+	}
+}
+function maxUpgrades() {
+	for(i=0;i<game.possibleUps.length;i++) {
+		buyUp(game.possibleUps[i],String(game.possibleUps[1]).length)
+	}
+}
+function changeNews() {
+	var nextNewsNum = Math.floor(news.length * Math.random())
+	update('news',news[nextNewsNum])
+	setTimeout('changeNews()',newsTimes[nextNewsNum] * 1000)
+	game.newsSeen ++
+	if(game.newsSeen === 500) giveAchieve('ach36')
 }
 var game = reset()
 var currentVer = 'v0.1D'
+function giveAchieve(number) {
+	if(!game.achievements.includes(number)) {
+		game.achievements.push(number)
+		updateClass(number,'achievecomplete')
+	}
+}
+function theme() {
+	if(game.theme === 'dark') {
+		game.theme = 'light'
+		document.body.style = 'background-color:#FFFFFF'
+		document.getElementById('commit').style = 'color:white'
+		document.getElementById('htmlcommit').style = 'color:white'
+		document.getElementById('news').style = 'color:black'
+		document.getElementById('numfull').style = 'color:black'
+	}
+	else if(game.theme === 'light') {
+		game.theme = 'dark'
+		document.body.style = 'background-color:#000000'
+		document.getElementById('commit').style = 'color:black'
+		document.getElementById('htmlcommit').style = 'color:black'
+		document.getElementById('news').style = 'color:white'
+		document.getElementById('numfull').style = 'color:white'
+	}
+	update('theme','Theme: '+game.theme)
+	updateClass('theme','button')
+	updateClass('max','button')
+	updateClass('save','button')
+	updateClass('import','button')
+	updateClass('export','button')
+	updateClass('hardreset','button')
+	updateClass('navgen','nav')
+	updateClass('navupg','nav')
+	updateClass('navsyn','nav')
+	updateClass('navneg','nav')
+	updateClass('navach','nav')
+	updateClass('navopt','nav')
+	updateClass('buyNeg','button big')
+	for(i=1;i<5;i++) {
+		for(j=1;j<3;j++) {
+			updateClass('neg' + i + j,'button')
+		}
+	}
+	for(i=1;i<7;i++) {
+		updateClass('buy'+i,'button')
+	}
+	for(i=1;i<4;i++) {
+		for(j=1;j<9;j++) {
+			updateClass('ach'+i+j,'achieve')
+		}
+	}
+	achieveClasses()
+}
 function init() {
+	changeNews()
 	setInterval(tick,100)
 	setInterval(save,3000)
 	if(localStorage.getItem('limitedIncrementalSave')!=null) load(localStorage.getItem('limitedIncrementalSave'))
-	update('commit','v0.1D-13')
+	for(i=1;i<7;i++) game['gen'+i].actualCost = game['gen'+i].cost
+	update('commit','v0.1D-45')
 }
 function userImport() {
 	var save = window.prompt('Paste your save data here.')
@@ -128,12 +224,20 @@ function displayUpdate() {
 		update('cost'+i,format(game['gen'+i].cost,0))
 	}
 }
+function achieveClasses() {
+	for(i=0;i<game.achievements.length;i++) {
+		updateClass(game.achievements[i],'achievecomplete')
+		console.log(i)
+	}
+}
 function changeTab(tab) {
 	hide('gens')
 	hide('upgrades')
 	hide('syn')
 	hide('negative')
+	hide('thebutton')
 	hide('options')
+	hide('achievs')
 	game.activeTab = tab
 	show(tab)
 }
@@ -149,6 +253,7 @@ function checkIfUpgradesUnlocked() {
 		return
 	}
 	if(game.gen6.amt > 0) {
+		giveAchieve('ach21')
 		show('upgrades')
 		show('tier1')
 		hide('upunlock')
@@ -163,6 +268,7 @@ function checkIfUpgradesUnlocked() {
 		if(!(game.upgrades1.includes(i))) good = 0
 	}
 	if(good === 1) {
+		giveAchieve('ach22')
 		show('tier2')
 	}
 	good = 1
@@ -174,6 +280,7 @@ function checkIfUpgradesUnlocked() {
 		}
 	}
 	if(good === 1) {
+		giveAchieve('ach23')
 		show('tier3')
 	}
 	good = 1
@@ -187,6 +294,7 @@ function checkIfUpgradesUnlocked() {
 		}
 	}
 	if(good === 1) {
+		giveAchieve('ach24')
 		show('tier4')
 	}
 	good = 1
@@ -202,6 +310,7 @@ function checkIfUpgradesUnlocked() {
 		}
 	}
 	if(good === 1) {
+		giveAchieve('ach25')
 		show('tier5')
 	}
 	good = 1
@@ -220,7 +329,9 @@ function checkIfUpgradesUnlocked() {
 	}
 	if(good === 1) {
 		show('tier6')
+		giveAchieve('ach26')
 	}
+	if(game.upgrades6.includes('123456')) giveAchieve('ach27')
 	upgradeClasses()
 }
 function upgradeClasses() {
@@ -257,12 +368,13 @@ function checkIfSynergiesUnlocked() {
 	}
 	else {
 		hide('synunlock')
+		giveAchieve('ach31')
 		show('class1syn')
 	}
 	synergyClasses()
 }
 function checkIfNegativesUnlocked() {
-	if(game.gen6.amt < 6666) {
+	if(game.gen6.amt < 20) {
 		show('negunlock')
 		hide('neg1')
 	}
@@ -282,20 +394,28 @@ function synergyClasses() {
 			}
 		}
 	}
-}
+}F
 function buyGen(i) {
 	if(game.number >= game['gen'+i].cost) {
 		game.number -= game['gen'+i].cost
-		game['gen'+i].cost *= game['gen'+i].costInc
+		game['gen'+i].actualCost *= game['gen'+i].costInc
 		game['gen'+i].baseMult *= 1.5
 		if(game['gen'+i].cost >= 1e33) game['gen'+i].costInc *= Math.pow(10,0.25)
 		game['gen'+i].amt ++
+		game['gen'+i].cost = game['gen'+i].actualCost/game.negative.upgrades.onePower
 		game.gen1.costInc = Math.min(game.gen1.costInc,1e4)
 		game.gen2.costInc = Math.min(game.gen2.costInc,Math.pow(10,4.5))
 		game.gen3.costInc = Math.min(game.gen3.costInc,1e5)
 		game.gen4.costInc = Math.min(game.gen4.costInc,Math.pow(10,5.5))
 		game.gen5.costInc = Math.min(game.gen5.costInc,1e6)
 		game.gen6.costInc = Math.min(game.gen6.costInc,1e7)
+		if(i === 1) giveAchieve('ach11')
+		if(i === 1 && game.gen1.baseMult > 1.6) giveAchieve('ach12')
+		if(i === 2) giveAchieve('ach13')
+		if(i === 3) giveAchieve('ach14')
+		if(i === 4) giveAchieve('ach15')
+		if(i === 5) giveAchieve('ach16')
+		if(i === 6) giveAchieve('ach17')
 	}
 }
 function buyMax() {
@@ -306,7 +426,7 @@ function buyMax() {
 	}
 }
 function returnSynergyCost(synNum) {
-	return 1e114 * Math.pow(10,[12,13,14,15,16,23,24,25,26,34,35,36,45,46,56].indexOf(synNum))
+	return 1e111 * Math.pow(10,[12,13,14,15,16,23,24,25,26,34,35,36,45,46,56].indexOf(synNum))
 }
 function buySyn(gen1,gen2) {
 	var synNum = 10 * gen1 + gen2
@@ -315,6 +435,7 @@ function buySyn(gen1,gen2) {
 		game.number -= cost
 		game.synergies.push(synNum)
 	}
+	if(game.synergies.length === 15) giveAchieve('ach32')
 }
 function returnUpgradeCost(num,tier) {
 	if(tier === 1) return 1e21 * Math.pow(2,num-1)
@@ -393,17 +514,88 @@ function buyUp(num,tier) {
 		}
 	}
 }
+function buyNeg() {
+	update('negAmt',format(game.negative.amt,0))
+	update('negCost',format(game.negative.cost,0))
+	update('negBoost',format(Math.pow(game.negative.upgrades.threePower,game.negative.amt),3))
+	checkForNegUpgrades()
+	if(game.number >= game.negative.cost) {
+		game.number -= game.negative.cost
+		game.negative.amt ++
+		game.negative.cost *= 10
+		game.negative.mult *= game.negative.upgrades.threePower
+	}
+}
+function checkForNegUpgrades() {
+	if(game.negative.amt >= 150 && game.negative.upgrades.one === 0) {
+		game.negative.upgrades.one = 1
+		game.negative.upgrades.onePower = 10
+		for(i=1;i<7;i++) {
+			game['gen'+i].cost /= 10
+		}
+	}
+	if(game.negative.amt >= 155 && game.negative.upgrades.two === 0) {
+		game.negative.upgrades.two = 1
+		game.negative.upgrades.twoPower = 5
+	}
+	if(game.negative.amt >= 160 && game.negative.upgrades.three === 0) {
+		game.negative.upgrades.three = 1
+		game.negative.upgrades.threePower = 1.05
+		update('negBoost',format(Math.pow(1.05,game.negative.amt),3))
+		game.negative.mult = Math.pow(1.05,game.negative.amt)
+	}
+	if(game.negative.amt >= 165 && game.negative.upgrades.four === 0) {
+		game.negative.upgrades.four = 1
+		game.negative.upgrades.fourPower = 2.2
+		for(i=1;i<7;i++) {
+			game['gen'+i].upgradeMult = Math.pow(2.2,32)
+		}
+	}
+	if(game.negative.amt >= 175 && game.negative.upgrades.one === 1) {
+		game.negative.upgrades.one = 2
+		for(i=1;i<7;i++) {
+			game['gen'+i].cost /= 1000
+		}
+		game.negative.upgrades.onePower = 10000
+	}
+	if(game.negative.amt >= 190 && game.negative.upgrades.two === 1) {
+		game.negative.upgrades.two = 2
+		game.negative.upgrades.twoPower = 125
+	}
+	if(game.negative.amt >= 225 && game.negative.upgrades.three === 1) {
+		game.negative.upgrades.three = 2
+		game.negative.upgrades.threePower = 1.15
+		update('negBoost',format(Math.pow(1.15,game.negative.amt),3))
+		game.negative.mult = Math.pow(1.15,game.negative.amt)
+	}
+	if(game.negative.amt >= 275 && game.negative.upgrades.four === 1) {
+		game.negative.upgrades.four = 2
+		game.negative.upgrades.fourPower = 2.5
+		for(i=1;i<7;i++) {
+			game['gen'+i].upgradeMult = Math.pow(2.5,32)
+		}
+	}
+}
+
 function increaseGens() {
-	for(i=0;i<7;i++) {
+	for(i=1;i<7;i++) {
 		game['gen'+i].synMult = 1
 	}
 	for(i=0;i<game.synergies.length;i++) {
 		var gen1 = String(game.synergies[i])[0]
 		var gen2 = String(game.synergies[i])[1]
-		game['gen'+gen1].synMult *= 1 + Math.log10(game['gen'+gen2].amt)
+		game['gen'+gen1].synMult *= 1 + Math.log10(game['gen'+gen2].amt) * 2
 	}
 	for(i=1;i<7;i++) {
-		game['gen'+i].mult = game['gen'+i].baseMult * game['gen'+i].upgradeMult * game['gen'+i].synMult
+		if(game.achievements.includes('ach27') && game.achievements.includes('ach34')) {
+			game['gen'+i].mult = game['gen'+i].baseMult * game['gen'+i].upgradeMult * game['gen'+i].synMult * game.negative.mult * game.negative.upgrades.twoPower * 4
+		}
+		else if(game.achievements.includes('ach27') || game.achievements.includes('ach34')) {
+			game['gen'+i].mult = game['gen'+i].baseMult * game['gen'+i].upgradeMult * game['gen'+i].synMult * game.negative.mult * game.negative.upgrades.twoPower * 2
+		}
+		else {
+			game['gen'+i].mult = game['gen'+i].baseMult * game['gen'+i].upgradeMult * game['gen'+i].synMult * game.negative.mult * game.negative.upgrades.twoPower
+		}
 	}
 	game.number += game.gen1.amt * game.gen1.mult / 10
 	game.gen1.amt += game.gen2.amt * game.gen2.mult / 10
@@ -411,6 +603,9 @@ function increaseGens() {
 	game.gen3.amt += game.gen4.amt * game.gen4.mult / 10
 	game.gen4.amt += game.gen5.amt * game.gen5.mult / 10
 	game.gen5.amt += game.gen6.amt * game.gen6.mult / 10
+	if(game.gen1.amt >= 1e100) giveAchieve('ach33')
+	if(game.gen6.mult >= 1e10) giveAchieve('ach34')
+	if(game.number >= 1e125) giveAchieve('ach35')
 }
 function abbreviate(i,short) {
 	if(short) {
@@ -456,6 +651,8 @@ function format(num,decimals) {
 	return Math.round(1000*m*Math.pow(10,e-e2))/1000+abbreviate(e2/3-1,true)
 }
 function tick() {
+	game.timePlayed += 0.1
+	if(game.timePlayed >= 420) giveAchieve('ach28')
 	increaseGens()
 	displayUpdate()
 	if(game.activeTab === 'upgrades') checkIfUpgradesUnlocked()
@@ -494,6 +691,28 @@ function load(save) {
 			}
 		}
 		if(game.negative === undefined) game.negative = reset().negative
+		if(game.achievements === undefined) game.achievements = []
+		if(game.timePlayed === undefined) game.timePlayed = 0
+		if(game.newsSeen === undefined) game.newsSeen = 0
+		if(game.theme === undefined) game.theme = 'dark'
+		if(game.negative.upgrades === []) {
+			game.negative.upgrades = {
+				one:0,
+				two:0,
+				three:0,
+				four:0,
+			}
+		}
+		if(game.negative.upgrades.onePower === undefined) {
+			game.negative.upgrades.onePower = 1
+			game.negative.upgrades.twoPower = 1
+		}
+		if(game.negative.upgrades.threePower === undefined) {
+			game.negative.upgrades.threePower = 1.025
+			game.negative.upgrades.fourPower = 2
+		}
+		achieveClasses()
+		buyNeg()
 	} catch (e) {
 		console.log('Your save failed to load: '+e)
 	}
