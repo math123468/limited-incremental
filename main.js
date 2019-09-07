@@ -4,6 +4,7 @@ function reset() {
 		version:currentVer,
 		activeTab:'gens',
 		timePlayed:0,
+		notation:'standard',
 		theme:'dark',
 		possibleUps:[1,2,3,4,5,6,12,13,14,15,16,23,24,25,26,34,35,36,45,46,56,123,124,125,126,134,135,136,145,146,156,234,235,236,245,246,256,345,346,356,456,1234,1235,1236,1245,1246,1256,1345,1346,1356,1456,2345,2346,2356,2456,3456,12345,12346,12356,12456,13456,23456,123456],
 		upgrades1:[],
@@ -193,13 +194,20 @@ function theme() {
 	}
 	achieveClasses()
 }
+function notation() {
+	if(game.notation === 'standard') {
+		game.notation = 'sci'
+	}
+	if(game.notation === 'sci') {
+		game.notation = 'standard'
+	}
 function init() {
 	changeNews()
 	setInterval(tick,100)
 	setInterval(save,3000)
 	if(localStorage.getItem('limitedIncrementalSave')!=null) load(localStorage.getItem('limitedIncrementalSave'))
 	for(i=1;i<7;i++) game['gen'+i].actualCost = game['gen'+i].cost
-	update('commit','v0.1D-45')
+	update('commit','v0.1E-1')
 }
 function userImport() {
 	var save = window.prompt('Paste your save data here.')
@@ -711,8 +719,9 @@ function load(save) {
 			game.negative.upgrades.threePower = 1.025
 			game.negative.upgrades.fourPower = 2
 		}
-		achieveClasses()
+		if(game.notation === undefined) game.notation = 'standard'
 		buyNeg()
+		achieveClasses()
 	} catch (e) {
 		console.log('Your save failed to load: '+e)
 	}
