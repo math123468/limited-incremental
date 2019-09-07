@@ -118,7 +118,7 @@ function updateClass(what,whatClass) {
 	}
 }
 function maxUpgrades() {
-	for(i=0;i<game.possibleUps.length) {
+	for(i=0;i<game.possibleUps.length;i++) {
 		buyUp(game.possibleUps[i],String(game.possibleUps[1]).length)
 	}
 }
@@ -189,7 +189,7 @@ function init() {
 	setInterval(save,3000)
 	if(localStorage.getItem('limitedIncrementalSave')!=null) load(localStorage.getItem('limitedIncrementalSave'))
 	for(i=1;i<7;i++) game['gen'+i].actualCost = game['gen'+i].cost
-	update('commit','v0.1D-39')
+	update('commit','v0.1D-40')
 }
 function userImport() {
 	var save = window.prompt('Paste your save data here.')
