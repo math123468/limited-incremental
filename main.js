@@ -85,6 +85,8 @@ function reset() {
 				four:0,
 				onePower:1,
 				twoPower:1,
+				threePower:1.025,
+				fourPower:2,
 			},
 			amt:0,
 			mult:1,
@@ -119,7 +121,7 @@ function updateClass(what,whatClass) {
 }
 function maxUpgrades() {
 	for(i=0;i<game.possibleUps.length;i++) {
-		buyUp(game.possibleUps[i],String(game.possibleUps[1]).length)
+		[(game.possibleUps[i],String(game.possibleUps[1]).length)
 	}
 }
 function changeNews() {
@@ -189,7 +191,7 @@ function init() {
 	setInterval(save,3000)
 	if(localStorage.getItem('limitedIncrementalSave')!=null) load(localStorage.getItem('limitedIncrementalSave'))
 	for(i=1;i<7;i++) game['gen'+i].actualCost = game['gen'+i].cost
-	update('commit','v0.1D-41')
+	update('commit','v0.1D-42')
 }
 function userImport() {
 	var save = window.prompt('Paste your save data here.')
@@ -383,7 +385,7 @@ function synergyClasses() {
 			}
 		}
 	}
-}
+}F
 function buyGen(i) {
 	if(game.number >= game['gen'+i].cost) {
 		game.number -= game['gen'+i].cost
@@ -508,10 +510,10 @@ function buyNeg() {
 		game.number -= game.negative.cost
 		game.negative.amt ++
 		game.negative.cost *= 10
-		game.negative.mult *= 1.025
+		game.negative.mult *= game.negative.upgrades.threePower
 		update('negAmt',format(game.negative.amt,0))
 		update('negCost',format(game.negative.cost,0))
-		update('negBoost',format(Math.pow(1.025,game.negative.amt),3))
+		update('negBoost',format(Math.pow(game.negative.upgrades.threePower,game.negative.amt),3))
 		checkForNegUpgrades()
 	}
 }
@@ -527,8 +529,19 @@ function checkForNegUpgrades() {
 		game.negative.upgrades.two = 1
 		game.negative.upgrades.twoPower = 5
 	}
-	if(game.negative.amt >= 160 && game.negative.upgrades.three === 0) game.negative.upgrades.three = 1
-	if(game.negative.amt >= 165 && game.negative.upgrades.four === 0) game.negative.upgrades.four = 1
+	if(game.negative.amt >= 160 && game.negative.upgrades.three === 0) {
+		game.negative.upgrades.three = 1
+		game.negative.upgrades.threePower = 1.05
+		update('negBoost',format(Math.pow(1.05,game.negative.amt),3))
+		game.negative.mult = Math.pow(1.05,game.negative.amt)
+	}
+	if(game.negative.amt >= 165 && game.negative.upgrades.four === 0) {
+		game.negative.upgrades.four = 1
+		game.negative.upgrades.fourPower = 2.2
+		for(i=1;i<7;i++) {
+			game['gen'+i].upgradeMult = Math.pow(2.2,32)
+		}
+	}
 	if(game.negative.amt >= 175 && game.negative.upgrades.one === 1) {
 		game.negative.upgrades.one = 2
 		for(i=1;i<7;i++) {
@@ -540,8 +553,19 @@ function checkForNegUpgrades() {
 		game.negative.upgrades.two = 2
 		game.negative.upgrades.twoPower = 125
 	}
-	if(game.negative.amt >= 200 && game.negative.upgrades.three === 1) game.negative.upgrades.three = 2
-	if(game.negative.amt >= 215 && game.negative.upgrades.four === 1) game.negative.upgrades.four = 2
+	if(game.negative.amt >= 200 && game.negative.upgrades.three === 1) {
+		game.negative.upgrades.three = 2
+		game.negative.upgrades.threePower = 1.15
+		update('negBoost',format(Math.pow(1.15,game.negative.amt),3))
+		game.negative.mult = Math.pow(1.15,game.negative.amt)
+	}
+	if(game.negative.amt >= 215 && game.negative.upgrades.four === 1) {
+		game.negative.upgrades.four = 2
+		game.negative.upgrades.fourPower = 2.5
+		for(i=1;i<7;i++) {
+			game['gen'+i].upgradeMult = Math.pow(2.5,32)
+		}
+	}
 }
 
 function increaseGens() {
@@ -619,7 +643,7 @@ function format(num,decimals) {
 }
 function tick() {
 	game.timePlayed += 0.1
-	if(game.timePlayed === 420) giveAchieve('ach28')
+	if(game.timePlayed >= 420) giveAchieve('ach28')
 	increaseGens()
 	displayUpdate()
 	if(game.activeTab === 'upgrades') checkIfUpgradesUnlocked()
@@ -673,6 +697,10 @@ function load(save) {
 		if(game.negative.upgrades.onePower === undefined) {
 			game.negative.upgrades.onePower = 1
 			game.negative.upgrades.twoPower = 1
+		}
+		if(game.negative.upgrades.threePower === undefined) {
+			game.negative.upgrades.threePower = 1.025
+			game.negative.upgrades.fourPower = 2
 		}
 		achieveClasses()
 	} catch (e) {
