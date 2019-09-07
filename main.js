@@ -15,7 +15,15 @@ function reset() {
 		synergies:[],
 		achievements:[],
 		newsSeen:0,
-		gen0:{},
+		gen0:{
+			cost:0,
+			baseMult:0,
+			upgradeMult:0,
+			synMult:0,
+			mult:0,
+			amt:0,
+			cosInc:0,
+		},
 		gen1:{
 			cost:10,
 			actualCost:10,
