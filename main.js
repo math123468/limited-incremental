@@ -121,7 +121,7 @@ function updateClass(what,whatClass) {
 }
 function maxUpgrades() {
 	for(i=0;i<game.possibleUps.length;i++) {
-		[(game.possibleUps[i],String(game.possibleUps[1]).length)
+		buyUp(game.possibleUps[i],String(game.possibleUps[1]).length)
 	}
 }
 function changeNews() {
@@ -191,7 +191,7 @@ function init() {
 	setInterval(save,3000)
 	if(localStorage.getItem('limitedIncrementalSave')!=null) load(localStorage.getItem('limitedIncrementalSave'))
 	for(i=1;i<7;i++) game['gen'+i].actualCost = game['gen'+i].cost
-	update('commit','v0.1D-43')
+	update('commit','v0.1D-44')
 }
 function userImport() {
 	var save = window.prompt('Paste your save data here.')
@@ -227,6 +227,7 @@ function changeTab(tab) {
 	hide('upgrades')
 	hide('syn')
 	hide('negative')
+	hide('thebutton')
 	hide('options')
 	hide('achievs')
 	game.activeTab = tab
