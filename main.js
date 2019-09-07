@@ -191,7 +191,7 @@ function init() {
 	setInterval(save,3000)
 	if(localStorage.getItem('limitedIncrementalSave')!=null) load(localStorage.getItem('limitedIncrementalSave'))
 	for(i=1;i<7;i++) game['gen'+i].actualCost = game['gen'+i].cost
-	update('commit','v0.1D-42')
+	update('commit','v0.1D-43')
 }
 function userImport() {
 	var save = window.prompt('Paste your save data here.')
@@ -506,15 +506,15 @@ function buyUp(num,tier) {
 	}
 }
 function buyNeg() {
+	update('negAmt',format(game.negative.amt,0))
+	update('negCost',format(game.negative.cost,0))
+	update('negBoost',format(Math.pow(game.negative.upgrades.threePower,game.negative.amt),3))
+	checkForNegUpgrades()
 	if(game.number >= game.negative.cost) {
 		game.number -= game.negative.cost
 		game.negative.amt ++
 		game.negative.cost *= 10
 		game.negative.mult *= game.negative.upgrades.threePower
-		update('negAmt',format(game.negative.amt,0))
-		update('negCost',format(game.negative.cost,0))
-		update('negBoost',format(Math.pow(game.negative.upgrades.threePower,game.negative.amt),3))
-		checkForNegUpgrades()
 	}
 }
 function checkForNegUpgrades() {
@@ -703,6 +703,7 @@ function load(save) {
 			game.negative.upgrades.fourPower = 2
 		}
 		achieveClasses()
+		buyNeg()
 	} catch (e) {
 		console.log('Your save failed to load: '+e)
 	}
