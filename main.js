@@ -198,7 +198,7 @@ function notation() {
 	if(game.notation === 'standard') {
 		game.notation = 'sci'
 	}
-	if(game.notation === 'sci') {
+	else if(game.notation === 'sci') {
 		game.notation = 'standard'
 	}
 	for(i=0;i<game.possibleUps.length;i++) {
@@ -220,7 +220,7 @@ function init() {
 	setInterval(save,3000)
 	if(localStorage.getItem('limitedIncrementalSave')!=null) load(localStorage.getItem('limitedIncrementalSave'))
 	for(i=1;i<7;i++) game['gen'+i].actualCost = game['gen'+i].cost
-	update('commit','v0.1E-4')
+	update('commit','v0.1E-5')
 }
 function userImport() {
 	var save = window.prompt('Paste your save data here.')
