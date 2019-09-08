@@ -212,7 +212,7 @@ function notation() {
 		}
 	}
 	update('negCost',format(game.negative.cost,0))
-	update('negMult',format(game.negative.mult),4)
+	update('negBoost',format(game.negative.mult),4)
 }
 function init() {
 	changeNews()
@@ -220,7 +220,7 @@ function init() {
 	setInterval(save,3000)
 	if(localStorage.getItem('limitedIncrementalSave')!=null) load(localStorage.getItem('limitedIncrementalSave'))
 	for(i=1;i<7;i++) game['gen'+i].actualCost = game['gen'+i].cost
-	update('commit','v0.1E-2')
+	update('commit','v0.1E-3')
 }
 function userImport() {
 	var save = window.prompt('Paste your save data here.')
