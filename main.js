@@ -103,8 +103,8 @@ function reset() {
 	}
 	return game
 }
-const news = ['Hi, guys!','Once upon a time...','Much Number!','Next update in 5 days!','Upgrades boost different gens!','Synergies boost gens based on the amount of another!','Negative Numbers: Coming soon(TM)','aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa']
-const newsTimes = [2,2.5,1.5,3,3,3,3,30]
+const news = ['Hi, guys!','Once upon a time...','Much Number!','Next update in 5 days!','Upgrades boost different gens!','Synergies boost gens based on the amount of another!','Negative Numbers boost all gens! There are also cool upgrades!','The Button: Coming soon(TM)','aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa']
+const newsTimes = [2,2.5,1.5,3,3,3,3,3,30]
 function update(what,withWhat) {
 	document.getElementById(what).innerHTML = withWhat
 }
@@ -201,13 +201,26 @@ function notation() {
 	if(game.notation === 'sci') {
 		game.notation = 'standard'
 	}
+	for(i=0;i<game.possibleUps.length;i++) {
+		var pos = game.possibleUps[i]
+		update('up'+pos+'cost',format(returnUpgradeCost(pos,String(pos).length)),0)
+	}
+	for(i=1;i<7;i++) {
+		for(j=6;j>i;j--) {
+			var thing = 10 * i + j
+			update('syn'+thing+'cost',format(returnSynergyCost(thing),0))
+		}
+	}
+	update('negCost',format(game.negative.cost,0))
+	update('negMult',format(game.negative.mult),4)
+}
 function init() {
 	changeNews()
 	setInterval(tick,100)
 	setInterval(save,3000)
 	if(localStorage.getItem('limitedIncrementalSave')!=null) load(localStorage.getItem('limitedIncrementalSave'))
 	for(i=1;i<7;i++) game['gen'+i].actualCost = game['gen'+i].cost
-	update('commit','v0.1E-1')
+	update('commit','v0.1E-2')
 }
 function userImport() {
 	var save = window.prompt('Paste your save data here.')
@@ -402,7 +415,7 @@ function synergyClasses() {
 			}
 		}
 	}
-}F
+}
 function buyGen(i) {
 	if(game.number >= game['gen'+i].cost) {
 		game.number -= game['gen'+i].cost
@@ -656,7 +669,14 @@ function format(num,decimals) {
 		m = 1;
 		e++;
 	}
-	return Math.round(1000*m*Math.pow(10,e-e2))/1000+abbreviate(e2/3-1,true)
+	if(game.notation === 'standard') {
+		return Math.round(1000*m*Math.pow(10,e-e2))/1000+abbreviate(e2/3-1,true)
+	}
+	if(game.notation === 'sci') {
+		return m + 'e' + e
+	}
+	console.log('You broke something')
+	return 'you broke something'
 }
 function tick() {
 	game.timePlayed += 0.1
