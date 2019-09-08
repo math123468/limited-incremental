@@ -81,7 +81,7 @@ div {
 </head>
 <body style = 'background-color:#000000'>
 	<div id = 'commit' style = 'color:black'>v0.1E-1</div>
-	<div id = 'htmlcommit' style = 'color:black'>HTML Commit 1</div><br>
+	<div id = 'htmlcommit' style = 'color:black'>HTML Commit 2</div><br>
 	<div id = 'news' style = 'color:white'></div>
 	<script src = 'main.js' onload = 'init()'></script>
 	<h1 id = 'numfull' style = 'color:white'>You have <div id = 'num'>0</div> number.</h1>
@@ -205,125 +205,125 @@ div {
 			<div id = 'tier1'>
 				<table>
 					<tr>
-						<td>   <button class = 'dark button' id = 'up1' onclick = 'buyUp(1,1)'>Doubles tier 1 gens. Cost: 1Sx</button></td>
-						<td>   <button class = 'dark button' id = 'up2' onclick = 'buyUp(2,1)'>Doubles tier 2 gens. Cost: 2Sx</button></td>
-						<td>   <button class = 'dark button' id = 'up3' onclick = 'buyUp(3,1)'>Doubles tier 3 gens. Cost: 4Sx</button></td>
+						<td>   <button class = 'dark button' id = 'up1' onclick = 'buyUp(1,1)'>Doubles tier 1 gens. Cost: <div id = 'up1cost'>1Sx</div></button></td>
+						<td>   <button class = 'dark button' id = 'up2' onclick = 'buyUp(2,1)'>Doubles tier 2 gens. Cost: <div id = 'up2cost'>2Sx</div></button></td>
+						<td>   <button class = 'dark button' id = 'up3' onclick = 'buyUp(3,1)'>Doubles tier 3 gens. Cost: <div id = 'up3cost'>4Sx</div></button></td>
 					</tr>
 					<tr>
-						<td>   <button class = 'dark button' id = 'up4' onclick = 'buyUp(4,1)'>Doubles tier 4 gens. Cost: 8Sx</button></td>
-						<td>   <button class = 'dark button' id = 'up5' onclick = 'buyUp(5,1)'>Doubles tier 5 gens. Cost: 16Sx</button></td>
-						<td>   <button class = 'dark button' id = 'up6' onclick = 'buyUp(6,1)'>Doubles tier 6 gens. Cost: 32Sx</button></td>
+						<td>   <button class = 'dark button' id = 'up4' onclick = 'buyUp(4,1)'>Doubles tier 4 gens. Cost: <div id = 'up4cost'>8Sx</div></button></td>
+						<td>   <button class = 'dark button' id = 'up5' onclick = 'buyUp(5,1)'>Doubles tier 5 gens. Cost: <div id = 'up5cost'>16Sx</div></button></td>
+						<td>   <button class = 'dark button' id = 'up6' onclick = 'buyUp(6,1)'>Doubles tier 6 gens. Cost: <div id = 'up6cost'>32Sx</div></button></td>
 					</tr>
 				</table>
 			</div>
 			<div id = 'tier2'>
 				<table>
 					<tr>
-						<td>   <button class = 'dark button' id = 'up12' onclick = 'buyUp(12,2)'>Doubles tier 1 and 2 gens. Cost: 1Oc</button></td>
-						<td>   <button class = 'dark button' id = 'up13' onclick = 'buyUp(13,2)'>Doubles tier 1 and 3 gens. Cost: 5Oc</button></td>
-						<td>   <button class = 'dark button' id = 'up14' onclick = 'buyUp(14,2)'>Doubles tier 1 and 4 gens. Cost: 25Oc</button></td>
+						<td>   <button class = 'dark button' id = 'up12' onclick = 'buyUp(12,2)'>Doubles tier 1 and 2 gens. Cost: <div id = 'up12cost'>1Oc</div></button></td>
+						<td>   <button class = 'dark button' id = 'up13' onclick = 'buyUp(13,2)'>Doubles tier 1 and 3 gens. Cost: <div id = 'up13cost'>5Oc</div></button></td>
+						<td>   <button class = 'dark button' id = 'up14' onclick = 'buyUp(14,2)'>Doubles tier 1 and 4 gens. Cost: <div id = 'up14cost'>25Oc</div></button></td>
 					</tr>
 					<tr>
-						<td>   <button class = 'dark button' id = 'up15' onclick = 'buyUp(15,2)'>Doubles tier 1 and 5 gens. Cost: 125Oc</button></td>
-						<td>   <button class = 'dark button' id = 'up16' onclick = 'buyUp(16,2)'>Doubles tier 1 and 6 gens. Cost: 625Oc</button></td>
-						<td>   <button class = 'dark button' id = 'up23' onclick = 'buyUp(23,2)'>Doubles tier 2 and 3 gens. Cost: 1No</button></td>
+						<td>   <button class = 'dark button' id = 'up15' onclick = 'buyUp(15,2)'>Doubles tier 1 and 5 gens. Cost: <div id = 'up15cost'>125Oc</div></button></td>
+						<td>   <button class = 'dark button' id = 'up16' onclick = 'buyUp(16,2)'>Doubles tier 1 and 6 gens. Cost: <div id = 'up16cost'>625Oc</div></button></td>
+						<td>   <button class = 'dark button' id = 'up23' onclick = 'buyUp(23,2)'>Doubles tier 2 and 3 gens. Cost: <div id = 'up23cost'>1No</div></button></td>
 					</tr>
 					<tr>
-						<td>   <button class = 'dark button' id = 'up24' onclick = 'buyUp(24,2)'>Doubles tier 2 and 4 gens. Cost: 5No</button></td>
-						<td>   <button class = 'dark button' id = 'up25' onclick = 'buyUp(25,2)'>Doubles tier 2 and 5 gens. Cost: 25No</button></td>
-						<td>   <button class = 'dark button' id = 'up26' onclick = 'buyUp(26,2)'>Doubles tier 2 and 6 gens. Cost: 125No</button></td>
+						<td>   <button class = 'dark button' id = 'up24' onclick = 'buyUp(24,2)'>Doubles tier 2 and 4 gens. Cost: <div id = 'up24cost'>5No</div></button></td>
+						<td>   <button class = 'dark button' id = 'up25' onclick = 'buyUp(25,2)'>Doubles tier 2 and 5 gens. Cost: <div id = 'up25cost'>25No</div></button></td>
+						<td>   <button class = 'dark button' id = 'up26' onclick = 'buyUp(26,2)'>Doubles tier 2 and 6 gens. Cost: <div id = 'up26cost'>125No</div></button></td>
 					</tr>
 					<tr>
-						<td>   <button class = 'dark button' id = 'up34' onclick = 'buyUp(34,2)'>Doubles tier 3 and 4 gens. Cost: 625No</button></td>
-						<td>   <button class = 'dark button' id = 'up35' onclick = 'buyUp(35,2)'>Doubles tier 3 and 5 gens. Cost: 1Dc</button></td>
-						<td>   <button class = 'dark button' id = 'up36' onclick = 'buyUp(36,2)'>Doubles tier 3 and 6 gens. Cost: 2Dc</button></td>
+						<td>   <button class = 'dark button' id = 'up34' onclick = 'buyUp(34,2)'>Doubles tier 3 and 4 gens. Cost: <div id = 'up34cost'>625No</div></button></td>
+						<td>   <button class = 'dark button' id = 'up35' onclick = 'buyUp(35,2)'>Doubles tier 3 and 5 gens. Cost: <div id = 'up35cost'>1Dc</div></button></td>
+						<td>   <button class = 'dark button' id = 'up36' onclick = 'buyUp(36,2)'>Doubles tier 3 and 6 gens. Cost: <div id = 'up36cost'>2Dc</div></button></td>
 					</tr>
 					<tr>
-						<td>   <button class = 'dark button' id = 'up45' onclick = 'buyUp(45,2)'>Doubles tier 4 and 5 gens. Cost: 4Dc</button></td>
-						<td>   <button class = 'dark button' id = 'up46' onclick = 'buyUp(46,2)'>Doubles tier 4 and 6 gens. Cost: 8Dc</button></td>
-						<td>   <button class = 'dark button' id = 'up56' onclick = 'buyUp(56,2)'>Doubles tier 5 and 6 gens. Cost: 16Dc</button></td>
+						<td>   <button class = 'dark button' id = 'up45' onclick = 'buyUp(45,2)'>Doubles tier 4 and 5 gens. Cost: <div id = 'up45cost'>4Dc</div></button></td>
+						<td>   <button class = 'dark button' id = 'up46' onclick = 'buyUp(46,2)'>Doubles tier 4 and 6 gens. Cost: <div id = 'up46cost'>8Dc</div></button></td>
+						<td>   <button class = 'dark button' id = 'up56' onclick = 'buyUp(56,2)'>Doubles tier 5 and 6 gens. Cost: <div id = 'up56cost'>16Dc</div></button></td>
 					</tr>
 				</table>
 			</div>
 		<div id = 'tier3'>
 			<table>
 				<tr>
-					<td><button class = 'dark button' id = 'up123' onclick = 'buyUp(123,3)'>Doubles tier 1, 2, and 3 gens. Cost: 1SxDc</button></td>
-					<td><button class = 'dark button' id = 'up124' onclick = 'buyUp(124,3)'>Doubles tier 1, 2, and 4 gens. Cost: 3SxDc</button></td>
-					<td><button class = 'dark button' id = 'up125' onclick = 'buyUp(125,3)'>Doubles tier 1, 2, and 5 gens. Cost: 9SxDc</button></td>
-					<td><button class = 'dark button' id = 'up126' onclick = 'buyUp(126,3)'>Doubles tier 1, 2, and 6 gens. Cost: 27SxDc</button></td>
+					<td><button class = 'dark button' id = 'up123' onclick = 'buyUp(123,3)'>Doubles tier 1, 2, and 3 gens. Cost: <div id = 'up123cost'>1SxDc</div></button></td>
+					<td><button class = 'dark button' id = 'up124' onclick = 'buyUp(124,3)'>Doubles tier 1, 2, and 4 gens. Cost: <div id = 'up124cost'>3SxDc</div></button></td>
+					<td><button class = 'dark button' id = 'up125' onclick = 'buyUp(125,3)'>Doubles tier 1, 2, and 5 gens. Cost: <div id = 'up125cost'>9SxDc</div></button></td>
+					<td><button class = 'dark button' id = 'up126' onclick = 'buyUp(126,3)'>Doubles tier 1, 2, and 6 gens. Cost: <div id = 'up126cost'>27SxDc</div></button></td>
 				</tr>
 				<tr>
-					<td><button class = 'dark button' id = 'up134' onclick = 'buyUp(134,3)'>Doubles tier 1, 2, and 3 gens. Cost: 81SxDc</button></td>
-					<td><button class = 'dark button' id = 'up135' onclick = 'buyUp(135,3)'>Doubles tier 1, 2, and 4 gens. Cost: 243SxDc</button></td>
-					<td><button class = 'dark button' id = 'up136' onclick = 'buyUp(136,3)'>Doubles tier 1, 2, and 5 gens. Cost: 1SpDc</button></td>
-					<td><button class = 'dark button' id = 'up145' onclick = 'buyUp(145,3)'>Doubles tier 1, 2, and 6 gens. Cost: 3SpDc</button></td>
+					<td><button class = 'dark button' id = 'up134' onclick = 'buyUp(134,3)'>Doubles tier 1, 2, and 3 gens. Cost: <div id = 'up134cost'>81SxDc</div></button></td>
+					<td><button class = 'dark button' id = 'up135' onclick = 'buyUp(135,3)'>Doubles tier 1, 2, and 4 gens. Cost: <div id = 'up135cost'>243SxDc</div></button></td>
+					<td><button class = 'dark button' id = 'up136' onclick = 'buyUp(136,3)'>Doubles tier 1, 2, and 5 gens. Cost: <div id = 'up136cost'>1SpDc</div></button></td>
+					<td><button class = 'dark button' id = 'up145' onclick = 'buyUp(145,3)'>Doubles tier 1, 2, and 6 gens. Cost: <div id = 'up145cost'>3SpDc</div></button></td>
 				</tr>
 				<tr>
-					<td><button class = 'dark button' id = 'up146' onclick = 'buyUp(146,3)'>Doubles tier 1, 4, and 6 gens. Cost: 9SpDc</button></td>
-					<td><button class = 'dark button' id = 'up156' onclick = 'buyUp(156,3)'>Doubles tier 1, 5, and 6 gens. Cost: 27SpDc</button></td>
-					<td><button class = 'dark button' id = 'up234' onclick = 'buyUp(234,3)'>Doubles tier 2, 3, and 4 gens. Cost: 81SpDc</button></td>
-					<td><button class = 'dark button' id = 'up235' onclick = 'buyUp(235,3)'>Doubles tier 2, 3, and 5 gens. Cost: 243SpDc</button></td>
+					<td><button class = 'dark button' id = 'up146' onclick = 'buyUp(146,3)'>Doubles tier 1, 4, and 6 gens. Cost: <div id = 'up146cost'>9SpDc</div></button></td>
+					<td><button class = 'dark button' id = 'up156' onclick = 'buyUp(156,3)'>Doubles tier 1, 5, and 6 gens. Cost: <div id = 'up156cost'>27SpDc</div></button></td>
+					<td><button class = 'dark button' id = 'up234' onclick = 'buyUp(234,3)'>Doubles tier 2, 3, and 4 gens. Cost: <div id = 'up234cost'>81SpDc</div></button></td>
+					<td><button class = 'dark button' id = 'up235' onclick = 'buyUp(235,3)'>Doubles tier 2, 3, and 5 gens. Cost: <div id = 'up235cost'>243SpDc</div></button></td>
 				</tr>
 				<tr>
-					<td><button class = 'dark button' id = 'up236' onclick = 'buyUp(236,3)'>Doubles tier 2, 3, and 6 gens. Cost: 1ODc</button></td>
-					<td><button class = 'dark button' id = 'up245' onclick = 'buyUp(245,3)'>Doubles tier 2, 4, and 5 gens. Cost: 3ODc</button></td>
-					<td><button class = 'dark button' id = 'up246' onclick = 'buyUp(246,3)'>Doubles tier 2, 4, and 6 gens. Cost: 9ODc</button></td>
-					<td><button class = 'dark button' id = 'up256' onclick = 'buyUp(256,3)'>Doubles tier 2, 5, and 6 gens. Cost: 27ODc</button></td>
+					<td><button class = 'dark button' id = 'up236' onclick = 'buyUp(236,3)'>Doubles tier 2, 3, and 6 gens. Cost: <div id = 'up236cost'>1ODc</div></button></td>
+					<td><button class = 'dark button' id = 'up245' onclick = 'buyUp(245,3)'>Doubles tier 2, 4, and 5 gens. Cost: <div id = 'up245cost'>3ODc</div></button></td>
+					<td><button class = 'dark button' id = 'up246' onclick = 'buyUp(246,3)'>Doubles tier 2, 4, and 6 gens. Cost: <div id = 'up246cost'>9ODc</div></button></td>
+					<td><button class = 'dark button' id = 'up256' onclick = 'buyUp(256,3)'>Doubles tier 2, 5, and 6 gens. Cost: <div id = 'up256cost'>27ODc</div></button></td>
 				</tr>
 				<tr>
-					<td><button class = 'dark button' id = 'up345' onclick = 'buyUp(345,3)'>Doubles tier 3, 4, and 5 gens. Cost: 81ODc</button></td>
-					<td><button class = 'dark button' id = 'up346' onclick = 'buyUp(346,3)'>Doubles tier 3, 4, and 6 gens. Cost: 243ODc</button></td>
-					<td><button class = 'dark button' id = 'up356' onclick = 'buyUp(356,3)'>Doubles tier 3, 5, and 6 gens. Cost: 1NDc</button></td>
-					<td><button class = 'dark button' id = 'up456' onclick = 'buyUp(456,3)'>Doubles tier 4, 5, and 6 gens. Cost: 3NDc</button></td>
+					<td><button class = 'dark button' id = 'up345' onclick = 'buyUp(345,3)'>Doubles tier 3, 4, and 5 gens. Cost: <div id = 'up345cost'>81ODc</div></button></td>
+					<td><button class = 'dark button' id = 'up346' onclick = 'buyUp(346,3)'>Doubles tier 3, 4, and 6 gens. Cost: <div id = 'up346cost'>243ODc</div></button></td>
+					<td><button class = 'dark button' id = 'up356' onclick = 'buyUp(356,3)'>Doubles tier 3, 5, and 6 gens. Cost: <div id = 'up356cost'>1NDc</div></button></td>
+					<td><button class = 'dark button' id = 'up456' onclick = 'buyUp(456,3)'>Doubles tier 4, 5, and 6 gens. Cost: <div id = 'up456cost'>3NDc</div></button></td>
 				</tr>
 			</table>
 		</div>
 		<div id = 'tier4'>
 			<table>
 				<tr>
-					<td>   <button class = 'dark button' id = 'up1234' onclick = 'buyUp(1234,4)'>Doubles tier 1, 2, 3 and 4 gens. Cost: 1QdVg</button></td>
-					<td>   <button class = 'dark button' id = 'up1235' onclick = 'buyUp(1235,4)'>Doubles tier 1, 2, 3 and 5 gens. Cost: 5QdVg</button></td>
-					<td>   <button class = 'dark button' id = 'up1236' onclick = 'buyUp(1236,4)'>Doubles tier 1, 2, 3 and 6 gens. Cost: 25QdVg</button></td>
+					<td>   <button class = 'dark button' id = 'up1234' onclick = 'buyUp(1234,4)'>Doubles tier 1, 2, 3 and 4 gens. Cost: <div id = 'up1234cost'>1QdVg</div></button></td>
+					<td>   <button class = 'dark button' id = 'up1235' onclick = 'buyUp(1235,4)'>Doubles tier 1, 2, 3 and 5 gens. Cost: <div id = 'up1235cost'>5QdVg</div></button></td>
+					<td>   <button class = 'dark button' id = 'up1236' onclick = 'buyUp(1236,4)'>Doubles tier 1, 2, 3 and 6 gens. Cost: <div id = 'up1236cost'>25QdVg</div></button></td>
 				</tr>
 				<tr>
-					<td>   <button class = 'dark button' id = 'up1245' onclick = 'buyUp(1245,4)'>Doubles tier 1, 2, 4 and 5 gens. Cost: 125QdVg</button></td>
-					<td>   <button class = 'dark button' id = 'up1246' onclick = 'buyUp(1246,4)'>Doubles tier 1, 2, 4 and 6 gens. Cost: 625QdVg</button></td>
-					<td>   <button class = 'dark button' id = 'up1256' onclick = 'buyUp(1256,4)'>Doubles tier 1, 2, 5 and 6 gens. Cost: 1QiVg</button></td>
+					<td>   <button class = 'dark button' id = 'up1245' onclick = 'buyUp(1245,4)'>Doubles tier 1, 2, 4 and 5 gens. Cost: <div id = 'up1245cost'>125QdVg</div></button></td>
+					<td>   <button class = 'dark button' id = 'up1246' onclick = 'buyUp(1246,4)'>Doubles tier 1, 2, 4 and 6 gens. Cost: <div id = 'up1246cost'>625QdVg</div></button></td>
+					<td>   <button class = 'dark button' id = 'up1256' onclick = 'buyUp(1256,4)'>Doubles tier 1, 2, 5 and 6 gens. Cost: <div id = 'up1256cost'>1QiVg</div></button></td>
 				</tr>
 				<tr>
-					<td>   <button class = 'dark button' id = 'up1345' onclick = 'buyUp(1345,4)'>Doubles tier 1, 3, 4 and 5 gens. Cost: 5QiVg</button></td>
-					<td>   <button class = 'dark button' id = 'up1346' onclick = 'buyUp(1346,4)'>Doubles tier 1, 3, 4 and 6 gens. Cost: 25QiVg</button></td>
-					<td>   <button class = 'dark button' id = 'up1356' onclick = 'buyUp(1356,4)'>Doubles tier 1, 3, 5 and 6 gens. Cost: 125QiVg</button></td>
+					<td>   <button class = 'dark button' id = 'up1345' onclick = 'buyUp(1345,4)'>Doubles tier 1, 3, 4 and 5 gens. Cost: <div id = 'up1345cost'>5QiVg</div></button></td>
+					<td>   <button class = 'dark button' id = 'up1346' onclick = 'buyUp(1346,4)'>Doubles tier 1, 3, 4 and 6 gens. Cost: <div id = 'up1346cost'>25QiVg</div></button></td>
+					<td>   <button class = 'dark button' id = 'up1356' onclick = 'buyUp(1356,4)'>Doubles tier 1, 3, 5 and 6 gens. Cost: <div id = 'up1356cost'>125QiVg</div></button></td>
 				</tr>
 				<tr>
-					<td>   <button class = 'dark button' id = 'up1456' onclick = 'buyUp(1456,4)'>Doubles tier 1, 4, 5 and 6 gens. Cost: 625QiVg</button></td>
-					<td>   <button class = 'dark button' id = 'up2345' onclick = 'buyUp(2345,4)'>Doubles tier 2, 3, 4 and 5 gens. Cost: 1SxVg</button></td>
-					<td>   <button class = 'dark button' id = 'up2346' onclick = 'buyUp(2346,4)'>Doubles tier 2, 3, 4 and 6 gens. Cost: 5SxVg</button></td>
+					<td>   <button class = 'dark button' id = 'up1456' onclick = 'buyUp(1456,4)'>Doubles tier 1, 4, 5 and 6 gens. Cost: <div id = 'up1456cost'>625QiVg</div></button></td>
+					<td>   <button class = 'dark button' id = 'up2345' onclick = 'buyUp(2345,4)'>Doubles tier 2, 3, 4 and 5 gens. Cost: <div id = 'up2345cost'>1SxVg</div></button></td>
+					<td>   <button class = 'dark button' id = 'up2346' onclick = 'buyUp(2346,4)'>Doubles tier 2, 3, 4 and 6 gens. Cost: <div id = 'up2346cost'>5SxVg</div></button></td>
 				</tr>
 				<tr>
-					<td>   <button class = 'dark button' id = 'up2356' onclick = 'buyUp(2356,4)'>Doubles tier 2, 3, 5 and 6 gens. Cost: 25SxVg</button></td>
-					<td>   <button class = 'dark button' id = 'up2456' onclick = 'buyUp(2456,4)'>Doubles tier 2, 4, 5 and 6 gens. Cost: 125SxVg</button></td>
-					<td>   <button class = 'dark button' id = 'up3456' onclick = 'buyUp(3456,4)'>Doubles tier 3, 4, 5 and 6 gens. Cost: 625SxVg</button></td>
+					<td>   <button class = 'dark button' id = 'up2356' onclick = 'buyUp(2356,4)'>Doubles tier 2, 3, 5 and 6 gens. Cost: <div id = 'up2356cost'>25SxVg</div></button></td>
+					<td>   <button class = 'dark button' id = 'up2456' onclick = 'buyUp(2456,4)'>Doubles tier 2, 4, 5 and 6 gens. Cost: <div id = 'up2456cost'>125SxVg</div></button></td>
+					<td>   <button class = 'dark button' id = 'up3456' onclick = 'buyUp(3456,4)'>Doubles tier 3, 4, 5 and 6 gens. Cost: <div id = 'up3456cost'>625SxVg</div></button></td>
 				</tr>
 			</table>
 		</div>	
 		<div id = 'tier5'>
 			<table>
 				<tr>
-					<td>   <button class = 'dark button' id = 'up12345' onclick = 'buyUp(12345,5)'>Doubles tier 1, 2, 3, 4 and 5 gens. Cost: 1UTg</button></td>
-					<td>   <button class = 'dark button' id = 'up12346' onclick = 'buyUp(12346,5)'>Doubles tier 1, 2, 3, 4 and 6 gens. Cost: 10UTg</button></td>
-					<td>   <button class = 'dark button' id = 'up12356' onclick = 'buyUp(12356,5)'>Doubles tier 1, 2, 3, 5 and 6 gens. Cost: 100UTg</button></td>
+					<td>   <button class = 'dark button' id = 'up12345' onclick = 'buyUp(12345,5)'>Doubles tier 1, 2, 3, 4 and 5 gens. Cost: <div id = 'up12345cost'>1UTg</div></button></td>
+					<td>   <button class = 'dark button' id = 'up12346' onclick = 'buyUp(12346,5)'>Doubles tier 1, 2, 3, 4 and 6 gens. Cost: <div id = 'up12346cost'>10UTg</div></button></td>
+					<td>   <button class = 'dark button' id = 'up12356' onclick = 'buyUp(12356,5)'>Doubles tier 1, 2, 3, 5 and 6 gens. Cost: <div id = 'up12356cost'>100UTg</div></button></td>
 				</tr>
 				<tr>
-					<td>   <button class = 'dark button' id = 'up12456' onclick = 'buyUp(12456,5)'>Doubles tier 1, 2, 4, 5 and 6 gens. Cost: 1DTg</button></td>
-					<td>   <button class = 'dark button' id = 'up13456' onclick = 'buyUp(13456,5)'>Doubles tier 1, 3, 4, 5 and 6 gens. Cost: 10DTg</button></td>
-					<td>   <button class = 'dark button' id = 'up23456' onclick = 'buyUp(23456,5)'>Doubles tier 2, 3, 4, 5 and 6 gens. Cost: 100DTg</button></td>
+					<td>   <button class = 'dark button' id = 'up12456' onclick = 'buyUp(12456,5)'>Doubles tier 1, 2, 4, 5 and 6 gens. Cost: <div id = 'up12456cost'>1DTg</div></button></td>
+					<td>   <button class = 'dark button' id = 'up13456' onclick = 'buyUp(13456,5)'>Doubles tier 1, 3, 4, 5 and 6 gens. Cost: <div id = 'up13456cost'>10DTg</div></button></td>
+					<td>   <button class = 'dark button' id = 'up23456' onclick = 'buyUp(23456,5)'>Doubles tier 2, 3, 4, 5 and 6 gens. Cost: <div id = 'up23456cost'>100DTg</div></button></td>
 				</tr>
 			</table>
 		</div>
 		<div id = 'tier6'>
-			<button class =  'dark button' id = 'up123456' onclick = 'buyUp(123456,6)'>Doubles tier 1, 2, 3, 4, 5 and 6 gens. Cost: 1QtTg</button>
+			<button class =  'dark button' id = 'up123456' onclick = 'buyUp(123456,6)'>Doubles tier 1, 2, 3, 4, 5 and 6 gens. Cost: <div id = 'up123456cost'>1QtTg</div></button>
 		</div>
 		</div>
 	<div id = 'syn' style = 'display:none'>
@@ -331,29 +331,29 @@ div {
 		<div id = 'class1syn'>
 		<table>
 			<tr>
-				<td> <button class = 'dark button' id = 'syn12' onclick = 'buySyn(1,2)'>Boosts tier 1 gens based on tier 2 gens. Cost: 1SxTg</button></td>
-				<td> <button class = 'dark button' id = 'syn13' onclick = 'buySyn(1,3)'>Boosts tier 1 gens based on tier 3 gens. Cost: 10SxTg</button></td>
-				<td> <button class = 'dark button' id = 'syn14' onclick = 'buySyn(1,4)'>Boosts tier 1 gens based on tier 4 gens. Cost: 100SxTg</button></td>
+				<td> <button class = 'dark button' id = 'syn12' onclick = 'buySyn(1,2)'>Boosts tier 1 gens based on tier 2 gens. Cost: <div id = 'syn12cost'>1SxTg</div></button></td>
+				<td> <button class = 'dark button' id = 'syn13' onclick = 'buySyn(1,3)'>Boosts tier 1 gens based on tier 3 gens. Cost: <div id = 'syn13cost'>10SxTg</div></button></td>
+				<td> <button class = 'dark button' id = 'syn14' onclick = 'buySyn(1,4)'>Boosts tier 1 gens based on tier 4 gens. Cost: <div id = 'syn14cost'>100SxTg</div></button></td>
 			</tr>
 			<tr>
-				<td> <button class = 'dark button' id = 'syn15' onclick = 'buySyn(1,5)'>Boosts tier 1 gens based on tier 5 gens. Cost: 1SpTg</button></td>
-				<td> <button class = 'dark button' id = 'syn16' onclick = 'buySyn(1,6)'>Boosts tier 1 gens based on tier 6 gens. Cost: 10SpTg</button></td>
-				<td> <button class = 'dark button' id = 'syn23' onclick = 'buySyn(2,3)'>Boosts tier 2 gens based on tier 3 gens. Cost: 100SpTg</button></td>
+				<td> <button class = 'dark button' id = 'syn15' onclick = 'buySyn(1,5)'>Boosts tier 1 gens based on tier 5 gens. Cost: <div id = 'syn15cost'>1SpTg</div></button></td>
+				<td> <button class = 'dark button' id = 'syn16' onclick = 'buySyn(1,6)'>Boosts tier 1 gens based on tier 6 gens. Cost: <div id = 'syn16cost'>10SpTg</div></button></td>
+				<td> <button class = 'dark button' id = 'syn23' onclick = 'buySyn(2,3)'>Boosts tier 2 gens based on tier 3 gens. Cost: <div id = 'syn23cost'>100SpTg</div></button></td>
 			</tr>
 			<tr>
-				<td> <button class = 'dark button' id = 'syn24' onclick = 'buySyn(2,4)'>Boosts tier 2 gens based on tier 4 gens. Cost: 1OTg</button></td>
-				<td> <button class = 'dark button' id = 'syn25' onclick = 'buySyn(2,5)'>Boosts tier 2 gens based on tier 5 gens. Cost: 10OTg</button></td>
-				<td> <button class = 'dark button' id = 'syn26' onclick = 'buySyn(2,6)'>Boosts tier 2 gens based on tier 6 gens. Cost: 100OTg</button></td>
+				<td> <button class = 'dark button' id = 'syn24' onclick = 'buySyn(2,4)'>Boosts tier 2 gens based on tier 4 gens. Cost: <div id = 'syn24cost'>1OTg</div></button></td>
+				<td> <button class = 'dark button' id = 'syn25' onclick = 'buySyn(2,5)'>Boosts tier 2 gens based on tier 5 gens. Cost: <div id = 'syn25cost'>10OTg</div></button></td>
+				<td> <button class = 'dark button' id = 'syn26' onclick = 'buySyn(2,6)'>Boosts tier 2 gens based on tier 6 gens. Cost: <div id = 'syn26cost'>100OTg</div></button></td>
 			</tr>
 			<tr>
-				<td> <button class = 'dark button' id = 'syn34' onclick = 'buySyn(3,4)'>Boosts tier 3 gens based on tier 4 gens. Cost: 1NTg</button></td>
-				<td> <button class = 'dark button' id = 'syn35' onclick = 'buySyn(3,5)'>Boosts tier 3 gens based on tier 5 gens. Cost: 10NTg</button></td>
-				<td> <button class = 'dark button' id = 'syn36' onclick = 'buySyn(3,6)'>Boosts tier 3 gens based on tier 6 gens. Cost: 100NTg</button></td>
+				<td> <button class = 'dark button' id = 'syn34' onclick = 'buySyn(3,4)'>Boosts tier 3 gens based on tier 4 gens. Cost: <div id = 'syn34cost'>1NTg</div></button></td>
+				<td> <button class = 'dark button' id = 'syn35' onclick = 'buySyn(3,5)'>Boosts tier 3 gens based on tier 5 gens. Cost: <div id = 'syn35cost'>10NTg</div></button></td>
+				<td> <button class = 'dark button' id = 'syn36' onclick = 'buySyn(3,6)'>Boosts tier 3 gens based on tier 6 gens. Cost: <div id = 'syn36cost'>100NTg</div></button></td>
 			</tr>
 			<tr>
-				<td> <button class = 'dark button' id = 'syn45' onclick = 'buySyn(4,5)'>Boosts tier 4 gens based on tier 5 gens. Cost: 1Qa</button></td>
-				<td> <button class = 'dark button' id = 'syn46' onclick = 'buySyn(4,6)'>Boosts tier 4 gens based on tier 6 gens. Cost: 10Qa</button></td>
-				<td> <button class = 'dark button' id = 'syn56' onclick = 'buySyn(5,6)'>Boosts tier 5 gens based on tier 6 gens. Cost: 100Qa</button></td>
+				<td> <button class = 'dark button' id = 'syn45' onclick = 'buySyn(4,5)'>Boosts tier 4 gens based on tier 5 gens. Cost: <div id = 'syn45cost'>1Qa</div></button></td>
+				<td> <button class = 'dark button' id = 'syn46' onclick = 'buySyn(4,6)'>Boosts tier 4 gens based on tier 6 gens. Cost: <div id = 'syn46cost'>10Qa</div></button></td>
+				<td> <button class = 'dark button' id = 'syn56' onclick = 'buySyn(5,6)'>Boosts tier 5 gens based on tier 6 gens. Cost: <div id = 'syn56cost'>100Qa</div></button></td>
 			</tr>
 		</table>
 		</div>
@@ -364,7 +364,7 @@ div {
 		<center>
 			<button class = 'dark button big' id = 'buyNeg' onclick = 'buyNeg()'>Buy a Negative Number.<br>Cost: <div id = 'negCost'>10</div> Number</button>
 			<h1>You have -<div id = 'negAmt'>0</div> Negative Numbers</h1>
-			<h3>They boost all gens by <div id = 'negBoost'>1</div>x(1.025x per Negative Number)</h3>
+			<h3>They boost all gens by <div id = 'negBoost'>1</div>x(<div id = 'negmult'>1.025</div>x per Negative Number)</h3>
 			<div id = 'negupgrades'>
 				<table>
 					<tr>
@@ -385,7 +385,7 @@ div {
 		</div>
 	</div>
 	<div id = 'thebutton' style = 'display:none'>
-		<div id = 'buttonunlock'><h1>Reach 29 6th gens to unlock!</h1></div>
+		<div id = 'buttonunlock'><h1>Reach 33 6th gens to unlock!</h1></div>
 	</div>
 	</font>
 					
