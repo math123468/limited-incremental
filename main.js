@@ -220,7 +220,7 @@ function init() {
 	setInterval(save,3000)
 	if(localStorage.getItem('limitedIncrementalSave')!=null) load(localStorage.getItem('limitedIncrementalSave'))
 	for(i=1;i<7;i++) game['gen'+i].actualCost = game['gen'+i].cost
-	update('commit','v0.1E-5')
+	update('commit','v0.1E-6')
 }
 function userImport() {
 	var save = window.prompt('Paste your save data here.')
@@ -583,17 +583,17 @@ function checkForNegUpgrades() {
 		game.negative.upgrades.two = 2
 		game.negative.upgrades.twoPower = 125
 	}
-	if(game.negative.amt >= 225 && game.negative.upgrades.three === 1) {
+	if(game.negative.amt >= 250 && game.negative.upgrades.three === 1) {
 		game.negative.upgrades.three = 2
-		game.negative.upgrades.threePower = 1.15
-		update('negBoost',format(Math.pow(1.15,game.negative.amt),3))
-		game.negative.mult = Math.pow(1.15,game.negative.amt)
+		game.negative.upgrades.threePower = 1.1
+		update('negBoost',format(Math.pow(1.1,game.negative.amt),3))
+		game.negative.mult = Math.pow(1.1,game.negative.amt)
 	}
-	if(game.negative.amt >= 275 && game.negative.upgrades.four === 1) {
+	if(game.negative.amt >= 305 && game.negative.upgrades.four === 1) {
 		game.negative.upgrades.four = 2
-		game.negative.upgrades.fourPower = 2.5
+		game.negative.upgrades.fourPower = 2.35
 		for(i=1;i<7;i++) {
-			game['gen'+i].upgradeMult = Math.pow(2.5,32)
+			game['gen'+i].upgradeMult = Math.pow(2.35,32)
 		}
 	}
 }
