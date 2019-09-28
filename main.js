@@ -99,6 +99,13 @@ function reset() {
 			},
 			amt:0,
 			mult:1,
+		},
+		thebutton:{
+			mult:1,
+			cooldown:0,
+			baseCooldown:10,
+			baseMult:1.06,
+			clicks:0,
 		}
 	}
 	return game
@@ -141,7 +148,7 @@ function changeNews() {
 	if(game.newsSeen === 500) giveAchieve('ach36')
 }
 var game = reset()
-var currentVer = 'v0.1D'
+var currentVer = 'v0.1E'
 function giveAchieve(number) {
 	if(!game.achievements.includes(number)) {
 		game.achievements.push(number)
@@ -220,7 +227,7 @@ function init() {
 	setInterval(save,3000)
 	if(localStorage.getItem('limitedIncrementalSave')!=null) load(localStorage.getItem('limitedIncrementalSave'))
 	for(i=1;i<7;i++) game['gen'+i].actualCost = game['gen'+i].cost
-	update('commit','v0.1E-6')
+	update('commit','v0.1E-7')
 }
 function userImport() {
 	var save = window.prompt('Paste your save data here.')
@@ -402,6 +409,16 @@ function checkIfNegativesUnlocked() {
 	else {
 		hide('negunlock')
 		show('neg1')
+	}
+}
+function checkIfButtonUnlocked() {
+	if(game.gen6.amt < 35) {
+		show('buttonunlock')
+		hide('buttoninfo')
+	}
+	else {
+		hide('buttonunlock')
+		show('buttoninfo')
 	}
 }
 function synergyClasses() {
@@ -686,65 +703,71 @@ function tick() {
 	if(game.activeTab === 'upgrades') checkIfUpgradesUnlocked()
 	if(game.activeTab === 'syn') checkIfSynergiesUnlocked()
 	if(game.activeTab === 'negative') checkIfNegativesUnlocked()
+	if(game.activeTab === 'thebutton')checkIfButtonUnlocked()
 }
 function save() { //save game
 	localStorage.setItem('limitedIncrementalSave',btoa(JSON.stringify(game)))
 }
 function load(save) {
-	try {
-		game=JSON.parse(atob(save))
-		if(game.upgrades1 === undefined) {
-			game.upgrades1 = []
-			game.upgrades2 = []
-			game.upgrades3 = []
-			game.upgrades4 = []
-			game.upgrades5 = []
-			game.upgrades6 = []
-		}
-		if(game.activeTab === undefined) {
-			game.activeTab = 'gens'
-			game.possibleUps = [1,2,3,4,5,6,12,13,14,15,16,23,24,25,26,34,35,36,45,46,56,123,124,125,126,134,135,136,145,146,156,234,235,236,245,246,256,345,346,356,456,1234,1235,1236,1245,1246,1256,1345,1346,1356,1456,2345,2346,2356,2456,3456,12345,12346,12356,12456,13456,23456,123456]
-		}
-		if(game.version === undefined) game.version = currentVer
-		if(game.synergies === undefined) game.synergies = []
-		if(game.gen1.baseMult === undefined) {
-			for(i=1;i<7;i++) {
-				game['gen'+i].baseMult = 1
-				game['gen'+i].upgradeMult = 1
-			}
-		}
-		if(game.gen1.synMult === undefined) {
-			for(i=1;i<7;i++) {
-				game['gen'+i].synMult = 1
-			}
-		}
-		if(game.negative === undefined) game.negative = reset().negative
-		if(game.achievements === undefined) game.achievements = []
-		if(game.timePlayed === undefined) game.timePlayed = 0
-		if(game.newsSeen === undefined) game.newsSeen = 0
-		if(game.theme === undefined) game.theme = 'dark'
-		if(game.negative.upgrades === []) {
-			game.negative.upgrades = {
-				one:0,
-				two:0,
-				three:0,
-				four:0,
-			}
-		}
-		if(game.negative.upgrades.onePower === undefined) {
-			game.negative.upgrades.onePower = 1
-			game.negative.upgrades.twoPower = 1
-		}
-		if(game.negative.upgrades.threePower === undefined) {
-			game.negative.upgrades.threePower = 1.025
-			game.negative.upgrades.fourPower = 2
-		}
-		if(game.notation === undefined) game.notation = 'standard'
-		buyNeg()
-		achieveClasses()
-	} catch (e) {
-		console.log('Your save failed to load: '+e)
+	game=JSON.parse(atob(save))
+	if(game.upgrades1 === undefined) {
+		game.upgrades1 = []
+		game.upgrades2 = []
+		game.upgrades3 = []
+		game.upgrades4 = []
+		game.upgrades5 = []
+		game.upgrades6 = []
 	}
+	if(game.activeTab === undefined) {
+		game.activeTab = 'gens'
+		game.possibleUps = [1,2,3,4,5,6,12,13,14,15,16,23,24,25,26,34,35,36,45,46,56,123,124,125,126,134,135,136,145,146,156,234,235,236,245,246,256,345,346,356,456,1234,1235,1236,1245,1246,1256,1345,1346,1356,1456,2345,2346,2356,2456,3456,12345,12346,12356,12456,13456,23456,123456]
+	}
+	if(game.version === undefined) game.version = currentVer
+	if(game.synergies === undefined) game.synergies = []
+	if(game.gen1.baseMult === undefined) {
+		for(i=1;i<7;i++) {
+			game['gen'+i].baseMult = 1
+			game['gen'+i].upgradeMult = 1
+		}
+	}
+	if(game.gen1.synMult === undefined) {
+		for(i=1;i<7;i++) {
+			game['gen'+i].synMult = 1
+		}
+	}
+	if(game.negative === undefined) game.negative = reset().negative
+	if(game.achievements === undefined) game.achievements = []
+	if(game.timePlayed === undefined) game.timePlayed = 0
+	if(game.newsSeen === undefined) game.newsSeen = 0
+	if(game.theme === undefined) game.theme = 'dark'
+	if(game.negative.upgrades === []) {
+		game.negative.upgrades = {
+			one:0,
+			two:0,
+			three:0,
+			four:0,
+		}
+	}
+	if(game.negative.upgrades.onePower === undefined) {
+		game.negative.upgrades.onePower = 1
+		game.negative.upgrades.twoPower = 1
+	}
+	if(game.negative.upgrades.threePower === undefined) {
+		game.negative.upgrades.threePower = 1.025
+		game.negative.upgrades.fourPower = 2
+	}
+	if(game.notation === undefined) game.notation = 'standard'
+	if(game.thebutton === undefined) {
+		game.thebutton = {
+			mult:1,
+			cooldown:0,
+			baseCooldown:10,
+			baseMult:1.06,
+			clicks:0,
+		}
+	}
+	buyNeg()
+	achieveClasses()
 }
 function loadBackup(point) {
 	if(point === 'presyn') load("eyJudW1iZXIiOjcuMTIxNDA3NzQwMzI2NDY3ZSsxMTQsImFjdGl2ZVRhYiI6ImdlbnMiLCJwb3NzaWJsZVVwcyI6WzEsMiwzLDQsNSw2LDEyLDEzLDE0LDE1LDE2LDIzLDI0LDI1LDI2LDM0LDM1LDM2LDQ1LDQ2LDU2LDEyMywxMjQsMTI1LDEyNiwxMzQsMTM1LDEzNiwxNDUsMTQ2LDE1NiwyMzQsMjM1LDIzNiwyNDUsMjQ2LDI1NiwzNDUsMzQ2LDM1Niw0NTYsMTIzNCwxMjM1LDEyMzYsMTI0NSwxMjQ2LDEyNTYsMTM0NSwxMzQ2LDEzNTYsMTQ1NiwyMzQ1LDIzNDYsMjM1NiwyNDU2LDM0NTYsMTIzNDUsMTIzNDYsMTIzNTYsMTI0NTYsMTM0NTYsMjM0NTYsMTIzNDU2XSwidXBncmFkZXMxIjpbMSwyLDMsNCw1LDZdLCJ1cGdyYWRlczIiOlsiMTIiLCIxMyIsIjE0IiwiMTUiLCIxNiIsIjIzIiwiMjQiLCIyNSIsIjI2IiwiMzYiLCI1NiIsIjM1IiwiNDYiLCIzNCIsIjQ1Il0sInVwZ3JhZGVzMyI6WyIxMjMiLCIxMjQiLCIxMjUiLCIxMjYiLCIxMzQiLCIxMzUiLCIxMzYiLCIxNDUiLCIxNDYiLCIxNTYiLCIyMzQiLCIyMzUiLCIyMzYiLCIyNDUiLCIyNDYiLCIyNTYiLCIzNDUiLCIzNDYiLCIzNTYiLCI0NTYiXSwidXBncmFkZXM0IjpbIjEyMzQiLCIxMjM1IiwiMTIzNiIsIjEyNDUiLCIxMjQ2IiwiMTI1NiIsIjEzNDUiLCIxNDU2IiwiMjM0NSIsIjEzNDYiLCIxMzU2IiwiMjM0NiIsIjIzNTYiLCIyNDU2IiwiMzQ1NiJdLCJ1cGdyYWRlczUiOlsiMTIzNDUiLCIxMjM0NiIsIjEyMzU2IiwiMTI0NTYiLCIxMzQ1NiIsIjIzNDU2Il0sInVwZ3JhZGVzNiI6WzEyMzQ1Nl0sInN5bmVyZ2llcyI6W10sImdlbjEiOnsiY29zdCI6MS4wMDAwMDAwMDAwMDAwMDA0ZSsxMjAsImJhc2VNdWx0IjozMTMzNTA3OTIxMjYzNTg3LCJ1cGdyYWRlTXVsdCI6NDI5NDk2NzI5Niwic3luTXVsdCI6MSwibXVsdCI6MS4zNDU4MzE0MDQzNTg0MDVlKzI1LCJhbXQiOjguMzEzNDEwNDEyOTk1NjY0ZSs4NywiY29zdEluYyI6NTYyMzQxMy4yNTE5MDM0ODh9LCJnZW4yIjp7ImNvc3QiOjEuNzc4Mjc5NDEwMDM4OTE1M2UrMTE4LCJiYXNlTXVsdCI6MjE1MTk3MjU2My4yMjI0MTc0LCJ1cGdyYWRlTXVsdCI6NDI5NDk2NzI5Niwic3luTXVsdCI6MSwibXVsdCI6OTI0MjY1MTc4MDkyOTU3NTAwMCwiYW10Ijo4Ljc1NTM3MDQ1NTE2MTg0NWUrNjYsImNvc3RJbmMiOjU2MjM0MTMuMjUxOTAzNDg4fSwiZ2VuMyI6eyJjb3N0IjozLjE2MjI3NzY2MDE2ODM2NjRlKzExNiwiYmFzZU11bHQiOjExMDU3MzMyLjMyMDk0MDAxMiwidXBncmFkZU11bHQiOjQyOTQ5NjcyOTYsInN5bk11bHQiOjEsIm11bHQiOjQ3NDkwODgwNjk5NDQxMTMwLCJhbXQiOjEuNDIxNzQ3ODQ0MzMxNzU1NWUrNDgsImNvc3RJbmMiOjU2MjM0MTMuMjUxOTAzNDg4fSwiZ2VuNCI6eyJjb3N0IjoxLjc3ODI3OTQxMDAzODkxMjllKzExNSwiYmFzZU11bHQiOjg1MjIyLjY5Mjk5MjM5MjkzLCJ1cGdyYWRlTXVsdCI6NDI5NDk2NzI5Niwic3luTXVsdCI6MSwibXVsdCI6MzY2MDI4Njc5Mjc5Mzc2LCJhbXQiOjIuMjU2NDY3MDk1NDIyMTM5NmUrMzEsImNvc3RJbmMiOjk5OTk5OTkuOTk5OTk5OTk0fSwiZ2VuNSI6eyJjb3N0IjoxLjc3ODI3OTQxMDAzODkxMzdlKzExNywiYmFzZU11bHQiOjMzMjUuMjU2NzMwMDc5NjUxLCJ1cGdyYWRlTXVsdCI6NDI5NDk2NzI5Niwic3luTXVsdCI6MSwibXVsdCI6MTQyODE4Njg5MDY0OTYsImFtdCI6NjQ3NjU2NDQ2MTk2NDU1NCwiY29zdEluYyI6NTYyMzQxMzIuNTE5MDM0ODd9LCJnZW42Ijp7ImNvc3QiOjMuMTYyMjc3NjYwMTY4Mzc2NmUrMTIzLCJiYXNlTXVsdCI6MjkxLjkyOTI2MDI1MzkwNjI1LCJ1cGdyYWRlTXVsdCI6NDI5NDk2NzI5Niwic3luTXVsdCI6MSwibXVsdCI6MTI1MzgyNjYyNTUzNiwiYW10IjoxNCwiY29zdEluYyI6MzE2MjI3NzY2MC4xNjgzNzg0fSwidmVyc2lvbiI6InYwLjJCIn0=")
