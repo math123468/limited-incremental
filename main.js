@@ -110,8 +110,16 @@ function reset() {
 	}
 	return game
 }
-const news = ['Hi, guys!','Once upon a time...','Much Number!','Next update in 5 days!','Upgrades boost different gens!','Synergies boost gens based on the amount of another!','Negative Numbers boost all gens! There are also cool upgrades!','The Button: Coming soon(TM)','aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa']
-const newsTimes = [2,2.5,1.5,3,3,3,3,3,30]
+const news = ['Does anyone even read this?','Hi, guys!','Once upon a time...','Much Number!','Next update in 5 days!','Upgrades boost different gens!','Synergies boost gens based on the amount of another!','Negative Numbers boost all gens! There are also cool upgrades!','The Button: Coming soon(TM)','aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa']
+const newsTimes = [3,2,2.5,1.5,3,3,3,3,3,30]
+function init() {
+	changeNews()
+	setInterval(tick,100)
+	setInterval(save,3000)
+	if(localStorage.getItem('limitedIncrementalSave')!=null) load(localStorage.getItem('limitedIncrementalSave'))
+	for(i=1;i<7;i++) game['gen'+i].actualCost = game['gen'+i].cost
+	update('commit','v0.1E-8')
+}
 function update(what,withWhat) {
 	document.getElementById(what).innerHTML = withWhat
 }
@@ -220,14 +228,6 @@ function notation() {
 	}
 	update('negCost',format(game.negative.cost,0))
 	update('negBoost',format(game.negative.mult,4))
-}
-function init() {
-	changeNews()
-	setInterval(tick,100)
-	setInterval(save,3000)
-	if(localStorage.getItem('limitedIncrementalSave')!=null) load(localStorage.getItem('limitedIncrementalSave'))
-	for(i=1;i<7;i++) game['gen'+i].actualCost = game['gen'+i].cost
-	update('commit','v0.1E-7')
 }
 function userImport() {
 	var save = window.prompt('Paste your save data here.')
@@ -614,7 +614,14 @@ function checkForNegUpgrades() {
 		}
 	}
 }
-
+function buttonClick() {
+	if(game.thebutton.cooldown <= 0) {
+		game.thebutton.cooldown = game.thebutton.baseCooldown
+		game.thebutton.mult *= game.thebutton.baseMult
+		game.thebutton.clicks ++
+		update('theButton',format(game.thebutton.mult,4) + 'x')
+	}
+}
 function increaseGens() {
 	for(i=1;i<7;i++) {
 		game['gen'+i].synMult = 1
@@ -626,13 +633,13 @@ function increaseGens() {
 	}
 	for(i=1;i<7;i++) {
 		if(game.achievements.includes('ach27') && game.achievements.includes('ach34')) {
-			game['gen'+i].mult = game['gen'+i].baseMult * game['gen'+i].upgradeMult * game['gen'+i].synMult * game.negative.mult * game.negative.upgrades.twoPower * 4
+			game['gen'+i].mult = game['gen'+i].baseMult * game['gen'+i].upgradeMult * game['gen'+i].synMult * game.negative.mult * game.negative.upgrades.twoPower * game.thebutton.mult * 4
 		}
 		else if(game.achievements.includes('ach27') || game.achievements.includes('ach34')) {
-			game['gen'+i].mult = game['gen'+i].baseMult * game['gen'+i].upgradeMult * game['gen'+i].synMult * game.negative.mult * game.negative.upgrades.twoPower * 2
+			game['gen'+i].mult = game['gen'+i].baseMult * game['gen'+i].upgradeMult * game['gen'+i].synMult * game.negative.mult * game.negative.upgrades.twoPower * game.thebutton.mult * 2
 		}
 		else {
-			game['gen'+i].mult = game['gen'+i].baseMult * game['gen'+i].upgradeMult * game['gen'+i].synMult * game.negative.mult * game.negative.upgrades.twoPower
+			game['gen'+i].mult = game['gen'+i].baseMult * game['gen'+i].upgradeMult * game['gen'+i].synMult * game.negative.mult * game.negative.upgrades.twoPower * game.thebutton.mult
 		}
 	}
 	game.number += game.gen1.amt * game.gen1.mult / 10
@@ -704,6 +711,8 @@ function tick() {
 	if(game.activeTab === 'syn') checkIfSynergiesUnlocked()
 	if(game.activeTab === 'negative') checkIfNegativesUnlocked()
 	if(game.activeTab === 'thebutton')checkIfButtonUnlocked()
+	game.thebutton.cooldown -= 0.1
+	update('buttoncooldown',format(game.thebutton.cooldown,1) + 's')
 }
 function save() { //save game
 	localStorage.setItem('limitedIncrementalSave',btoa(JSON.stringify(game)))
