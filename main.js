@@ -104,8 +104,10 @@ function reset() {
 			mult:1,
 			cooldown:0,
 			baseCooldown:10,
-			baseMult:1.06,
+			baseMult:1.1,
 			clicks:0,
+			possibleCooldowns:[1,10,100],
+			possibleMults:[1.01,1.1,2.5],
 		}
 	}
 	return game
@@ -113,7 +115,7 @@ function reset() {
 const news = ['Does anyone even read this?','Hi, guys!','Once upon a time...','Much Number!','Next update in 5 days!','Upgrades boost different gens!','Synergies boost gens based on the amount of another!','Negative Numbers boost all gens! There are also cool upgrades!','The Button: Coming soon(TM)','aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa']
 const newsTimes = [3,2,2.5,1.5,3,3,3,3,3,30]
 function init() {
-	update('commit','v0.1E-8')
+	update('commit','v0.1E-9')
 	changeNews()
 	setInterval(tick,100)
 	setInterval(save,3000)
@@ -228,6 +230,21 @@ function notation() {
 	}
 	update('negCost',format(game.negative.cost,0))
 	update('negBoost',format(game.negative.mult,4))
+}
+function formatTime(s) {
+	if(s < 60) return s + 'secs'
+	var mins = Math.floor(secs/60)
+	var secs = s % 60
+	if(mins < 60) return mins + 'mins' + secs + 'secs'
+	var hrs = Math.floor(mins/60)
+	mins = mins % 60
+	if(hrs < 24) return hrs + 'hrs' + mins + 'mins' + secs + 'secs'
+	var days = Math.floor(hrs/24)
+	hrs = hrs % 24
+	if(days < 365) return days + 'days' + hrs + 'hrs' + mins + 'mins' + secs + 'secs'
+	var yrs = Math.floor(days/365)
+	days = days % 365
+	return yrs + 'yrs' + days + 'days' + hrs + 'hrs' + mins + 'mins' + secs + 'secs'
 }
 function userImport() {
 	var save = window.prompt('Paste your save data here.')
@@ -622,6 +639,14 @@ function buttonClick() {
 		update('theButton',format(game.thebutton.mult,4) + 'x')
 	}
 }
+function changeButtonCooldown() {
+	var index = game.thebutton.possibleCooldowns.indexOf(game.thebutton.baseCooldown)
+	index ++
+	game.thebutton.baseCooldown = game.thebutton.possibleCooldowns[index]
+	game.thebutton.baseMult = game.thebutton.possibleMults[index]
+	update('buttontime',formatTime(game.thebutton.baseCooldown))
+	update('buttonmult',format(game.thebutton.baseMult,2)+'x')
+}
 function increaseGens() {
 	for(i=1;i<7;i++) {
 		game['gen'+i].synMult = 1
@@ -712,7 +737,7 @@ function tick() {
 	if(game.activeTab === 'negative') checkIfNegativesUnlocked()
 	if(game.activeTab === 'thebutton')checkIfButtonUnlocked()
 	game.thebutton.cooldown -= 0.1
-	update('buttoncooldown',format(game.thebutton.cooldown,1) + 's')
+	update('buttoncooldown',format(Math,min(game.thebutton.cooldown,0),1) + 's')
 }
 function save() { //save game
 	localStorage.setItem('limitedIncrementalSave',btoa(JSON.stringify(game)))
