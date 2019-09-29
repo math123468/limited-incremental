@@ -113,12 +113,12 @@ function reset() {
 const news = ['Does anyone even read this?','Hi, guys!','Once upon a time...','Much Number!','Next update in 5 days!','Upgrades boost different gens!','Synergies boost gens based on the amount of another!','Negative Numbers boost all gens! There are also cool upgrades!','The Button: Coming soon(TM)','aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa']
 const newsTimes = [3,2,2.5,1.5,3,3,3,3,3,30]
 function init() {
+	update('commit','v0.1E-8')
 	changeNews()
 	setInterval(tick,100)
 	setInterval(save,3000)
 	if(localStorage.getItem('limitedIncrementalSave')!=null) load(localStorage.getItem('limitedIncrementalSave'))
 	for(i=1;i<7;i++) game['gen'+i].actualCost = game['gen'+i].cost
-	update('commit','v0.1E-8')
 }
 function update(what,withWhat) {
 	document.getElementById(what).innerHTML = withWhat
