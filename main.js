@@ -115,7 +115,7 @@ function reset() {
 const news = ['Does anyone even read this?','Hi, guys!','Once upon a time...','Much Number!','Next update in 5 days!','Upgrades boost different gens!','Synergies boost gens based on the amount of another!','Negative Numbers boost all gens! There are also cool upgrades!','The Button: Coming soon(TM)','aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa']
 const newsTimes = [3,2,2.5,1.5,3,3,3,3,3,30]
 function init() {
-	update('commit','v0.1E-10')
+	update('commit','v0.1E-11')
 	changeNews()
 	setInterval(tick,100)
 	setInterval(save,3000)
@@ -233,7 +233,7 @@ function notation() {
 }
 function formatTime(s) {
 	if(s < 60) return s + 'secs'
-	var mins = Math.floor(secs/60)
+	var mins = Math.floor(s/60)
 	var secs = s % 60
 	if(mins < 60) return mins + 'mins' + secs + 'secs'
 	var hrs = Math.floor(mins/60)
@@ -642,6 +642,7 @@ function buttonClick() {
 function changeButtonCooldown() {
 	var index = game.thebutton.possibleCooldowns.indexOf(game.thebutton.baseCooldown)
 	index ++
+	if(index === game.thebutton.possibleCooldowns.length)index = 0
 	game.thebutton.baseCooldown = game.thebutton.possibleCooldowns[index]
 	game.thebutton.baseMult = game.thebutton.possibleMults[index]
 	update('buttontime',formatTime(game.thebutton.baseCooldown))
@@ -737,7 +738,7 @@ function tick() {
 	if(game.activeTab === 'negative') checkIfNegativesUnlocked()
 	if(game.activeTab === 'thebutton')checkIfButtonUnlocked()
 	game.thebutton.cooldown -= 0.1
-	update('buttoncooldown',format(Math.min(game.thebutton.cooldown,0),1) + 's')
+	update('buttoncooldown',format(Math.max(game.thebutton.cooldown,0),1) + 's')
 }
 function save() { //save game
 	localStorage.setItem('limitedIncrementalSave',btoa(JSON.stringify(game)))
