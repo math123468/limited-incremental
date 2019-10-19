@@ -116,7 +116,7 @@ function reset() {
 const news = ['Does anyone even read this?','Hi, guys!','Once upon a time...','Much Number!','Next update in 5 days!','Upgrades boost different gens!','Synergies boost gens based on the amount of another!','Negative Numbers boost all gens! There are also cool upgrades!','The Button: Coming soon(TM)','aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa']
 const newsTimes = [3,2,2.5,1.5,3,3,3,3,3,30]
 function init() {
-	update('commit','v0.1E-14')
+	update('commit','v0.1E-15')
 	changeNews()
 	setInterval(tick,100)
 	setInterval(save,3000)
@@ -716,6 +716,7 @@ function increaseGens() {
 	if(game.gen1.amt >= 1e100) giveAchieve('ach33')
 	if(game.gen1.amt >= 1e200) giveAchieve('ach57')
 	if(game.gen6.mult >= 1e10) giveAchieve('ach34')
+	if(game.gen6.mult >= 1e35) giveAchieve('ach58')
 	if(game.number >= 1e125) giveAchieve('ach35')
 }
 function abbreviate(i,short) {
