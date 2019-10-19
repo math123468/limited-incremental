@@ -4,6 +4,7 @@ function reset() {
 		version:currentVer,
 		activeTab:'gens',
 		timePlayed:0,
+		standardTime:0,
 		notation:'standard',
 		theme:'dark',
 		possibleUps:[1,2,3,4,5,6,12,13,14,15,16,23,24,25,26,34,35,36,45,46,56,123,124,125,126,134,135,136,145,146,156,234,235,236,245,246,256,345,346,356,456,1234,1235,1236,1245,1246,1256,1345,1346,1356,1456,2345,2346,2356,2456,3456,12345,12346,12356,12456,13456,23456,123456],
@@ -115,12 +116,14 @@ function reset() {
 const news = ['Does anyone even read this?','Hi, guys!','Once upon a time...','Much Number!','Next update in 5 days!','Upgrades boost different gens!','Synergies boost gens based on the amount of another!','Negative Numbers boost all gens! There are also cool upgrades!','The Button: Coming soon(TM)','aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa']
 const newsTimes = [3,2,2.5,1.5,3,3,3,3,3,30]
 function init() {
-	update('commit','v0.1E-11')
+	update('commit','v0.1E-12')
 	changeNews()
 	setInterval(tick,100)
 	setInterval(save,3000)
 	if(localStorage.getItem('limitedIncrementalSave')!=null) load(localStorage.getItem('limitedIncrementalSave'))
 	for(i=1;i<7;i++) game['gen'+i].actualCost = game['gen'+i].cost
+	theme()
+	theme()
 }
 function update(what,withWhat) {
 	document.getElementById(what).innerHTML = withWhat
@@ -144,6 +147,11 @@ function updateClass(what,whatClass) {
 	else {
 		element.classList.add(whatClass)
 	}
+}
+function updateSecret(what) {
+	var element = document.getElementById(what)
+	element.className = ''
+	element.classList.add('hidden'+game.theme)
 }
 function maxUpgrades() {
 	for(i=0;i<game.possibleUps.length;i++) {
@@ -182,6 +190,7 @@ function theme() {
 		document.getElementById('news').style = 'color:white'
 		document.getElementById('numfull').style = 'color:white'
 	}
+	updateSecret('secretach1')
 	update('theme','Theme: '+game.theme)
 	updateClass('theme','button')
 	updateClass('max','button')
@@ -195,6 +204,10 @@ function theme() {
 	updateClass('navneg','nav')
 	updateClass('navach','nav')
 	updateClass('navopt','nav')
+	updateClass('navbut','nav')
+	updateClass('notation','button')
+	updateClass('theButton','button big')
+	updateClass('cooldownwrapper','button')
 	updateClass('buyNeg','button big')
 	for(i=1;i<5;i++) {
 		for(j=1;j<3;j++) {
@@ -204,11 +217,12 @@ function theme() {
 	for(i=1;i<7;i++) {
 		updateClass('buy'+i,'button')
 	}
-	for(i=1;i<4;i++) {
+	for(i=1;i<6;i++) {
 		for(j=1;j<9;j++) {
 			updateClass('ach'+i+j,'achieve')
 		}
 	}
+	giveAchieve('ach38')
 	achieveClasses()
 }
 function notation() {
@@ -230,6 +244,8 @@ function notation() {
 	}
 	update('negCost',format(game.negative.cost,0))
 	update('negBoost',format(game.negative.mult,4))
+	update('notation','Notation: '+game.notation)
+	giveAchieve('ach37')
 }
 function formatTime(s) {
 	if(s < 60) return s + 'secs'
@@ -273,6 +289,12 @@ function achieveClasses() {
 	for(i=0;i<game.achievements.length;i++) {
 		updateClass(game.achievements[i],'achievecomplete')
 		console.log(i)
+	}
+}
+function giveSecret(num) {
+	if(num === 1) {
+		giveAchieve('ach48')
+		document.getElementById('ach48').title = 'Click the secret button next to the news ticker'
 	}
 }
 function changeTab(tab) {
@@ -426,6 +448,7 @@ function checkIfNegativesUnlocked() {
 	else {
 		hide('negunlock')
 		show('neg1')
+		giveAchieve('ach41')
 	}
 }
 function checkIfButtonUnlocked() {
@@ -436,6 +459,7 @@ function checkIfButtonUnlocked() {
 	else {
 		hide('buttonunlock')
 		show('buttoninfo')
+		giveAchieve('ach51')
 	}
 }
 function synergyClasses() {
@@ -471,6 +495,7 @@ function buyGen(i) {
 		if(i === 4) giveAchieve('ach15')
 		if(i === 5) giveAchieve('ach16')
 		if(i === 6) giveAchieve('ach17')
+		if(game.gen6.amt === 45) giveAchieve('ach56')
 	}
 }
 function buyMax() {
@@ -588,6 +613,7 @@ function checkForNegUpgrades() {
 		for(i=1;i<7;i++) {
 			game['gen'+i].cost /= 10
 		}
+		giveAchieve('ach42')
 	}
 	if(game.negative.amt >= 155 && game.negative.upgrades.two === 0) {
 		game.negative.upgrades.two = 1
@@ -605,6 +631,7 @@ function checkForNegUpgrades() {
 		for(i=1;i<7;i++) {
 			game['gen'+i].upgradeMult = Math.pow(2.2,32)
 		}
+		giveAcheive('ach43')
 	}
 	if(game.negative.amt >= 175 && game.negative.upgrades.one === 1) {
 		game.negative.upgrades.one = 2
@@ -629,6 +656,7 @@ function checkForNegUpgrades() {
 		for(i=1;i<7;i++) {
 			game['gen'+i].upgradeMult = Math.pow(2.35,32)
 		}
+		giveAchieve('ach44')
 	}
 }
 function buttonClick() {
@@ -637,6 +665,9 @@ function buttonClick() {
 		game.thebutton.mult *= game.thebutton.baseMult
 		game.thebutton.clicks ++
 		update('theButton',format(game.thebutton.mult,4) + 'x')
+		if(game.thebutton.mult >= 100) giveAchieve('ach52')
+		if(game.thebutton.clicks === 10) giveAchieve('ach54')
+		if(game.thebutton.mult >= 1e9) giveAchieve('ach55')
 	}
 }
 function changeButtonCooldown() {
@@ -647,6 +678,7 @@ function changeButtonCooldown() {
 	game.thebutton.baseMult = game.thebutton.possibleMults[index]
 	update('buttontime',formatTime(game.thebutton.baseCooldown))
 	update('buttonmult',format(game.thebutton.baseMult,2)+'x')
+	giveAchieve('ach53')
 }
 function increaseGens() {
 	for(i=1;i<7;i++) {
@@ -675,6 +707,7 @@ function increaseGens() {
 	game.gen4.amt += game.gen5.amt * game.gen5.mult / 10
 	game.gen5.amt += game.gen6.amt * game.gen6.mult / 10
 	if(game.gen1.amt >= 1e100) giveAchieve('ach33')
+	if(game.gen1.amt >= 1e200) giveAchieve('ach57')
 	if(game.gen6.mult >= 1e10) giveAchieve('ach34')
 	if(game.number >= 1e125) giveAchieve('ach35')
 }
@@ -730,7 +763,10 @@ function format(num,decimals) {
 }
 function tick() {
 	game.timePlayed += 0.1
+	if(game.notation === 'standard') game.standardTime += 0.1
 	if(game.timePlayed >= 420) giveAchieve('ach28')
+	if(game.standardTime >= 600) giveAchieve('ach47')
+	if(game.timePlayed-game.standardTime >= 600) giveAchieve('ach46')
 	increaseGens()
 	displayUpdate()
 	if(game.activeTab === 'upgrades') checkIfUpgradesUnlocked()
@@ -801,6 +837,7 @@ function load(save) {
 			clicks:0,
 		}
 	}
+	if(game.standardTime === undefined) game.standardTime = 0tick
 	buyNeg()
 	achieveClasses()
 }
