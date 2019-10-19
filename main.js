@@ -4,6 +4,8 @@ function reset() {
 		version:currentVer,
 		activeTab:'gens',
 		timePlayed:0,
+		standardTime:0,
+		notation:'standard',
 		theme:'dark',
 		possibleUps:[1,2,3,4,5,6,12,13,14,15,16,23,24,25,26,34,35,36,45,46,56,123,124,125,126,134,135,136,145,146,156,234,235,236,245,246,256,345,346,356,456,1234,1235,1236,1245,1246,1256,1345,1346,1356,1456,2345,2346,2356,2456,3456,12345,12346,12356,12456,13456,23456,123456],
 		upgrades1:[],
@@ -98,12 +100,38 @@ function reset() {
 			},
 			amt:0,
 			mult:1,
+		},
+		thebutton:{
+			mult:1,
+			cooldown:0,
+			baseCooldown:10,
+			baseMult:1.1,
+			clicks:0,
+			possibleCooldowns:[1,10,100],
+			possibleMults:[1.01,1.1,2.5],
 		}
 	}
 	return game
 }
-const news = ['Hi, guys!','Once upon a time...','Much Number!','Next update in 5 days!','Upgrades boost different gens!','Synergies boost gens based on the amount of another!','Negative Numbers: Coming soon(TM)','aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa']
-const newsTimes = [2,2.5,1.5,3,3,3,3,30]
+const news = ['Does anyone even read this?','Hi, guys!','Once upon a time...','Much Number!','Next update in 5 days!','Upgrades boost different gens!','Synergies boost gens based on the amount of another!','Negative Numbers boost all gens! There are also cool upgrades!','The Button: Coming soon(TM)','aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa']
+const newsTimes = [3,2,2.5,1.5,3,3,3,3,3,30]
+function init() {
+	update('commit','v0.1E-15')
+	changeNews()
+	setInterval(tick,100)
+	setInterval(save,3000)
+	if(localStorage.getItem('limitedIncrementalSave')!=null) load(localStorage.getItem('limitedIncrementalSave'))
+	for(i=1;i<7;i++) game['gen'+i].actualCost = game['gen'+i].cost
+	theme()
+	theme()
+}
+function start() {
+	theme()
+	theme()
+	achieveClasses()
+	update('notation','Notation: '+game.notation)
+}
+	
 function update(what,withWhat) {
 	document.getElementById(what).innerHTML = withWhat
 }
@@ -127,6 +155,11 @@ function updateClass(what,whatClass) {
 		element.classList.add(whatClass)
 	}
 }
+function updateSecret(what) {
+	var element = document.getElementById(what)
+	element.className = ''
+	element.classList.add('hidden'+game.theme)
+}
 function maxUpgrades() {
 	for(i=0;i<game.possibleUps.length;i++) {
 		buyUp(game.possibleUps[i],String(game.possibleUps[1]).length)
@@ -140,7 +173,7 @@ function changeNews() {
 	if(game.newsSeen === 500) giveAchieve('ach36')
 }
 var game = reset()
-var currentVer = 'v0.1D'
+var currentVer = 'v0.1E'
 function giveAchieve(number) {
 	if(!game.achievements.includes(number)) {
 		game.achievements.push(number)
@@ -164,6 +197,7 @@ function theme() {
 		document.getElementById('news').style = 'color:white'
 		document.getElementById('numfull').style = 'color:white'
 	}
+	updateSecret('secretach1')
 	update('theme','Theme: '+game.theme)
 	updateClass('theme','button')
 	updateClass('max','button')
@@ -177,6 +211,10 @@ function theme() {
 	updateClass('navneg','nav')
 	updateClass('navach','nav')
 	updateClass('navopt','nav')
+	updateClass('navbut','nav')
+	updateClass('notation','button')
+	updateClass('theButton','button big')
+	updateClass('cooldownwrapper','button')
 	updateClass('buyNeg','button big')
 	for(i=1;i<5;i++) {
 		for(j=1;j<3;j++) {
@@ -186,20 +224,50 @@ function theme() {
 	for(i=1;i<7;i++) {
 		updateClass('buy'+i,'button')
 	}
-	for(i=1;i<4;i++) {
+	for(i=1;i<6;i++) {
 		for(j=1;j<9;j++) {
 			updateClass('ach'+i+j,'achieve')
 		}
 	}
+	giveAchieve('ach38')
 	achieveClasses()
 }
-function init() {
-	changeNews()
-	setInterval(tick,100)
-	setInterval(save,3000)
-	if(localStorage.getItem('limitedIncrementalSave')!=null) load(localStorage.getItem('limitedIncrementalSave'))
-	for(i=1;i<7;i++) game['gen'+i].actualCost = game['gen'+i].cost
-	update('commit','v0.1D-45')
+function notation() {
+	if(game.notation === 'standard') {
+		game.notation = 'sci'
+	}
+	else if(game.notation === 'sci') {
+		game.notation = 'standard'
+	}
+	for(i=0;i<game.possibleUps.length;i++) {
+		var pos = game.possibleUps[i]
+		update('up'+pos+'cost',format(returnUpgradeCost(pos,String(pos).length)),0)
+	}
+	for(i=1;i<7;i++) {
+		for(j=6;j>i;j--) {
+			var thing = 10 * i + j
+			update('syn'+thing+'cost',format(returnSynergyCost(thing),0))
+		}
+	}
+	update('negCost',format(game.negative.cost,0))
+	update('negBoost',format(game.negative.mult,4))
+	update('notation','Notation: '+game.notation)
+	giveAchieve('ach37')
+}
+function formatTime(s) {
+	if(s < 60) return s + 'secs'
+	var mins = Math.floor(s/60)
+	var secs = s % 60
+	if(mins < 60) return mins + 'mins' + secs + 'secs'
+	var hrs = Math.floor(mins/60)
+	mins = mins % 60
+	if(hrs < 24) return hrs + 'hrs' + mins + 'mins' + secs + 'secs'
+	var days = Math.floor(hrs/24)
+	hrs = hrs % 24
+	if(days < 365) return days + 'days' + hrs + 'hrs' + mins + 'mins' + secs + 'secs'
+	var yrs = Math.floor(days/365)
+	days = days % 365
+	return yrs + 'yrs' + days + 'days' + hrs + 'hrs' + mins + 'mins' + secs + 'secs'
 }
 function userImport() {
 	var save = window.prompt('Paste your save data here.')
@@ -228,6 +296,12 @@ function achieveClasses() {
 	for(i=0;i<game.achievements.length;i++) {
 		updateClass(game.achievements[i],'achievecomplete')
 		console.log(i)
+	}
+}
+function giveSecret(num) {
+	if(num === 1) {
+		giveAchieve('ach48')
+		document.getElementById('ach48').title = 'Click the secret button next to the news ticker'
 	}
 }
 function changeTab(tab) {
@@ -381,6 +455,18 @@ function checkIfNegativesUnlocked() {
 	else {
 		hide('negunlock')
 		show('neg1')
+		giveAchieve('ach41')
+	}
+}
+function checkIfButtonUnlocked() {
+	if(game.gen6.amt < 35) {
+		show('buttonunlock')
+		hide('buttoninfo')
+	}
+	else {
+		hide('buttonunlock')
+		show('buttoninfo')
+		giveAchieve('ach51')
 	}
 }
 function synergyClasses() {
@@ -394,7 +480,7 @@ function synergyClasses() {
 			}
 		}
 	}
-}F
+}
 function buyGen(i) {
 	if(game.number >= game['gen'+i].cost) {
 		game.number -= game['gen'+i].cost
@@ -416,6 +502,7 @@ function buyGen(i) {
 		if(i === 4) giveAchieve('ach15')
 		if(i === 5) giveAchieve('ach16')
 		if(i === 6) giveAchieve('ach17')
+		if(game.gen6.amt === 45) giveAchieve('ach56')
 	}
 }
 function buyMax() {
@@ -533,6 +620,7 @@ function checkForNegUpgrades() {
 		for(i=1;i<7;i++) {
 			game['gen'+i].cost /= 10
 		}
+		giveAchieve('ach42')
 	}
 	if(game.negative.amt >= 155 && game.negative.upgrades.two === 0) {
 		game.negative.upgrades.two = 1
@@ -550,6 +638,7 @@ function checkForNegUpgrades() {
 		for(i=1;i<7;i++) {
 			game['gen'+i].upgradeMult = Math.pow(2.2,32)
 		}
+		giveAcheive('ach43')
 	}
 	if(game.negative.amt >= 175 && game.negative.upgrades.one === 1) {
 		game.negative.upgrades.one = 2
@@ -562,21 +651,42 @@ function checkForNegUpgrades() {
 		game.negative.upgrades.two = 2
 		game.negative.upgrades.twoPower = 125
 	}
-	if(game.negative.amt >= 225 && game.negative.upgrades.three === 1) {
+	if(game.negative.amt >= 250 && game.negative.upgrades.three === 1) {
 		game.negative.upgrades.three = 2
-		game.negative.upgrades.threePower = 1.15
-		update('negBoost',format(Math.pow(1.15,game.negative.amt),3))
-		game.negative.mult = Math.pow(1.15,game.negative.amt)
+		game.negative.upgrades.threePower = 1.1
+		update('negBoost',format(Math.pow(1.1,game.negative.amt),3))
+		game.negative.mult = Math.pow(1.1,game.negative.amt)
 	}
-	if(game.negative.amt >= 275 && game.negative.upgrades.four === 1) {
+	if(game.negative.amt >= 305 && game.negative.upgrades.four === 1) {
 		game.negative.upgrades.four = 2
-		game.negative.upgrades.fourPower = 2.5
+		game.negative.upgrades.fourPower = 2.35
 		for(i=1;i<7;i++) {
-			game['gen'+i].upgradeMult = Math.pow(2.5,32)
+			game['gen'+i].upgradeMult = Math.pow(2.35,32)
 		}
+		giveAchieve('ach44')
 	}
 }
-
+function buttonClick() {
+	if(game.thebutton.cooldown <= 0) {
+		game.thebutton.cooldown = game.thebutton.baseCooldown
+		game.thebutton.mult *= game.thebutton.baseMult
+		game.thebutton.clicks ++
+		update('theButton',format(game.thebutton.mult,4) + 'x')
+		if(game.thebutton.mult >= 100) giveAchieve('ach52')
+		if(game.thebutton.clicks === 10) giveAchieve('ach54')
+		if(game.thebutton.mult >= 1e9) giveAchieve('ach55')
+	}
+}
+function changeButtonCooldown() {
+	var index = game.thebutton.possibleCooldowns.indexOf(game.thebutton.baseCooldown)
+	index ++
+	if(index === game.thebutton.possibleCooldowns.length)index = 0
+	game.thebutton.baseCooldown = game.thebutton.possibleCooldowns[index]
+	game.thebutton.baseMult = game.thebutton.possibleMults[index]
+	update('buttontime',formatTime(game.thebutton.baseCooldown))
+	update('buttonmult',format(game.thebutton.baseMult,2)+'x')
+	giveAchieve('ach53')
+}
 function increaseGens() {
 	for(i=1;i<7;i++) {
 		game['gen'+i].synMult = 1
@@ -588,13 +698,13 @@ function increaseGens() {
 	}
 	for(i=1;i<7;i++) {
 		if(game.achievements.includes('ach27') && game.achievements.includes('ach34')) {
-			game['gen'+i].mult = game['gen'+i].baseMult * game['gen'+i].upgradeMult * game['gen'+i].synMult * game.negative.mult * game.negative.upgrades.twoPower * 4
+			game['gen'+i].mult = game['gen'+i].baseMult * game['gen'+i].upgradeMult * game['gen'+i].synMult * game.negative.mult * game.negative.upgrades.twoPower * game.thebutton.mult * 4
 		}
 		else if(game.achievements.includes('ach27') || game.achievements.includes('ach34')) {
-			game['gen'+i].mult = game['gen'+i].baseMult * game['gen'+i].upgradeMult * game['gen'+i].synMult * game.negative.mult * game.negative.upgrades.twoPower * 2
+			game['gen'+i].mult = game['gen'+i].baseMult * game['gen'+i].upgradeMult * game['gen'+i].synMult * game.negative.mult * game.negative.upgrades.twoPower * game.thebutton.mult * 2
 		}
 		else {
-			game['gen'+i].mult = game['gen'+i].baseMult * game['gen'+i].upgradeMult * game['gen'+i].synMult * game.negative.mult * game.negative.upgrades.twoPower
+			game['gen'+i].mult = game['gen'+i].baseMult * game['gen'+i].upgradeMult * game['gen'+i].synMult * game.negative.mult * game.negative.upgrades.twoPower * game.thebutton.mult
 		}
 	}
 	game.number += game.gen1.amt * game.gen1.mult / 10
@@ -604,7 +714,9 @@ function increaseGens() {
 	game.gen4.amt += game.gen5.amt * game.gen5.mult / 10
 	game.gen5.amt += game.gen6.amt * game.gen6.mult / 10
 	if(game.gen1.amt >= 1e100) giveAchieve('ach33')
+	if(game.gen1.amt >= 1e200) giveAchieve('ach57')
 	if(game.gen6.mult >= 1e10) giveAchieve('ach34')
+	if(game.gen6.mult >= 1e35) giveAchieve('ach58')
 	if(game.number >= 1e125) giveAchieve('ach35')
 }
 function abbreviate(i,short) {
@@ -648,74 +760,94 @@ function format(num,decimals) {
 		m = 1;
 		e++;
 	}
-	return Math.round(1000*m*Math.pow(10,e-e2))/1000+abbreviate(e2/3-1,true)
+	if(game.notation === 'standard') {
+		return Math.round(1000*m*Math.pow(10,e-e2))/1000+abbreviate(e2/3-1,true)
+	}
+	if(game.notation === 'sci') {
+		return m + 'e' + e
+	}
+	console.log('You broke something')
+	return 'you broke something'
 }
 function tick() {
 	game.timePlayed += 0.1
+	if(game.notation === 'standard') game.standardTime += 0.1
 	if(game.timePlayed >= 420) giveAchieve('ach28')
+	if(game.standardTime >= 600) giveAchieve('ach47')
+	if(game.timePlayed-game.standardTime >= 600) giveAchieve('ach46')
 	increaseGens()
 	displayUpdate()
 	if(game.activeTab === 'upgrades') checkIfUpgradesUnlocked()
 	if(game.activeTab === 'syn') checkIfSynergiesUnlocked()
 	if(game.activeTab === 'negative') checkIfNegativesUnlocked()
+	if(game.activeTab === 'thebutton')checkIfButtonUnlocked()
+	game.thebutton.cooldown -= 0.1
+	update('buttoncooldown',format(Math.max(game.thebutton.cooldown,0),1) + 's')
 }
 function save() { //save game
 	localStorage.setItem('limitedIncrementalSave',btoa(JSON.stringify(game)))
 }
 function load(save) {
-	try {
-		game=JSON.parse(atob(save))
-		if(game.upgrades1 === undefined) {
-			game.upgrades1 = []
-			game.upgrades2 = []
-			game.upgrades3 = []
-			game.upgrades4 = []
-			game.upgrades5 = []
-			game.upgrades6 = []
-		}
-		if(game.activeTab === undefined) {
-			game.activeTab = 'gens'
-			game.possibleUps = [1,2,3,4,5,6,12,13,14,15,16,23,24,25,26,34,35,36,45,46,56,123,124,125,126,134,135,136,145,146,156,234,235,236,245,246,256,345,346,356,456,1234,1235,1236,1245,1246,1256,1345,1346,1356,1456,2345,2346,2356,2456,3456,12345,12346,12356,12456,13456,23456,123456]
-		}
-		if(game.version === undefined) game.version = currentVer
-		if(game.synergies === undefined) game.synergies = []
-		if(game.gen1.baseMult === undefined) {
-			for(i=1;i<7;i++) {
-				game['gen'+i].baseMult = 1
-				game['gen'+i].upgradeMult = 1
-			}
-		}
-		if(game.gen1.synMult === undefined) {
-			for(i=1;i<7;i++) {
-				game['gen'+i].synMult = 1
-			}
-		}
-		if(game.negative === undefined) game.negative = reset().negative
-		if(game.achievements === undefined) game.achievements = []
-		if(game.timePlayed === undefined) game.timePlayed = 0
-		if(game.newsSeen === undefined) game.newsSeen = 0
-		if(game.theme === undefined) game.theme = 'dark'
-		if(game.negative.upgrades === []) {
-			game.negative.upgrades = {
-				one:0,
-				two:0,
-				three:0,
-				four:0,
-			}
-		}
-		if(game.negative.upgrades.onePower === undefined) {
-			game.negative.upgrades.onePower = 1
-			game.negative.upgrades.twoPower = 1
-		}
-		if(game.negative.upgrades.threePower === undefined) {
-			game.negative.upgrades.threePower = 1.025
-			game.negative.upgrades.fourPower = 2
-		}
-		achieveClasses()
-		buyNeg()
-	} catch (e) {
-		console.log('Your save failed to load: '+e)
+	game=JSON.parse(atob(save))
+	if(game.upgrades1 === undefined) {
+		game.upgrades1 = []
+		game.upgrades2 = []
+		game.upgrades3 = []
+		game.upgrades4 = []
+		game.upgrades5 = []
+		game.upgrades6 = []
 	}
+	if(game.activeTab === undefined) {
+		game.activeTab = 'gens'
+		game.possibleUps = [1,2,3,4,5,6,12,13,14,15,16,23,24,25,26,34,35,36,45,46,56,123,124,125,126,134,135,136,145,146,156,234,235,236,245,246,256,345,346,356,456,1234,1235,1236,1245,1246,1256,1345,1346,1356,1456,2345,2346,2356,2456,3456,12345,12346,12356,12456,13456,23456,123456]
+	}
+	if(game.version === undefined) game.version = currentVer
+	if(game.synergies === undefined) game.synergies = []
+	if(game.gen1.baseMult === undefined) {
+		for(i=1;i<7;i++) {
+			game['gen'+i].baseMult = 1
+			game['gen'+i].upgradeMult = 1
+		}
+	}
+	if(game.gen1.synMult === undefined) {
+		for(i=1;i<7;i++) {
+			game['gen'+i].synMult = 1
+		}
+	}
+	if(game.negative === undefined) game.negative = reset().negative
+	if(game.achievements === undefined) game.achievements = []
+	if(game.timePlayed === undefined) game.timePlayed = 0
+	if(game.newsSeen === undefined) game.newsSeen = 0
+	if(game.theme === undefined) game.theme = 'dark'
+	if(game.negative.upgrades === []) {
+		game.negative.upgrades = {
+			one:0,
+			two:0,
+			three:0,
+			four:0,
+		}
+	}
+	if(game.negative.upgrades.onePower === undefined) {
+		game.negative.upgrades.onePower = 1
+		game.negative.upgrades.twoPower = 1
+	}
+	if(game.negative.upgrades.threePower === undefined) {
+		game.negative.upgrades.threePower = 1.025
+		game.negative.upgrades.fourPower = 2
+	}
+	if(game.notation === undefined) game.notation = 'standard'
+	if(game.thebutton === undefined) {
+		game.thebutton = {
+			mult:1,
+			cooldown:0,
+			baseCooldown:10,
+			baseMult:1.06,
+			clicks:0,
+		}
+	}
+	if(game.standardTime === undefined) game.standardTime = 0
+	buyNeg()
+	achieveClasses()
 }
 function loadBackup(point) {
 	if(point === 'presyn') load("eyJudW1iZXIiOjcuMTIxNDA3NzQwMzI2NDY3ZSsxMTQsImFjdGl2ZVRhYiI6ImdlbnMiLCJwb3NzaWJsZVVwcyI6WzEsMiwzLDQsNSw2LDEyLDEzLDE0LDE1LDE2LDIzLDI0LDI1LDI2LDM0LDM1LDM2LDQ1LDQ2LDU2LDEyMywxMjQsMTI1LDEyNiwxMzQsMTM1LDEzNiwxNDUsMTQ2LDE1NiwyMzQsMjM1LDIzNiwyNDUsMjQ2LDI1NiwzNDUsMzQ2LDM1Niw0NTYsMTIzNCwxMjM1LDEyMzYsMTI0NSwxMjQ2LDEyNTYsMTM0NSwxMzQ2LDEzNTYsMTQ1NiwyMzQ1LDIzNDYsMjM1NiwyNDU2LDM0NTYsMTIzNDUsMTIzNDYsMTIzNTYsMTI0NTYsMTM0NTYsMjM0NTYsMTIzNDU2XSwidXBncmFkZXMxIjpbMSwyLDMsNCw1LDZdLCJ1cGdyYWRlczIiOlsiMTIiLCIxMyIsIjE0IiwiMTUiLCIxNiIsIjIzIiwiMjQiLCIyNSIsIjI2IiwiMzYiLCI1NiIsIjM1IiwiNDYiLCIzNCIsIjQ1Il0sInVwZ3JhZGVzMyI6WyIxMjMiLCIxMjQiLCIxMjUiLCIxMjYiLCIxMzQiLCIxMzUiLCIxMzYiLCIxNDUiLCIxNDYiLCIxNTYiLCIyMzQiLCIyMzUiLCIyMzYiLCIyNDUiLCIyNDYiLCIyNTYiLCIzNDUiLCIzNDYiLCIzNTYiLCI0NTYiXSwidXBncmFkZXM0IjpbIjEyMzQiLCIxMjM1IiwiMTIzNiIsIjEyNDUiLCIxMjQ2IiwiMTI1NiIsIjEzNDUiLCIxNDU2IiwiMjM0NSIsIjEzNDYiLCIxMzU2IiwiMjM0NiIsIjIzNTYiLCIyNDU2IiwiMzQ1NiJdLCJ1cGdyYWRlczUiOlsiMTIzNDUiLCIxMjM0NiIsIjEyMzU2IiwiMTI0NTYiLCIxMzQ1NiIsIjIzNDU2Il0sInVwZ3JhZGVzNiI6WzEyMzQ1Nl0sInN5bmVyZ2llcyI6W10sImdlbjEiOnsiY29zdCI6MS4wMDAwMDAwMDAwMDAwMDA0ZSsxMjAsImJhc2VNdWx0IjozMTMzNTA3OTIxMjYzNTg3LCJ1cGdyYWRlTXVsdCI6NDI5NDk2NzI5Niwic3luTXVsdCI6MSwibXVsdCI6MS4zNDU4MzE0MDQzNTg0MDVlKzI1LCJhbXQiOjguMzEzNDEwNDEyOTk1NjY0ZSs4NywiY29zdEluYyI6NTYyMzQxMy4yNTE5MDM0ODh9LCJnZW4yIjp7ImNvc3QiOjEuNzc4Mjc5NDEwMDM4OTE1M2UrMTE4LCJiYXNlTXVsdCI6MjE1MTk3MjU2My4yMjI0MTc0LCJ1cGdyYWRlTXVsdCI6NDI5NDk2NzI5Niwic3luTXVsdCI6MSwibXVsdCI6OTI0MjY1MTc4MDkyOTU3NTAwMCwiYW10Ijo4Ljc1NTM3MDQ1NTE2MTg0NWUrNjYsImNvc3RJbmMiOjU2MjM0MTMuMjUxOTAzNDg4fSwiZ2VuMyI6eyJjb3N0IjozLjE2MjI3NzY2MDE2ODM2NjRlKzExNiwiYmFzZU11bHQiOjExMDU3MzMyLjMyMDk0MDAxMiwidXBncmFkZU11bHQiOjQyOTQ5NjcyOTYsInN5bk11bHQiOjEsIm11bHQiOjQ3NDkwODgwNjk5NDQxMTMwLCJhbXQiOjEuNDIxNzQ3ODQ0MzMxNzU1NWUrNDgsImNvc3RJbmMiOjU2MjM0MTMuMjUxOTAzNDg4fSwiZ2VuNCI6eyJjb3N0IjoxLjc3ODI3OTQxMDAzODkxMjllKzExNSwiYmFzZU11bHQiOjg1MjIyLjY5Mjk5MjM5MjkzLCJ1cGdyYWRlTXVsdCI6NDI5NDk2NzI5Niwic3luTXVsdCI6MSwibXVsdCI6MzY2MDI4Njc5Mjc5Mzc2LCJhbXQiOjIuMjU2NDY3MDk1NDIyMTM5NmUrMzEsImNvc3RJbmMiOjk5OTk5OTkuOTk5OTk5OTk0fSwiZ2VuNSI6eyJjb3N0IjoxLjc3ODI3OTQxMDAzODkxMzdlKzExNywiYmFzZU11bHQiOjMzMjUuMjU2NzMwMDc5NjUxLCJ1cGdyYWRlTXVsdCI6NDI5NDk2NzI5Niwic3luTXVsdCI6MSwibXVsdCI6MTQyODE4Njg5MDY0OTYsImFtdCI6NjQ3NjU2NDQ2MTk2NDU1NCwiY29zdEluYyI6NTYyMzQxMzIuNTE5MDM0ODd9LCJnZW42Ijp7ImNvc3QiOjMuMTYyMjc3NjYwMTY4Mzc2NmUrMTIzLCJiYXNlTXVsdCI6MjkxLjkyOTI2MDI1MzkwNjI1LCJ1cGdyYWRlTXVsdCI6NDI5NDk2NzI5Niwic3luTXVsdCI6MSwibXVsdCI6MTI1MzgyNjYyNTUzNiwiYW10IjoxNCwiY29zdEluYyI6MzE2MjI3NzY2MC4xNjgzNzg0fSwidmVyc2lvbiI6InYwLjJCIn0=")
