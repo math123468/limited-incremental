@@ -116,7 +116,7 @@ function reset() {
 const news = ['Does anyone even read this?','Hi, guys!','Once upon a time...','Much Number!','Next update in 5 days!','Upgrades boost different gens!','Synergies boost gens based on the amount of another!','Negative Numbers boost all gens! There are also cool upgrades!','The Button: Coming soon(TM)','aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa']
 const newsTimes = [3,2,2.5,1.5,3,3,3,3,3,30]
 function init() {
-	update('commit','v0.1E-13')
+	update('commit','v0.1E-14')
 	changeNews()
 	setInterval(tick,100)
 	setInterval(save,3000)
