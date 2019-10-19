@@ -837,7 +837,7 @@ function load(save) {
 			clicks:0,
 		}
 	}
-	if(game.standardTime === undefined) game.standardTime = 0tick
+	if(game.standardTime === undefined) game.standardTime = 0
 	buyNeg()
 	achieveClasses()
 }
