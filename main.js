@@ -116,7 +116,7 @@ function reset() {
 const news = ['Does anyone even read this?','Hi, guys!','Once upon a time...','Much Number!','Next update in 5 days!','Upgrades boost different gens!','Synergies boost gens based on the amount of another!','Negative Numbers boost all gens! There are also cool upgrades!','The Button: Coming soon(TM)','aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa']
 const newsTimes = [3,2,2.5,1.5,3,3,3,3,3,30]
 function init() {
-	update('commit','v0.1E-15')
+	update('commit','v0.2A-1')
 	changeNews()
 	setInterval(tick,100)
 	setInterval(save,3000)
@@ -162,7 +162,7 @@ function updateSecret(what) {
 }
 function maxUpgrades() {
 	for(i=0;i<game.possibleUps.length;i++) {
-		buyUp(game.possibleUps[i],String(game.possibleUps[1]).length)
+		buyUp(game.possibleUps[i],String(game.possibleUps[i]).length)
 	}
 }
 function changeNews() {
@@ -244,8 +244,8 @@ function notation() {
 		update('up'+pos+'cost',format(returnUpgradeCost(pos,String(pos).length)),0)
 	}
 	for(i=1;i<7;i++) {
-		for(j=6;j>i;j--) {
-			var thing = 10 * i + j
+		for(k=6;k>i;k--) {
+			var thing = 10 * i + k
 			update('syn'+thing+'cost',format(returnSynergyCost(thing),0))
 		}
 	}
