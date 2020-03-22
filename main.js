@@ -113,10 +113,10 @@ function reset() {
 	}
 	return game
 }
-const news = ['Does anyone even read this?','Hi, guys!','Once upon a time...','Much Number!','Next update in 5 days!','Upgrades boost different gens!','Synergies boost gens based on the amount of another!','Negative Numbers boost all gens! There are also cool upgrades!','The Button: Coming soon(TM)','aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa']
-const newsTimes = [3,2,2.5,1.5,3,3,3,3,3,30]
+const news = ['Does anyone even read this?','Hi, guys!','Once upon a time...','Much Number!','Next update in 5 days!','Upgrades boost different gens!','Synergies boost gens based on the amount of another!','Negative Numbers boost all gens! There are also cool upgrades!','The Button gives a boost each time you click!','You can change the cooldown time of the Button, but it will also change the mult gained on click.','aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa']
+const newsTimes = [3,2,2.5,1.5,3,3,3,3,3,5,30]
 function init() {
-	update('commit','v0.2A-1')
+	update('commit','v0.2A-2')
 	changeNews()
 	setInterval(tick,100)
 	setInterval(save,3000)
@@ -130,6 +130,10 @@ function start() {
 	theme()
 	achieveClasses()
 	update('notation','Notation: '+game.notation)
+	update('theButton',game.thebutton.mult + 'x')
+	update('negAmt',game.negative.amt)
+	update('negCost',game.negative.cost)
+	update('negBoost',format(game.negative.mult,3))
 }
 	
 function update(what,withWhat) {
@@ -173,7 +177,7 @@ function changeNews() {
 	if(game.newsSeen === 500) giveAchieve('ach36')
 }
 var game = reset()
-var currentVer = 'v0.1E'
+var currentVer = 'v0.2A'
 function giveAchieve(number) {
 	if(!game.achievements.includes(number)) {
 		game.achievements.push(number)
@@ -630,6 +634,7 @@ function checkForNegUpgrades() {
 		game.negative.upgrades.three = 1
 		game.negative.upgrades.threePower = 1.05
 		update('negBoost',format(Math.pow(1.05,game.negative.amt),3))
+		update('negMult',1.05)
 		game.negative.mult = Math.pow(1.05,game.negative.amt)
 	}
 	if(game.negative.amt >= 165 && game.negative.upgrades.four === 0) {
@@ -656,6 +661,7 @@ function checkForNegUpgrades() {
 		game.negative.upgrades.threePower = 1.1
 		update('negBoost',format(Math.pow(1.1,game.negative.amt),3))
 		game.negative.mult = Math.pow(1.1,game.negative.amt)
+		update('negMult',1.1)
 	}
 	if(game.negative.amt >= 305 && game.negative.upgrades.four === 1) {
 		game.negative.upgrades.four = 2
