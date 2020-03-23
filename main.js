@@ -120,7 +120,7 @@ const newsTimes = [3,2,2.5,1.5,3,3,3,3,3,5,30]
 var game = reset()
 var currentVer = 'v0.2A'
 function init() {
-	update('commit','v0.2A-4')
+	update('commit','v0.2A-5')
 	changeNews()
 	setInterval(tick,100)
 	setInterval(save,3000)
@@ -372,7 +372,7 @@ function increaseGens() {
 	for(i=0;i<game.synergies.length;i++) {
 		var gen1 = String(game.synergies[i])[0]
 		var gen2 = String(game.synergies[i])[1]
-		game['gen'+gen1].synMult *= 1 + game['gen'+gen2].amt.log10() * 2
+		game['gen'+gen1].synMult *= 1 + game['gen'+gen2].amt.log(10) * 2
 	}
 	for(i=1;i<7;i++) {
 		if(game.achievements.includes('ach27') && game.achievements.includes('ach34')) {
