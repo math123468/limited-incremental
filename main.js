@@ -120,7 +120,7 @@ const newsTimes = [3,2,2.5,1.5,3,3,3,3,3,5,30]
 var game = reset()
 var currentVer = 'v0.2A'
 function init() {
-	update('commit','v0.2A-5')
+	update('commit','v0.2A-6')
 	changeNews()
 	setInterval(tick,100)
 	setInterval(save,3000)
@@ -327,8 +327,8 @@ function format(num,decimals) {
 		return Math.round(num * Math.pow(10,decimals))/Math.pow(10,decimals)
 	}
 	var exp = Math.floor(Math.log10(num));
-	var exp2 = 3*Math.floor(e/3)
-	var coeff = Math.round(Math.pow(10,Math.log10(num)-e)*1000)/1000;
+	var exp2 = 3*Math.floor(exp/3)
+	var coeff = Math.round(Math.pow(10,Math.log10(num)-exp)*1000)/1000;
 	if (coeff>9.9995) {
 		coeff = 1;
 		exp++;
