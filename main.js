@@ -120,7 +120,7 @@ const newsTimes = [3,2,2.5,1.5,3,3,3,3,3,5,30]
 var game = reset()
 var currentVer = 'v0.2A'
 function init() {
-	update('commit','v0.2A-6')
+	update('commit','v0.2A-7')
 	changeNews()
 	setInterval(tick,100)
 	setInterval(save,3000)
@@ -385,7 +385,7 @@ function increaseGens() {
 			game['gen'+i].mult = new Decimal(game['gen'+i].baseMult * game['gen'+i].upgradeMult * game['gen'+i].synMult * game.negative.mult * game.negative.upgrades.twoPower * game.thebutton.mult)
 		}
 	}
-	game.number += game.gen1.amt.mul(game.gen1.mult / 10)
+	game.number = game.number.add(game.gen1.amt.mul(game.gen1.mult / 10))
 	game.gen1.amt = game.gen1.amt.add(game.gen2.amt.mul(game.gen2.mult / 10))
 	game.gen2.amt = game.gen2.amt.add(game.gen3.amt.mul(game.gen3.mult / 10))
 	game.gen3.amt = game.gen3.amt.add(game.gen4.amt.mul(game.gen4.mult / 10))
