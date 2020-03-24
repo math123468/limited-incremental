@@ -1,3 +1,4 @@
+/*CSS Commit 1*/
 .dark {
 	background-color: #000000;
 }
@@ -55,6 +56,16 @@
 	}
 .nav:hover {
 	background-color: #e842f4
+	}
+.nav2 {
+	color:#ff9d00;
+	borde: 2px solid #ff9d00;
+	text-align:center;
+	padding: 15px 32px;
+	font-size:48px
+	}
+.nav2:hover {
+	background-color: #ff9d00
 	}
 .green {
 	color: #00FF00;
