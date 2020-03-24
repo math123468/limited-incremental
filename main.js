@@ -98,6 +98,7 @@ function reset() {
 				twoPower:1,
 				threePower:1.025,
 				fourPower:2,
+				total:0,
 			},
 			amt:0,
 			mult:1,
@@ -120,7 +121,7 @@ const newsTimes = [3,2,2.5,1.5,3,3,3,3,3,5,30]
 var game = reset()
 var currentVer = 'v0.2A'
 function init() {
-	update('commit','v0.2A-8')
+	update('commit','v0.2A-9')
 	changeNews()
 	setInterval(tick,100)
 	setInterval(save,3000)
@@ -351,7 +352,7 @@ function formatDecimal(a) {
 	}
 	if(a.lt(1000)) return a;
 	if (game.notation == 'sci') return mant + 'e' + exp;
-	if(game.notation == 'standard') return Math.round(1000*mant*Math.pow(10,exp-exp2))/1000 + abbreviate(exp2/3-1,true)
+	if(game.notation == 'standard') return Math.round(1000*mant*Math.pow(10,exp-3*Math.floor(e/3)))/1000 + abbreviate(Math.floor(e/3)-1,true)
 }
 //updates every tick
 function displayUpdate() {
@@ -528,6 +529,7 @@ function checkIfNegativesUnlocked() {
 		show('neg1')
 		giveAchieve('ach41')
 	}
+	negativeClasses()
 }
 function checkIfButtonUnlocked() {
 	if(game.gen6.amt < 35) {
@@ -577,6 +579,14 @@ function synergyClasses() {
 				else if(game.number.gte(returnSynergyCost(synNum))) updateClass('syn'+synNum,'red')
 				else updateClass('syn'+synNum,'green')
 			}
+		}
+	}
+}
+function negativeClasses() {
+	for(i=1;i<=2;i++) {
+		for(j=1;j<5;j++) {
+			if(game.negative.upgrades.total >= 4 * (i - 1) + j) updateClass('neg' + i + j,'blue')
+			else updateClass('neg' + i + j,'green')
 		}
 	}
 }
@@ -862,6 +872,8 @@ function load(save) {
 		game['gen'+i].actualCost = new Decimal(game['gen'+i].actualCost)
 		game['gen'+i].amt = new Decimal(game['gen'+i].amt)
 	}
+	game.negative.cost = new Decimal(game.negative.cost)
+	if(game.negative.upgrades.total == undefined) game.negative.upgrades.total = game.negative.upgrades.one + game.negative.upgrades.two + game.negative.upgrades.three + game.negative.upgrades.four
 }
 function userImport() {
 	var save = window.prompt('Paste your save data here.')
