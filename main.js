@@ -120,7 +120,7 @@ const newsTimes = [3,2,2.5,1.5,3,3,3,3,3,5,30]
 var game = reset()
 var currentVer = 'v0.2A'
 function init() {
-	update('commit','v0.2A-7')
+	update('commit','v0.2A-8')
 	changeNews()
 	setInterval(tick,100)
 	setInterval(save,3000)
@@ -376,13 +376,13 @@ function increaseGens() {
 	}
 	for(i=1;i<7;i++) {
 		if(game.achievements.includes('ach27') && game.achievements.includes('ach34')) {
-			game['gen'+i].mult = new Decimal(game['gen'+i].baseMult * game['gen'+i].upgradeMult * game['gen'+i].synMult * game.negative.mult * game.negative.upgrades.twoPower * game.thebutton.mult * 4)
+			game['gen'+i].mult = game['gen'+i].baseMult * game['gen'+i].upgradeMult * game['gen'+i].synMult * game.negative.mult * game.negative.upgrades.twoPower * game.thebutton.mult * 4
 		}
 		else if(game.achievements.includes('ach27') || game.achievements.includes('ach34')) {
-			game['gen'+i].mult = new Decimal(game['gen'+i].baseMult * game['gen'+i].upgradeMult * game['gen'+i].synMult * game.negative.mult * game.negative.upgrades.twoPower * game.thebutton.mult * 2)
+			game['gen'+i].mult = game['gen'+i].baseMult * game['gen'+i].upgradeMult * game['gen'+i].synMult * game.negative.mult * game.negative.upgrades.twoPower * game.thebutton.mult * 2
 		}
 		else {
-			game['gen'+i].mult = new Decimal(game['gen'+i].baseMult * game['gen'+i].upgradeMult * game['gen'+i].synMult * game.negative.mult * game.negative.upgrades.twoPower * game.thebutton.mult)
+			game['gen'+i].mult = game['gen'+i].baseMult * game['gen'+i].upgradeMult * game['gen'+i].synMult * game.negative.mult * game.negative.upgrades.twoPower * game.thebutton.mult
 		}
 	}
 	game.number = game.number.add(game.gen1.amt.mul(game.gen1.mult / 10))
@@ -851,11 +851,17 @@ function load(save) {
 			mult:1,
 			cooldown:0,
 			baseCooldown:10,
-			baseMult:1.06,
+			baseMult:1.1,
 			clicks:0,
 		}
 	}
 	if(game.standardTime === undefined) game.standardTime = 0
+	game.number = new Decimal(game.number)
+	for(i=1;i<7;i++) {
+		game['gen'+i].cost = new Decimal(game['gen'+i].cost)
+		game['gen'+i].actualCost = new Decimal(game['gen'+i].actualCost)
+		game['gen'+i].amt = new Decimal(game['gen'+i].amt)
+	}
 }
 function userImport() {
 	var save = window.prompt('Paste your save data here.')
