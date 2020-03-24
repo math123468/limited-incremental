@@ -111,7 +111,11 @@ function reset() {
 			clicks:0,
 			possibleCooldowns:[1,10,100],
 			possibleMults:[1.01,1.1,2.5],
-		}
+		},
+		decimalize:{
+			times:0,
+			decimals:0,
+		},
 	}
 	return game
 }
@@ -121,7 +125,7 @@ const newsTimes = [3,2,2.5,1.5,3,3,3,3,3,5,30]
 var game = reset()
 var currentVer = 'v0.2A'
 function init() {
-	update('commit','v0.2A-9')
+	update('commit','v0.2A-10')
 	changeNews()
 	setInterval(tick,100)
 	setInterval(save,3000)
@@ -196,6 +200,10 @@ function changeTab(tab) {
 	hide('options')
 	hide('achievs')
 	game.activeTab = tab
+	show(tab)
+}
+function changeTab2(tab) {
+	hide('generators')
 	show(tab)
 }
 function achieveClasses() {
@@ -352,7 +360,7 @@ function formatDecimal(a) {
 	}
 	if(a.lt(1000)) return a;
 	if (game.notation == 'sci') return mant + 'e' + exp;
-	if(game.notation == 'standard') return Math.round(1000*mant*Math.pow(10,exp-3*Math.floor(e/3)))/1000 + abbreviate(Math.floor(e/3)-1,true)
+	if(game.notation == 'standard') return Math.round(1000*mant*Math.pow(10,exp-3*Math.floor(exp/3)))/1000 + abbreviate(Math.floor(exp/3)-1,true)
 }
 //updates every tick
 function displayUpdate() {
@@ -415,6 +423,9 @@ function tick() {
 }
 //checking if stuff is unlocked
 function checkIfUpgradesUnlocked() {
+	if(game.decimalize.times != 0) {
+		for(i=1;i<7;i++) show('tier'+i)
+	}
 	if(game.gen6.amt === 0) {
 		show('upunlock')
 		hide('tier1')
@@ -508,7 +519,7 @@ function checkIfUpgradesUnlocked() {
 	upgradeClasses()
 }
 function checkIfSynergiesUnlocked() {
-	if(game.gen6.amt < 14) {
+	if(game.gen6.amt < 14 && game.decimalize.times == 0) {
 		show('synunlock')
 		hide('class1syn')
 	}
@@ -520,7 +531,7 @@ function checkIfSynergiesUnlocked() {
 	synergyClasses()
 }
 function checkIfNegativesUnlocked() {
-	if(game.gen6.amt < 20) {
+	if(game.gen6.amt < 20 && game.decimalize.times == 0) {
 		show('negunlock')
 		hide('neg1')
 	}
@@ -532,7 +543,7 @@ function checkIfNegativesUnlocked() {
 	negativeClasses()
 }
 function checkIfButtonUnlocked() {
-	if(game.gen6.amt < 35) {
+	if(game.gen6.amt < 35 && game.decimalize.times == 0) {
 		show('buttonunlock')
 		hide('buttoninfo')
 	}
@@ -874,6 +885,7 @@ function load(save) {
 	}
 	game.negative.cost = new Decimal(game.negative.cost)
 	if(game.negative.upgrades.total == undefined) game.negative.upgrades.total = game.negative.upgrades.one + game.negative.upgrades.two + game.negative.upgrades.three + game.negative.upgrades.four
+	if(game.decimalize == undefined) game.decimalize = reset().decimalize
 }
 function userImport() {
 	var save = window.prompt('Paste your save data here.')
