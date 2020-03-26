@@ -125,7 +125,7 @@ const newsTimes = [3,2,2.5,1.5,3,3,3,3,3,5,30]
 var game = reset()
 var currentVer = 'v0.2A'
 function init() {
-	update('commit','v0.2A-11')
+	update('commit','v0.2A-12')
 	changeNews()
 	setInterval(tick,100)
 	setInterval(save,3000)
@@ -636,7 +636,7 @@ function buyMax() {
 function buyUp(num,tier) {
 	if(tier === 1) {
 		var cost = 1e21 * Math.pow(2,num-1)
-		if(game.number,gte(cost) && !game.upgrades1.includes(num)) {
+		if(game.number.gte(cost) && !game.upgrades1.includes(num)) {
 			game['gen'+num].upgradeMult *= 2
 			game.number = game.number.sub(cost)
 			game.upgrades1.push(num)
@@ -705,7 +705,7 @@ function buyUp(num,tier) {
 function buySyn(gen1,gen2) {
 	var synNum = 10 * gen1 + gen2
 	var cost = returnSynergyCost(synNum)
-	if(game.number,gte(cost) && !game.synergies.includes(synNum)) {
+	if(game.number.gte(cost) && !game.synergies.includes(synNum)) {
 		game.number = game.number.sub(cost)
 		game.synergies.push(synNum)
 	}
