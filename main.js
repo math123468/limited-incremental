@@ -125,7 +125,7 @@ const newsTimes = [3,2,2.5,1.5,3,3,3,3,3,5,30]
 var game = reset()
 var currentVer = 'v0.2A'
 function init() {
-	update('commit','v0.2A-10')
+	update('commit','v0.2A-11')
 	changeNews()
 	setInterval(tick,100)
 	setInterval(save,3000)
@@ -596,8 +596,8 @@ function synergyClasses() {
 function negativeClasses() {
 	for(i=1;i<=2;i++) {
 		for(j=1;j<5;j++) {
-			if(game.negative.upgrades.total >= 4 * (i - 1) + j) updateClass('neg' + i + j,'blue')
-			else updateClass('neg' + i + j,'green')
+			if(game.negative.upgrades.total >= 4 * (i - 1) + j) updateClass('neg' + j + i,'blue')
+			else updateClass('neg' + j + i,'green')
 		}
 	}
 }
