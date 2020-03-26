@@ -125,7 +125,7 @@ const newsTimes = [3,2,2.5,1.5,3,3,3,3,3,5,30]
 var game = reset()
 var currentVer = 'v0.2A'
 function init() {
-	update('commit','v0.2A-13')
+	update('commit','v0.2A-14')
 	changeNews()
 	setInterval(tick,100)
 	setInterval(save,3000)
@@ -557,7 +557,7 @@ function checkIfDecimalizeUnlocked() {
 	if(game.number.gte(1.79e308) && game.decimalize.times < 1) {
 		giveAchieve('ach61')
 		giveAchieve('ach62')
-		decimalize()
+		decimalize(false)
 	}
 }
 //purchasable upgrades
@@ -830,18 +830,22 @@ function changeButtonCooldown() {
 	giveAchieve('ach53')
 }
 //prestiges
-function decimalize() {
+function decimalize(confirm) {
 	if(game.number.lt(1.79e308)) return
-	game.decimalize.times ++
-	game.decimalize.decimals += game.number.log(2)/256 - 3
-	game.number = new Decimal(0)
-	for(i=1;i<=6;i++) {
-		game['upgrades'+i] = []
-		game['gen'+i] = reset()['gen'+i]
+	if(confirm && window.confirm('Are you sure you want to decimalize? It will reset your previous progress!') || !confirm) {
+		window.alert('Note: the number of decimals you have is the number after the decimal point.')
+		game.decimalize.times ++
+		game.decimalize.decimals += game.number.log(2)/256 - 3
+		game.number = new Decimal(0)
+		for(i=1;i<=6;i++) {
+			game['upgrades'+i] = []
+			game['gen'+i] = reset()['gen'+i]
+		}
+		game.synergies = []
+		game.negative = reset().negative
+		game.thebutton = reset().thebutton
+		update('decimals',format(game.decimalize.decimals))
 	}
-	game.synergies = []
-	game.negative = reset().negative
-	game.thebutton = reset().thebutton
 }
 //saving stuff
 function save() {
