@@ -5,7 +5,7 @@
 </head>
 <body style = 'background-color:#000000'>
 	<div id = 'commit' style = 'color:black'>v0.2A-1</div>
-	<div id = 'htmlcommit' style = 'color:black'>HTML Commit 8</div><br>
+	<div id = 'htmlcommit' style = 'color:black'>HTML Commit 9</div><br>
 	<div id = 'info' style = 'color:white'><a href = ''>Discord: Coming Soon</a></div><br> 
 	<div id = 'news' style = 'color:white'></div>
 	<button id = 'secretach1' class = 'hiddendark' onclick = 'giveSecret(1)'></button>
@@ -13,16 +13,24 @@
 	<script src = 'main.js' onload = 'init()'></script>
 	<h1 id = 'numfull' style = 'color:white'>You have <div id = 'num'>0</div> number.</h1>
 	<font color = '#00FFFF'>
-		<button id = 'navp1' class = 'dark nav2' onclick = 'changeTab2("generators")'>Generators</button><br>
-		<div id = 'generators'>
-			<button id = 'navgen' class = 'dark nav' onclick = 'changeTab("gens")'>Generators</button>
-			<button id = 'navupg' class = 'dark nav' onclick = 'changeTab("upgrades")'>Upgrades</button>
-			<button id = 'navsyn' class = 'dark nav' onclick = 'changeTab("syn")'>Synergies</button>
-			<button id = 'navneg' class = 'dark nav' onclick = 'changeTab("negative")'>Negatives</button>
-			<button id = 'navbut' class = 'dark nav' onclick = 'changeTab("thebutton")'>The Button</button>
-			<button id = 'navach' class = 'dark nav' onclick = 'changeTab("achievs")'>Achievements</button>
+		<div id = 'nav2'>
+		<button id = 'navp1' class = 'dark nav2' style = 'display:none' onclick = 'changeTab2("generators")'>Generators</button>
+		<button id = 'navp2' class = 'dark nav2' style = 'display:none' onclick = 'changeTab2("decimalize")'>Generators</button><br>
 		</div>
-			<button id = 'navopt' class = 'dark nav' onclick = 'changeTab("options")'>Options</button>
+		<div id = 'decimalize'>
+			<button id = 'decupg' class = 'dark nav' onclick = 'changeTab("decUpgrades")'>Upgrades</button>
+			<div id = 'decUpgrades' style = 'display:none'>
+				<h1>You have 0.<div id = 'decimals'>0<div> decimals.</h1>
+			</div>
+		</div>
+		<div id = 'generators'>
+		<button id = 'navgen' class = 'dark nav' onclick = 'changeTab("gens")'>Generators</button>
+		<button id = 'navupg' class = 'dark nav' onclick = 'changeTab("upgrades")'>Upgrades</button>
+		<button id = 'navsyn' class = 'dark nav' onclick = 'changeTab("syn")'>Synergies</button>
+		<button id = 'navneg' class = 'dark nav' onclick = 'changeTab("negative")'>Negatives</button>
+		<button id = 'navbut' class = 'dark nav' onclick = 'changeTab("thebutton")'>The Button</button>
+		<button id = 'navach' class = 'dark nav' onclick = 'changeTab("achievs")'>Achievements</button>
+		<button id = 'navopt' class = 'dark nav' onclick = 'changeTab("options")'>Options</button>
 		<div id = 'achievs' style = 'display:none'>
 			<table>
 				<tr>
@@ -74,6 +82,16 @@
 					<td><button id = 'ach56' class = 'dark achieve' title = 'Reach 45 6th gens'>One more to go...</button></td>
 					<td><button id = 'ach57' class = 'dark achieve' title = 'Reach 1e200 First Generators'>That's really a lot.</button></td>
 					<td><button id = 'ach58' class = 'dark achieve' title = 'Get all gen multipliers over 1e35.'>Multiplying multiplyiers that multiply!</button></td>
+				</tr>
+				<tr>
+					<td><button id = 'ach61' class = 'dark achieve' title = 'Surpass 2^1024, or about 1.79e308'>To infinity... and beyond!</button></td>
+					<td><button id = 'ach62' class = 'dark achieve' title = 'Decimalize for the first time'>Finally, it's a real incremental game.</button></td>
+					<td><button id = 'ach63' class = 'dark achieve' title = ''></button></td>
+					<td><button id = 'ach64' class = 'dark achieve' title = ''></button></td>
+					<td><button id = 'ach65' class = 'dark achieve' title = ''></button></td>
+					<td><button id = 'ach66' class = 'dark achieve' title = ''></button></td>
+					<td><button id = 'ach67' class = 'dark achieve' title = ''></button></td>
+					<td><button id = 'ach68' class = 'dark achieve' title = ''></button></td>
 				</tr>
 			</table>
 		</div>
@@ -306,16 +324,16 @@
 			<div id = 'negUpgrades'>
 				<table>
 					<tr>
-						<td><button class = 'dark button' id = 'neg11'>Negative Numbers make all gens cheaper.<br> Requires: 150 Negative Numbers.</button></td>
-						<td><button class = 'dark button' id = 'neg21'>Negative Numbers increase mults of all gens.<br>Requires: 155 Negative Numbers.</button></td>
-						<td><button class = 'dark button' id = 'neg31'>Negative Number mult on all gens increased to 1.05x per.<br>Requires: 160 Negative Numbers.</button></td>
-						<td><button class = 'dark button' id = 'neg41'>Negative Numbers increase upgrade effect to 2.2x.<br>Requires: 165 Negative Numbers.</button></td>
+						<td><button class = 'dark button' id = 'neg11'>Negative Numbers make all gens cheaper.<br> Requires: -150 Negative Numbers.</button></td>
+						<td><button class = 'dark button' id = 'neg21'>Negative Numbers increase mults of all gens.<br>Requires: -155 Negative Numbers.</button></td>
+						<td><button class = 'dark button' id = 'neg31'>Negative Number mult on all gens increased to 1.05x per.<br>Requires: -160 Negative Numbers.</button></td>
+						<td><button class = 'dark button' id = 'neg41'>Negative Numbers increase upgrade effect to 2.2x.<br>Requires: -165 Negative Numbers.</button></td>
 					</tr>
 					<tr>
-						<td><button class = 'dark button' id = 'neg12'>Negative Numbers make all gens even cheaper.<br> Requires: 175 Negative Numbers.</button></td>
-						<td><button class = 'dark button' id = 'neg22'>Negative Numbers increase mults of all gens even more.<br>Requires: 190 Negative Numbers.</button></td>
-						<td><button class = 'dark button' id = 'neg32'>Negative Number mult on all gens increased to 1.1x per.<br>Requires: 250 Negative Numbers.</button></td>
-						<td><button class = 'dark button' id = 'neg42'>Negative Numbers increase upgrade effect to 2.35x.<br>Requires: 305 Negative Numbers.</button></td>
+						<td><button class = 'dark button' id = 'neg12'>Negative Numbers make all gens even cheaper.<br> Requires: -175 Negative Numbers.</button></td>
+						<td><button class = 'dark button' id = 'neg22'>Negative Numbers increase mults of all gens even more.<br>Requires: -190 Negative Numbers.</button></td>
+						<td><button class = 'dark button' id = 'neg32'>Negative Number mult on all gens increased to 1.1x per.<br>Requires: -250 Negative Numbers.</button></td>
+						<td><button class = 'dark button' id = 'neg42'>Negative Numbers increase upgrade effect to 2.35x.<br>Requires: -305 Negative Numbers.</button></td>
 					</tr>
 				</table>
 			</div>
@@ -330,6 +348,7 @@
 			<h1>Mult gain per click: <div id = 'buttonmult'>1.1x</div></button>
 			<button onload = 'start()' class = 'dark button' onclick = 'changeButtonCooldown()' id = 'cooldownwrapper'>Current cooldown between clicks:<div id = 'buttontime'>10 sec</div></button>
 		</div>
+	</div>
 	</div>
 	</font>
 </body>
