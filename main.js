@@ -125,7 +125,7 @@ const newsTimes = [3,2,2.5,1.5,3,3,3,3,3,5,30]
 var game = reset()
 var currentVer = 'v0.2A'
 function init() {
-	update('commit','v0.2A-14')
+	update('commit','v0.2A-15')
 	changeNews()
 	setInterval(tick,100)
 	setInterval(save,3000)
@@ -719,16 +719,16 @@ function buySyn(gen1,gen2) {
 	if(game.synergies.length === 15) giveAchieve('ach32')
 }
 function buyNeg() {
-	update('negAmt',format(game.negative.amt,0))
-	update('negCost',format(game.negative.cost,0))
-	update('negBoost',format(Math.pow(game.negative.upgrades.threePower,game.negative.amt),3))
-	checkForNegUpgrades()
 	if(game.number.gte(game.negative.cost)) {
 		game.number = game.number.sub(game.negative.cost)
 		game.negative.amt ++
 		game.negative.cost = game.negative.cost.mul(10)
 		game.negative.mult *= game.negative.upgrades.threePower
 	}
+	update('negAmt',format(game.negative.amt,0))
+	update('negCost',format(game.negative.cost,0))
+	update('negBoost',format(Math.pow(game.negative.upgrades.threePower,game.negative.amt),3))
+	checkForNegUpgrades()
 }
 function buttonClick() {
 	if(game.thebutton.cooldown <= 0) {
