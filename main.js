@@ -125,7 +125,7 @@ const newsTimes = [3,2,2.5,1.5,3,3,3,3,3,5,30]
 var game = reset()
 var currentVer = 'v0.2A'
 function init() {
-	update('commit','v0.2A-12')
+	update('commit','v0.2A-13')
 	changeNews()
 	setInterval(tick,100)
 	setInterval(save,3000)
@@ -553,6 +553,13 @@ function checkIfButtonUnlocked() {
 		giveAchieve('ach51')
 	}
 }
+function checkIfDecimalizeUnlocked() {
+	if(game.number.gte(1.79e308) && game.decimalize.times < 1) {
+		giveAchieve('ach61')
+		giveAchieve('ach62')
+		decimalize()
+	}
+}
 //purchasable upgrades
 function upgradeClasses() {
 	for(i=0;i<game.possibleUps.length;i++) {
@@ -596,7 +603,7 @@ function synergyClasses() {
 function negativeClasses() {
 	for(i=1;i<=2;i++) {
 		for(j=1;j<5;j++) {
-			if(game.negative.upgrades.total >= 4 * (i - 1) + j) updateClass('neg' + j + i,'blue')
+			if(game.negative.upgrades.total >= 4 * (i - 1) + j) updateClass('neg' + j + i,'button')
 			else updateClass('neg' + j + i,'green')
 		}
 	}
@@ -752,6 +759,7 @@ function checkForNegUpgrades() {
 	if(game.negative.amt >= 150 && game.negative.upgrades.one === 0) {
 		game.negative.upgrades.one = 1
 		game.negative.upgrades.onePower = 10
+		game.negative.upgrades.total ++
 		for(i=1;i<7;i++) {
 			game['gen'+i].cost = game['gen'+i].cost.div(10)
 		}
@@ -760,6 +768,7 @@ function checkForNegUpgrades() {
 	if(game.negative.amt >= 155 && game.negative.upgrades.two === 0) {
 		game.negative.upgrades.two = 1
 		game.negative.upgrades.twoPower = 5
+		game.negative.upgrades.total ++
 	}
 	if(game.negative.amt >= 160 && game.negative.upgrades.three === 0) {
 		game.negative.upgrades.three = 1
@@ -767,6 +776,7 @@ function checkForNegUpgrades() {
 		update('negBoost',format(Math.pow(1.05,game.negative.amt),3))
 		update('negMult',1.05)
 		game.negative.mult = Math.pow(1.05,game.negative.amt)
+		game.negative.upgrades.total ++
 	}
 	if(game.negative.amt >= 165 && game.negative.upgrades.four === 0) {
 		game.negative.upgrades.four = 1
@@ -774,7 +784,8 @@ function checkForNegUpgrades() {
 		for(i=1;i<7;i++) {
 			game['gen'+i].upgradeMult = Math.pow(2.2,32)
 		}
-		giveAcheive('ach43')
+		giveAchieve('ach43')
+		game.negative.upgrades.total ++
 	}
 	if(game.negative.amt >= 175 && game.negative.upgrades.one === 1) {
 		game.negative.upgrades.one = 2
@@ -782,10 +793,12 @@ function checkForNegUpgrades() {
 			game['gen'+i].cost = game['gen'+i].cost.div(1000)
 		}
 		game.negative.upgrades.onePower = 10000
+		game.negative.upgrades.total ++
 	}
 	if(game.negative.amt >= 190 && game.negative.upgrades.two === 1) {
 		game.negative.upgrades.two = 2
 		game.negative.upgrades.twoPower = 125
+		game.negative.upgrades.total ++
 	}
 	if(game.negative.amt >= 250 && game.negative.upgrades.three === 1) {
 		game.negative.upgrades.three = 2
@@ -793,6 +806,7 @@ function checkForNegUpgrades() {
 		update('negBoost',format(Math.pow(1.1,game.negative.amt),3))
 		game.negative.mult = Math.pow(1.1,game.negative.amt)
 		update('negMult',1.1)
+		game.negative.upgrades.total ++
 	}
 	if(game.negative.amt >= 305 && game.negative.upgrades.four === 1) {
 		game.negative.upgrades.four = 2
@@ -801,6 +815,7 @@ function checkForNegUpgrades() {
 			game['gen'+i].upgradeMult = Math.pow(2.35,32)
 		}
 		giveAchieve('ach44')
+		game.negative.upgrades.total ++
 	}
 }
 //button misc
@@ -813,6 +828,20 @@ function changeButtonCooldown() {
 	update('buttontime',formatTime(game.thebutton.baseCooldown))
 	update('buttonmult',format(game.thebutton.baseMult,2)+'x')
 	giveAchieve('ach53')
+}
+//prestiges
+function decimalize() {
+	if(game.number.lt(1.79e308)) return
+	game.decimalize.times ++
+	game.decimalize.decimals += game.number.log(2)/256 - 3
+	game.number = new Decimal(0)
+	for(i=1;i<=6;i++) {
+		game['upgrades'+i] = []
+		game['gen'+i] = reset()['gen'+i]
+	}
+	game.synergies = []
+	game.negative = reset().negative
+	game.thebutton = reset().thebutton
 }
 //saving stuff
 function save() {
