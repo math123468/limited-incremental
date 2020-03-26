@@ -5,7 +5,7 @@
 </head>
 <body style = 'background-color:#000000'>
 	<div id = 'commit' style = 'color:black'>v0.2A-1</div>
-	<div id = 'htmlcommit' style = 'color:black'>HTML Commit 9</div><br>
+	<div id = 'htmlcommit' style = 'color:black'>HTML Commit 10</div><br>
 	<div id = 'info' style = 'color:white'><a href = ''>Discord: Coming Soon</a></div><br> 
 	<div id = 'news' style = 'color:white'></div>
 	<button id = 'secretach1' class = 'hiddendark' onclick = 'giveSecret(1)'></button>
@@ -17,10 +17,16 @@
 		<button id = 'navp1' class = 'dark nav2' style = 'display:none' onclick = 'changeTab2("generators")'>Generators</button>
 		<button id = 'navp2' class = 'dark nav2' style = 'display:none' onclick = 'changeTab2("decimalize")'>Generators</button><br>
 		</div>
-		<div id = 'decimalize'>
+		<div id = 'decimalize' style = 'display:none'>
 			<button id = 'decupg' class = 'dark nav' onclick = 'changeTab("decUpgrades")'>Upgrades</button>
-			<div id = 'decUpgrades' style = 'display:none'>
+			<div id = 'decUpgrades'>
 				<h1>You have 0.<div id = 'decimals'>0<div> decimals.</h1>
+				<table style = 'width:100%'>
+					<tr>
+						<td><button id = 'dec1' class = 'dark button' onclick = 'buyDec(1)'>Unlock the Seventh Generator. Cost:0.1 Decimals</td>
+					</tr>
+				</table>
+						
 			</div>
 		</div>
 		<div id = 'generators'>
