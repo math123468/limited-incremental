@@ -125,7 +125,7 @@ const newsTimes = [3,2,2.5,1.5,3,3,3,3,3,5,30]
 var game = reset()
 var currentVer = 'v0.2A'
 function init() {
-	update('commit','v0.2A-15')
+	update('commit','v0.2A-16')
 	changeNews()
 	setInterval(tick,100)
 	setInterval(save,3000)
@@ -364,14 +364,14 @@ function formatDecimal(a) {
 }
 //updates every tick
 function displayUpdate() {
-	update('num',format(game.number,0))
+	update('num',formatDecimal(game.number,0))
 	for(i=1;i<7;i++) {
 		update(i+'amt',formatDecimal(game['gen'+i].amt))
 		if(i!=6) {
 			update(i+'persec',formatDecimal(game['gen'+(i+1)].amt.mul(game['gen'+(i+1)].mult,2)))
 		}
 		update('mult'+i,format(game['gen'+i].mult,4))
-		update('cost'+i,format(game['gen'+i].cost,0))
+		update('cost'+i,formatDecimal(game['gen'+i].cost,0))
 	}
 }
 function increaseGens() {
