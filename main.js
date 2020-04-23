@@ -125,7 +125,7 @@ const newsTimes = [3,2,2.5,1.5,3,3,3,3,3,5,30]
 var game = reset()
 var currentVer = 'v0.2A'
 function init() {
-	update('commit','v0.2A-16')
+	update('commit','v0.2A-17')
 	changeNews()
 	setInterval(tick,100)
 	setInterval(save,3000)
@@ -189,6 +189,10 @@ function giveSecret(num) {
 	if(num === 1) {
 		giveAchieve('ach48')
 		document.getElementById('ach48').title = 'Click the secret button next to the news ticker'
+	}
+	else if(num == 2) {
+		giveAchieve('ach68')
+		document.getElementById('ach68').title = 'Click on this achievement\'s slot'
 	}
 }
 function changeTab(tab) {
@@ -418,6 +422,7 @@ function tick() {
 	if(game.activeTab === 'syn') checkIfSynergiesUnlocked()
 	if(game.activeTab === 'negative') checkIfNegativesUnlocked()
 	if(game.activeTab === 'thebutton')checkIfButtonUnlocked()
+	checkIfDecimalizeUnlocked()
 	game.thebutton.cooldown -= 0.1
 	update('buttoncooldown',format(Math.max(game.thebutton.cooldown,0),1) + 's')
 }
@@ -557,6 +562,7 @@ function checkIfDecimalizeUnlocked() {
 	if(game.number.gte(1.79e308) && game.decimalize.times < 1) {
 		giveAchieve('ach61')
 		giveAchieve('ach62')
+		window.alert('You have earned enough Number to decimalize! You will now lose your Generators and Upgrades but will gain a decimal point to spend on powerful upgrades!')
 		decimalize(false)
 	}
 }
@@ -833,7 +839,7 @@ function changeButtonCooldown() {
 function decimalize(confirm) {
 	if(game.number.lt(1.79e308)) return
 	if(confirm && window.confirm('Are you sure you want to decimalize? It will reset your previous progress!') || !confirm) {
-		window.alert('Note: the number of decimals you have is the number after the decimal point.')
+		window.alert('Note: All Decimal Point values have a decimal point added in front of them.')
 		game.decimalize.times ++
 		game.decimalize.decimals += game.number.log(2)/256 - 3
 		game.number = new Decimal(0)
