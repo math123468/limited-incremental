@@ -125,7 +125,7 @@ const newsTimes = [3,2,2.5,1.5,3,3,3,3,3,5,30]
 var game = reset()
 var currentVer = 'v0.2A'
 function init() {
-	update('commit','v0.2A-18')
+	update('commit','v0.2A-19')
 	changeNews()
 	setInterval(tick,100)
 	setInterval(save,3000)
@@ -432,7 +432,7 @@ function checkIfUpgradesUnlocked() {
 		for(i=1;i<7;i++) show('tier'+i)
 		hide('upunlock')
 	}
-	if(game.gen6.amt === 0) {
+	if(game.gen6.amt.lt(1)) {
 		show('upunlock')
 		hide('tier1')
 		hide('tier2')
@@ -442,7 +442,7 @@ function checkIfUpgradesUnlocked() {
 		hide('tier6')
 		return
 	}
-	if(game.gen6.amt > 0) {
+	if(game.gen6.amt.gt(0)) {
 		giveAchieve('ach21')
 		show('upgrades')
 		show('tier1')
@@ -852,6 +852,7 @@ function decimalize(confirm) {
 		game.negative = reset().negative
 		game.thebutton = reset().thebutton
 		update('decimals',format(game.decimalize.decimals))
+		show('nav2')
 	}
 }
 //saving stuff
