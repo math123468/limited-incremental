@@ -5,7 +5,7 @@
 </head>
 <body style = 'background-color:#000000'>
 	<div id = 'commit' style = 'color:black'>v0.2A-1</div>
-	<div id = 'htmlcommit' style = 'color:black'>HTML Commit 11</div><br>
+	<div id = 'htmlcommit' style = 'color:black'>HTML Commit 12</div><br>
 	<div id = 'info' style = 'color:white'><a href = ''>Discord: Coming Soon</a></div><br> 
 	<div id = 'news' style = 'color:white'></div>
 	<button id = 'secretach1' class = 'hiddendark' onclick = 'giveSecret(1)'></button>
@@ -13,9 +13,9 @@
 	<script src = 'main.js' onload = 'init()'></script>
 	<h1 id = 'numfull' style = 'color:white'>You have <div id = 'num'>0</div> number.</h1>
 	<font color = '#00FFFF'>
-		<div id = 'nav2'>
-		<button id = 'navp1' class = 'dark nav2' style = 'display:none' onclick = 'changeTab2("generators")'>Generators</button>
-		<button id = 'navp2' class = 'dark nav2' style = 'display:none' onclick = 'changeTab2("decimalize")'>Generators</button><br>
+		<div id = 'nav2' style = 'display:none'>
+		<button id = 'navp1' class = 'dark nav2' onclick = 'changeTab2("generators")'>Generators</button>
+		<button id = 'navp2' class = 'dark nav2' onclick = 'changeTab2("decimalize")'>Generators</button><br>
 		</div>
 		<div id = 'decimalize' style = 'display:none'>
 			<button id = 'decupg' class = 'dark nav' onclick = 'changeTab("decUpgrades")'>Upgrades</button>
@@ -25,7 +25,17 @@
 					<tr>
 						<td><button id = 'dec1' class = 'dark button' onclick = 'buyDec(1)'>Unlock the Seventh Generator. Cost:0.1 Decimals</td>
 						<td><button id = 'dec2' class = 'dark button' onclick = 'buyDec(2)'>Unlock the Reverse Synergies. Cost:0.1 Decimals</td>
-						<td><button id = 'dec3' class = 'dark button' onclick = 'buyDec(3)'></td>
+						<td><button id = 'dec3' class = 'dark button' onclick = 'buyDec(3)'>Unlock more cooldowns for the Button. Cost:0.1 Decimals</td>
+					</tr>
+					<tr>
+						<td><button id = 'dec4' class = 'dark button' onclick = 'buyDec(4)'>Unlock the third row of Negative Upgrades. Cost:0.2 Decimals</td>
+						<td><button id = 'dec5' class = 'dark button' onclick = 'buyDec(5)'>Donate Decimals to the poor. Cost:0.500 Decimals</td>
+						<td><button id = 'dec6' class = 'dark button' onclick = 'buyDec(6)'>Throw Decimals into the Infinite Pit. Cost:0.1000 Decimals</td>
+					</tr>
+					<tr>
+						<td><button id = 'dec7' class = 'dark button' onclick = 'buyDec(7)'>I give up! Please stop. Cost:0.100K Decimals</td>
+						<td><button id = 'dec8' class = 'dark button' onclick = 'buyDec(8)'>Please... I've run out of ideas. Cost:0.100M Decimals</td>
+						<td><button id = 'dec9' class = 'dark button' onclick = 'buyDec(9)'>You literally win the game... Cost:0.1T Decimals</td>
 					</tr>
 				</table>
 						
