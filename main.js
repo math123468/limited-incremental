@@ -115,6 +115,12 @@ function reset() {
 		decimalize:{
 			times:0,
 			decimals:0,
+			currentTime:0,
+			totalDecimals:0,
+			upgrades:{
+				possible:[1,2,3,4,5,6,7,8,9],
+				owned:[],
+			},
 		},
 	}
 	return game
@@ -125,7 +131,7 @@ const newsTimes = [3,2,2.5,1.5,3,3,3,3,3,5,30]
 var game = reset()
 var currentVer = 'v0.2A'
 function init() {
-	update('commit','v0.2A-19')
+	update('commit','v0.2A-20')
 	changeNews()
 	setInterval(tick,100)
 	setInterval(save,3000)
@@ -208,6 +214,7 @@ function changeTab(tab) {
 }
 function changeTab2(tab) {
 	hide('generators')
+	hide('decimalize')
 	show(tab)
 }
 function achieveClasses() {
@@ -748,6 +755,12 @@ function buttonClick() {
 		if(game.thebutton.mult >= 1e9) giveAchieve('ach55')
 	}
 }
+function buyDec(num) {
+	var cost = [1,1,1,2,3,5,10,20,50][num-1]
+	if(game.decimalize.decimals < cost) return
+	game.decimalize.decimals -= cost
+	game.decimalize.upgrades.owned.push(num)
+}
 //upgrade misc
 function returnUpgradeCost(num,tier) {
 	if(tier === 1) return 1e21 * Math.pow(2,num-1)
@@ -842,8 +855,10 @@ function decimalize(confirm) {
 	if(confirm && window.confirm('Are you sure you want to decimalize? It will reset your previous progress!') || !confirm) {
 		window.alert('Note: All Decimal Point values have a decimal point added in front of them.')
 		game.decimalize.times ++
-		game.decimalize.decimals += game.number.log(2)/256 - 3
-		game.number = new Decimal(0)
+		game.decimalize.currentTime = 0
+		game.decimalize.decimals += Math.floor(game.number.log(2)/256 - 3)
+		game.decimalize.totalDecimals += Math.floor(game.number.log(2)/256 - 3)
+		game.number = new Decimal(1000)
 		for(i=1;i<=6;i++) {
 			game['upgrades'+i] = []
 			game['gen'+i] = reset()['gen'+i]
@@ -851,7 +866,7 @@ function decimalize(confirm) {
 		game.synergies = []
 		game.negative = reset().negative
 		game.thebutton = reset().thebutton
-		update('decimals',format(game.decimalize.decimals))
+		update('decimals',format(game.decimalize.decimals,3))
 		show('nav2')
 	}
 }
@@ -927,6 +942,11 @@ function load(save) {
 	game.negative.cost = new Decimal(game.negative.cost)
 	if(game.negative.upgrades.total == undefined) game.negative.upgrades.total = game.negative.upgrades.one + game.negative.upgrades.two + game.negative.upgrades.three + game.negative.upgrades.four
 	if(game.decimalize == undefined) game.decimalize = reset().decimalize
+	if(game.decimalize.currentTime == undefined) {
+		game.decimalize.currentTime = 0
+		game.decimalize.totalDecimals = game.decimalize.decimals
+		game.decimalize.upgrades = reset().decimalize.upgrades
+	}
 }
 function userImport() {
 	var save = window.prompt('Paste your save data here.')
