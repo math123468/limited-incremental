@@ -8,7 +8,7 @@ function reset() {
 		standardTime:0,
 		notation:'standard',
 		theme:'dark',
-		possibleUps:[1,2,3,4,5,6,12,13,14,15,16,23,24,25,26,34,35,36,45,46,56,123,124,125,126,134,135,136,145,146,156,234,235,236,245,246,256,345,346,356,456,1234,1235,1236,1245,1246,1256,1345,1346,1356,1456,2345,2346,2356,2456,3456,12345,12346,12356,12456,13456,23456,123456],
+		possibleUps:[1,2,3,4,5,6,12,13,14,15,16,23,24,25,26,34,35,36,45,46,56,123,124,125,126,134,135,136,145,146,156,234,235,236,245,246,256,345,346,356,456,1234,1235,1236,1245,1246,1256,1345,1346,1356,1456,2345,2346,2356,2456,3456,12345,12346,12356,12456,13456,23456,123456,7],
 		upgrades1:[],
 		upgrades2:[],
 		upgrades3:[],
@@ -141,7 +141,7 @@ const newsTimes = [3,2,2.5,1.5,3,3,3,3,3,5,30]
 var game = reset()
 var currentVer = 'v0.2A'
 function init() {
-	update('commit','v0.2A-22')
+	update('commit','v0.2A-23')
 	changeNews()
 	setInterval(tick,100)
 	setInterval(save,3000)
@@ -388,7 +388,7 @@ function displayUpdate() {
 	update('num',formatDecimal(game.number))
 	for(i=1;i<8;i++) {
 		update(i+'amt',formatDecimal(game['gen'+i].amt))
-		if(i!=6) {
+		if(i!=7) {
 			update(i+'persec',formatDecimal(game['gen'+(i+1)].amt.mul(game['gen'+(i+1)].mult,2)))
 		}
 		update('mult'+i,format(game['gen'+i].mult,4))
@@ -430,6 +430,7 @@ function increaseGens() {
 }
 function tick() {
 	game.timePlayed += 0.1
+	game.decimalize.currentTime += 0.1
 	if(game.notation === 'standard') game.standardTime += 0.1
 	if(game.timePlayed >= 420) giveAchieve('ach28')
 	if(game.standardTime >= 600) giveAchieve('ach47')
@@ -551,6 +552,7 @@ function checkIfSynergiesUnlocked() {
 		hide('synunlock')
 		giveAchieve('ach31')
 		show('class1syn')
+		if(game.decimalize.upgrades.includes(2)) show('class2syn')
 	}
 	synergyClasses()
 }
@@ -658,6 +660,7 @@ function buyGen(i) {
 		if(i === 6) giveAchieve('ach17')
 		if(i === 7) giveAchieve('ach18')
 		if(game.gen6.amt === 42) giveAchieve('ach56')
+		if(game.gen6.amt === 66) giveAchieve('ach66')
 	}
 }
 function buyMax() {
@@ -735,6 +738,13 @@ function buyUp(num,tier) {
 			}
 		}
 	}
+	else if(tier === 7) {
+		if(game.number.gte(1e150) && !game.upgrades6.includes(num)) {
+			game.number = game.number.sub(1e150)
+			game.upgrades6.push('7')
+			game.gen7.upgradeMult = Math.pow(2,32)
+		}
+	}
 }
 function buySyn(gen1,gen2) {
 	var synNum = 10 * gen1 + gen2
@@ -766,6 +776,7 @@ function buttonClick() {
 		if(game.thebutton.mult >= 100) giveAchieve('ach52')
 		if(game.thebutton.clicks === 10) giveAchieve('ach54')
 		if(game.thebutton.mult >= 1e9) giveAchieve('ach55')
+		if(game.thebutton.click == 496) giveAchieve('ach67')
 	}
 }
 function buyDec(num) {
@@ -871,6 +882,7 @@ function decimalize(confirm) {
 	if(confirm && window.confirm('Are you sure you want to decimalize? It will reset your previous progress!') || !confirm) {
 		window.alert('Note: All Decimal Point values have a decimal point added in front of them.')
 		game.decimalize.times ++
+		if(game.decimalize.currentTime <= 600) giveAchieve('ach65')
 		game.decimalize.currentTime = 0
 		game.decimalize.decimals += Math.floor(game.number.log(2)/256 - 3)
 		game.decimalize.totalDecimals += Math.floor(game.number.log(2)/256 - 3)
