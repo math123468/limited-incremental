@@ -87,6 +87,16 @@ function reset() {
 			amt:new Decimal(0),
 			costInc:Math.pow(10,6.5)
 		},
+		gen7:{
+			cost:new Decimal(1e22),
+			actualCost:new Decimal(1e22),
+			baseMult:1,
+			upgradeMult:1,
+			synMult:1,
+			mult:1,
+			amt:new Decimal(0),
+			costInc:Math.pow(10,10.5)
+		},
 		negative:{
 			cost:new Decimal(10),
 			upgrades:{
@@ -131,12 +141,12 @@ const newsTimes = [3,2,2.5,1.5,3,3,3,3,3,5,30]
 var game = reset()
 var currentVer = 'v0.2A'
 function init() {
-	update('commit','v0.2A-21')
+	update('commit','v0.2A-22')
 	changeNews()
 	setInterval(tick,100)
 	setInterval(save,3000)
 	if(localStorage.getItem('limitedIncrementalSave')!=null) load(localStorage.getItem('limitedIncrementalSave'))
-	for(i=1;i<7;i++) game['gen'+i].actualCost = new Decimal(game['gen'+i].cost)
+	for(i=1;i<8;i++) game['gen'+i].actualCost = new Decimal(game['gen'+i].cost)
 	setTimeout(start,1000)
 }
 function start() {
@@ -263,7 +273,7 @@ function theme() {
 			updateClass('neg' + i + j,'button')
 		}
 	}
-	for(i=1;i<7;i++) {
+	for(i=1;i<8;i++) {
 		updateClass('buy'+i,'button')
 	}
 	for(i=1;i<6;i++) {
@@ -274,7 +284,7 @@ function theme() {
 	giveAchieve('ach38')
 	achieveClasses()
 }
-function notation() {f
+function notation() {
 	if(game.notation === 'standard') {
 		game.notation = 'sci'
 	}
@@ -376,7 +386,7 @@ function formatDecimal(a) {
 //updates every tick
 function displayUpdate() {
 	update('num',formatDecimal(game.number))
-	for(i=1;i<7;i++) {
+	for(i=1;i<8;i++) {
 		update(i+'amt',formatDecimal(game['gen'+i].amt))
 		if(i!=6) {
 			update(i+'persec',formatDecimal(game['gen'+(i+1)].amt.mul(game['gen'+(i+1)].mult,2)))
@@ -386,7 +396,7 @@ function displayUpdate() {
 	}
 }
 function increaseGens() {
-	for(i=1;i<7;i++) {
+	for(i=1;i<8;i++) {
 		game['gen'+i].synMult = 1
 	}
 	for(i=0;i<game.synergies.length;i++) {
@@ -394,7 +404,7 @@ function increaseGens() {
 		var gen2 = String(game.synergies[i])[1]
 		game['gen'+gen1].synMult *= 1 + game['gen'+gen2].amt.log(10) * 2
 	}
-	for(i=1;i<7;i++) {
+	for(i=1;i<8;i++) {
 		if(game.achievements.includes('ach27') && game.achievements.includes('ach34')) {
 			game['gen'+i].mult = game['gen'+i].baseMult * game['gen'+i].upgradeMult * game['gen'+i].synMult * game.negative.mult * game.negative.upgrades.twoPower * game.thebutton.mult * 4
 		}
@@ -411,6 +421,7 @@ function increaseGens() {
 	game.gen3.amt = game.gen3.amt.add(game.gen4.amt.mul(game.gen4.mult / 10))
 	game.gen4.amt = game.gen4.amt.add(game.gen5.amt.mul(game.gen5.mult / 10))
 	game.gen5.amt = game.gen5.amt.add(game.gen6.amt.mul(game.gen6.mult / 10))
+	game.gen6.amt = game.gen6.amt.add(game.gen7.amt.mul(game.gen7.mult / 10))
 	if(game.gen1.amt.gte(1e100)) giveAchieve('ach33')
 	if(game.gen1.amt.gte(1e200)) giveAchieve('ach57')
 	if(game.gen6.mult >= 1e10) giveAchieve('ach34')
@@ -436,7 +447,7 @@ function tick() {
 //checking if stuff is unlocked
 function checkIfUpgradesUnlocked() {
 	if(game.decimalize.times != 0) {
-		for(i=1;i<7;i++) show('tier'+i)
+		for(i=1;i<8;i++) show('tier'+i)
 		hide('upunlock')
 	}
 	if(game.gen6.amt.lt(1)) {
@@ -637,6 +648,7 @@ function buyGen(i) {
 		game.gen4.costInc = Math.min(game.gen4.costInc,Math.pow(10,5.5))
 		game.gen5.costInc = Math.min(game.gen5.costInc,1e6)
 		game.gen6.costInc = Math.min(game.gen6.costInc,1e7)
+		game.gen7.costInc = Math.min(game.gen6.costInc,1e12)
 		if(i === 1) giveAchieve('ach11')
 		if(i === 1 && game.gen1.baseMult > 1.6) giveAchieve('ach12')
 		if(i === 2) giveAchieve('ach13')
@@ -644,7 +656,8 @@ function buyGen(i) {
 		if(i === 4) giveAchieve('ach15')
 		if(i === 5) giveAchieve('ach16')
 		if(i === 6) giveAchieve('ach17')
-		if(game.gen6.amt === 45) giveAchieve('ach56')
+		if(i === 7) giveAchieve('ach18')
+		if(game.gen6.amt === 42) giveAchieve('ach56')
 	}
 }
 function buyMax() {
@@ -760,6 +773,9 @@ function buyDec(num) {
 	if(game.decimalize.decimals < cost) return
 	game.decimalize.decimals -= cost
 	game.decimalize.upgrades.owned.push(num)
+	giveAchieve('ach63')
+	if(num == 4) giveAchieve('ach64')
+	if(num == 1) show('gen7')
 }
 //upgrade misc
 function returnUpgradeCost(num,tier) {
@@ -780,7 +796,7 @@ function checkForNegUpgrades() {
 		game.negative.upgrades.one = 1
 		game.negative.upgrades.onePower = 10
 		game.negative.upgrades.total ++
-		for(i=1;i<7;i++) {
+		for(i=1;i<8;i++) {
 			game['gen'+i].cost = game['gen'+i].cost.div(10)
 		}
 		giveAchieve('ach42')
@@ -801,7 +817,7 @@ function checkForNegUpgrades() {
 	if(game.negative.amt >= 165 && game.negative.upgrades.four === 0) {
 		game.negative.upgrades.four = 1
 		game.negative.upgrades.fourPower = 2.2
-		for(i=1;i<7;i++) {
+		for(i=1;i<8;i++) {
 			game['gen'+i].upgradeMult = Math.pow(2.2,32)
 		}
 		giveAchieve('ach43')
@@ -809,7 +825,7 @@ function checkForNegUpgrades() {
 	}
 	if(game.negative.amt >= 175 && game.negative.upgrades.one === 1) {
 		game.negative.upgrades.one = 2
-		for(i=1;i<7;i++) {
+		for(i=1;i<8;i++) {
 			game['gen'+i].cost = game['gen'+i].cost.div(1000)
 		}
 		game.negative.upgrades.onePower = 10000
@@ -831,7 +847,7 @@ function checkForNegUpgrades() {
 	if(game.negative.amt >= 305 && game.negative.upgrades.four === 1) {
 		game.negative.upgrades.four = 2
 		game.negative.upgrades.fourPower = 2.35
-		for(i=1;i<7;i++) {
+		for(i=1;i<8;i++) {
 			game['gen'+i].upgradeMult = Math.pow(2.35,32)
 		}
 		giveAchieve('ach44')
@@ -950,6 +966,8 @@ function load(save) {
 	if(game.decimalize.times > 0) {
 		show('nav2')
 	}
+	if(game.gen7 == undefined) game.gen7 = reset().gen7
+	if(game.decimalize.upgrades.includes(1)) show('gen7')
 }
 function userImport() {
 	var save = window.prompt('Paste your save data here.')
