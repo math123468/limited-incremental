@@ -131,7 +131,7 @@ const newsTimes = [3,2,2.5,1.5,3,3,3,3,3,5,30]
 var game = reset()
 var currentVer = 'v0.2A'
 function init() {
-	update('commit','v0.2A-20')
+	update('commit','v0.2A-21')
 	changeNews()
 	setInterval(tick,100)
 	setInterval(save,3000)
@@ -946,6 +946,9 @@ function load(save) {
 		game.decimalize.currentTime = 0
 		game.decimalize.totalDecimals = game.decimalize.decimals
 		game.decimalize.upgrades = reset().decimalize.upgrades
+	}
+	if(game.decimalize.times > 0) {
+		show('nav2')
 	}
 }
 function userImport() {
