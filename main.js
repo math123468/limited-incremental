@@ -141,7 +141,7 @@ const newsTimes = [3,2,2.5,1.5,3,3,3,3,3,5,30]
 var game = reset()
 var currentVer = 'v0.2A'
 function init() {
-	update('commit','v0.2A-23')
+	update('commit','v0.2A-24')
 	changeNews()
 	setInterval(tick,100)
 	setInterval(save,3000)
@@ -158,6 +158,10 @@ function start() {
 	update('negAmt',game.negative.amt)
 	update('negCost',formatDecimal(game.negative.cost))
 	update('negBoost',format(game.negative.mult,3))
+	if(game.decimalize.times > 0) {
+		show('nav2')
+	}
+	if(game.decimalize.upgrades.owned.includes(1)) show('gen7')
 }
 //generic updating functions	
 function update(what,withWhat) {
@@ -450,6 +454,7 @@ function checkIfUpgradesUnlocked() {
 	if(game.decimalize.times != 0) {
 		for(i=1;i<8;i++) show('tier'+i)
 		hide('upunlock')
+		return
 	}
 	if(game.gen6.amt.lt(1)) {
 		show('upunlock')
@@ -664,7 +669,9 @@ function buyGen(i) {
 	}
 }
 function buyMax() {
-	for(i=6;i>0;i--) {
+	var k = 6
+	if(game.decimalize.upgrades.owned.includes(1)) k = 7
+	for(i=k;i>0;i--) {
 		while(game.number.gte(game['gen'+i].cost)) {
 			buyGen(i)
 		}
@@ -962,7 +969,7 @@ function load(save) {
 	}
 	if(game.standardTime === undefined) game.standardTime = 0
 	game.number = new Decimal(game.number)
-	for(i=1;i<7;i++) {
+	for(i=1;i<8;i++) {
 		game['gen'+i].cost = new Decimal(game['gen'+i].cost)
 		game['gen'+i].actualCost = new Decimal(game['gen'+i].actualCost)
 		game['gen'+i].amt = new Decimal(game['gen'+i].amt)
@@ -975,11 +982,7 @@ function load(save) {
 		game.decimalize.totalDecimals = game.decimalize.decimals
 		game.decimalize.upgrades = reset().decimalize.upgrades
 	}
-	if(game.decimalize.times > 0) {
-		show('nav2')
-	}
 	if(game.gen7 == undefined) game.gen7 = reset().gen7
-	if(game.decimalize.upgrades.includes(1)) show('gen7')
 }
 function userImport() {
 	var save = window.prompt('Paste your save data here.')
