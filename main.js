@@ -124,14 +124,25 @@ function reset() {
 		},
 		decimalize:{
 			times:0,
-			decimals:0,
+			decimals:new Decimal(0),
 			currentTime:0,
-			totalDecimals:0,
+			totalDecimals:new Decimal(0),
 			upgrades:{
 				possible:[1,2,3,4,5,6,7,8,9],
 				owned:[],
 			},
 		},
+		prestigeDims:{
+			dim1:{
+				cost:new Decimal(10),
+				upgradeMult:1,
+				synMult:1,
+				mult:1,
+				amt:new Decimal(0),
+				costInc:Math.pow(10,0.5)
+			},
+		},
+			
 	}
 	return game
 }
@@ -141,12 +152,14 @@ const newsTimes = [3,2,2.5,1.5,3,3,3,3,3,5,30]
 var game = reset()
 var currentVer = 'v0.2A'
 function init() {
-	update('commit','v0.2A-25')
+	update('commit','v0.2A-26')
 	changeNews()
 	setInterval(tick,100)
 	setInterval(save,3000)
 	if(localStorage.getItem('limitedIncrementalSave')!=null) load(localStorage.getItem('limitedIncrementalSave'))
 	for(i=1;i<8;i++) game['gen'+i].actualCost = new Decimal(game['gen'+i].cost)
+	game.decimalize.decimals = new Decimal(game.decimalize.decimals)
+	game.decimalize.totalDecimals = new Decimal(game.decimalize.totalDecimals)
 	setTimeout(start,1000)
 }
 function start() {
@@ -790,12 +803,23 @@ function buttonClick() {
 }
 function buyDec(num) {
 	var cost = [1,1,1,2,3,5,10,20,50][num-1]
-	if(game.decimalize.decimals < cost) return
-	game.decimalize.decimals -= cost
+	if(game.decimalize.decimals.lt(cost)) return
+	game.decimalize.decimals = game.decimalize.decimals.sub(cost)
 	game.decimalize.upgrades.owned.push(num)
 	giveAchieve('ach63')
 	if(num == 4) giveAchieve('ach64')
 	if(num == 1) show('gen7')
+}
+function buyDim(num) {
+	if(game.decimalize.decimals.gte(game.prestigeDims['dim'+num].cost)) {
+		game.decimalize.decimals = game.decimalize.decimals.sub(game.prestigeDims['dim'+num].cost)
+		game.prestigeDims['dim'+num].cost = game['dim'+num].cost.mul(game.prestigeDims['dim'+num].costInc)
+		game.prestigeDims['dim'+num].mult *= 1.5
+		game.prestigeDims['dim'+num].amt = game.prestigeDims['dim'+num].amt.add(1)
+		update('pmult'+num,game.prestigeDims['dim'+num].mult)
+		update('p'+num+'amt',game.prestigeDims['dim'+num].amt)
+		update('pcost'+num,'0.'+game.prestigeDims['dim'+num].cost)
+	}
 }
 //upgrade misc
 function returnUpgradeCost(num,tier) {
@@ -895,8 +919,8 @@ function decimalize(confirm) {
 		game.decimalize.times ++
 		if(game.decimalize.currentTime <= 600) giveAchieve('ach65')
 		game.decimalize.currentTime = 0
-		game.decimalize.decimals += Math.floor(Math.pow(2,game.number.log(2)/1024 - 1))
-		game.decimalize.totalDecimals += Math.floor(Math.pow(2,game.number.log(2)/1024 - 1))
+		game.decimalize.decimals = game.decimalize.decimals.add(Math.floor(Math.pow(2,game.number.log(2)/1024 - 1)))
+		game.decimalize.totalDecimals = game.decimalize.totalDecimals.add(Math.floor(Math.pow(2,game.number.log(2)/1024 - 1)))
 		game.number = new Decimal(1000)
 		for(i=1;i<=6;i++) {
 			game['upgrades'+i] = []
@@ -905,7 +929,7 @@ function decimalize(confirm) {
 		game.synergies = []
 		game.negative = reset().negative
 		game.thebutton = reset().thebutton
-		update('decimals',format(game.decimalize.decimals,3))
+		update('decimals',formatDecimal(game.decimalize.decimals))
 		show('nav2')
 	}
 }
@@ -987,6 +1011,7 @@ function load(save) {
 		game.decimalize.upgrades = reset().decimalize.upgrades
 	}
 	if(game.gen7 == undefined) game.gen7 = reset().gen7
+	if(game.prestigeDims == undefined) game.prestigeDims = reset().prestigeDims
 }
 function userImport() {
 	var save = window.prompt('Paste your save data here.')
