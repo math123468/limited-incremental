@@ -141,7 +141,7 @@ const newsTimes = [3,2,2.5,1.5,3,3,3,3,3,5,30]
 var game = reset()
 var currentVer = 'v0.2A'
 function init() {
-	update('commit','v0.2A-24')
+	update('commit','v0.2A-25')
 	changeNews()
 	setInterval(tick,100)
 	setInterval(save,3000)
@@ -229,6 +229,7 @@ function changeTab(tab) {
 function changeTab2(tab) {
 	hide('generators')
 	hide('decimalize')
+	hide('dimensions')
 	show(tab)
 }
 function achieveClasses() {
@@ -454,6 +455,7 @@ function checkIfUpgradesUnlocked() {
 	if(game.decimalize.times != 0) {
 		for(i=1;i<8;i++) show('tier'+i)
 		hide('upunlock')
+		upgradeClasses()
 		return
 	}
 	if(game.gen6.amt.lt(1)) {
@@ -557,7 +559,7 @@ function checkIfSynergiesUnlocked() {
 		hide('synunlock')
 		giveAchieve('ach31')
 		show('class1syn')
-		if(game.decimalize.upgrades.includes(2)) show('class2syn')
+		if(game.decimalize.upgrades.owned.includes(2)) show('class2syn')
 	}
 	synergyClasses()
 }
@@ -621,9 +623,9 @@ function upgradeClasses() {
 	}
 }
 function synergyClasses() {
-	for(i=1;i<7;i++) {
+	for(i=1;i<8;i++) {
 		for(j=1;j<7;j++) {
-			if(j > i) {
+			if(j != i) {
 				var synNum = 10 * i + j
 				if(game.synergies.includes(synNum)) updateClass('syn'+synNum,'button')
 				else if(game.number.gte(returnSynergyCost(synNum))) updateClass('syn'+synNum,'red')
@@ -806,7 +808,9 @@ function returnUpgradeCost(num,tier) {
 }
 //synergy misc
 function returnSynergyCost(synNum) {
-	return 1e111 * Math.pow(10,[12,13,14,15,16,23,24,25,26,34,35,36,45,46,56].indexOf(synNum))
+	var pos = [12,13,14,15,16,23,24,25,26,34,35,36,45,46,56].indexOf(synNum)
+	if(pos != -1) return 1e111 * Math.pow(10,pos)
+	return 1e183 * Math.pow(10,[21,31,41,51,61,32,42,52,62,43,53,63,54,64,65,71,72,73,74,75,76].indexOf(synNum))
 }
 //negative misc
 function checkForNegUpgrades() {
@@ -891,8 +895,8 @@ function decimalize(confirm) {
 		game.decimalize.times ++
 		if(game.decimalize.currentTime <= 600) giveAchieve('ach65')
 		game.decimalize.currentTime = 0
-		game.decimalize.decimals += Math.floor(game.number.log(2)/256 - 3)
-		game.decimalize.totalDecimals += Math.floor(game.number.log(2)/256 - 3)
+		game.decimalize.decimals += Math.floor(Math.pow(2,game.number.log(2)/1024 - 1))
+		game.decimalize.totalDecimals += Math.floor(Math.pow(2,game.number.log(2)/1024 - 1))
 		game.number = new Decimal(1000)
 		for(i=1;i<=6;i++) {
 			game['upgrades'+i] = []
