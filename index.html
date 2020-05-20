@@ -5,7 +5,7 @@
 </head>
 <body style = 'background-color:#000000'>
 	<div id = 'commit' style = 'color:black'>v0.2A-1</div>
-	<div id = 'htmlcommit' style = 'color:black'>HTML Commit 17</div><br>
+	<div id = 'htmlcommit' style = 'color:black'>HTML Commit 18</div><br>
 	<div id = 'info' style = 'color:white'><a href = ''>Discord: Coming Soon</a></div><br> 
 	<div id = 'news' style = 'color:white'></div>
 	<button id = 'secretach1' class = 'hiddendark' onclick = 'giveSecret(1)'></button>
@@ -15,12 +15,26 @@
 	<font color = '#00FFFF'>
 		<div id = 'nav2' style = 'display:none'>
 		<button id = 'navp1' class = 'dark nav2' onclick = 'changeTab2("generators")'>Generators</button>
-		<button id = 'navp2' class = 'dark nav2' onclick = 'changeTab2("decimalize")'>Decimalize</button><br>
+		<button id = 'navp2' class = 'dark nav2' onclick = 'changeTab2("decimalize")'>Decimalize</button>
+		<button id = 'navp3' class = 'dark nav2' onclick = 'changeTab2("dimensions")'>Dimensions</button><br>
+		</div>
+		<div id = 'dimensions' style = 'display:none'>
+			<h1>You have <div id = 'prestige'>0</div> Prestige Points.</h1>
+			<h3>They multiply all normal generators by <div id = 'prestigeMult'>1</div>x.</h3>
+			<table style = 'width:100%'>
+				<tr>
+					<td><h1>First Dimension</h1></td>
+					<td><h3>x<div id = 'mult1'>1.0000</div></h3></td>
+					<td><h2><div id='1amt'>0</div></h2></td>
+					<td><h2><div id='1persec'>0</div> per second</h2></td>
+					<td><button class = 'dark button' id = 'buy1' onclick = 'buyGen(1)'>Cost: <div id = 'cost1'>10</div></button></td>
+				</tr>
+			</table>
 		</div>
 		<div id = 'decimalize' style = 'display:none'>
 			<button id = 'decupg' class = 'dark nav' onclick = 'changeTab("decUpgrades")'>Upgrades</button>
 			<div id = 'decUpgrades'>
-				<h1>You have 0.<div id = 'decimals'>0<div> decimals.</h1>
+				<h1>You have 0.<div id = 'decimals'>0</div> decimals.</h1>
 				<table style = 'width:100%'>
 					<tr>
 						<td><button id = 'dec1' class = 'dark button' onclick = 'buyDec(1)'>Unlock the Seventh Generator. Cost:0.1 Decimals</td>
@@ -172,7 +186,7 @@
 					<td><h2><div id='6persec'>0</div> per second</h2></td>
 					<td><button class = 'dark button' id = 'buy6' onclick = 'buyGen(6)'>Cost: <div id = 'cost6'>100Qa</div></button></td>
 				</tr>
-				<tr id = 'gen7' style = 'display:none'>
+				<tr id = 'gen7' style = 'display:none;width:100%'>
 					<td><h1>Seventh Generator</h1></td>
 					<td><h3>x<div id = 'mult7'>1.0000</div></h3></td>
 					<td><h2><div id='7amt'>0</div></h2></td>
