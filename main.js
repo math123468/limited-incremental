@@ -152,7 +152,7 @@ const newsTimes = [3,2,2.5,1.5,3,3,3,3,3,5,30]
 var game = reset()
 var currentVer = 'v0.2A'
 function init() {
-	update('commit','v0.2A-26')
+	update('commit','v0.2A-27')
 	changeNews()
 	setInterval(tick,100)
 	setInterval(save,3000)
@@ -185,6 +185,9 @@ function hide(what) {
 }
 function show(what) {
 	document.getElementById(what).style.display = 'block'
+}
+function full(what) {
+	document.getElementById(what).style = 'width:1005a'
 }
 function updateClass(what,whatClass) {
 	var element = document.getElementById(what)
@@ -282,6 +285,9 @@ function theme() {
 	updateClass('navach','nav')
 	updateClass('navopt','nav')
 	updateClass('navbut','nav')
+	updateClass('navp1','nav2')
+	updateClass('navp2','nav2')
+	updateClass('navp3','nav2')
 	updateClass('notation','button')
 	updateClass('theButton','button big')
 	updateClass('cooldownwrapper','button')
@@ -299,6 +305,12 @@ function theme() {
 			updateClass('ach'+i+j,'achieve')
 		}
 	}
+	for(i=1;i<game.decimalize.upgrades.possible.length;i++) {
+		updateClass('dec'+i,'button')
+	}
+	for(i=1;i<7;i++) {
+		updateClass('pbuy'+i,'button')
+	}
 	giveAchieve('ach38')
 	achieveClasses()
 }
@@ -312,9 +324,11 @@ function notation() {
 	for(i=0;i<game.possibleUps.length;i++) {
 		var pos = game.possibleUps[i]
 		update('up'+pos+'cost',format(returnUpgradeCost(pos,String(pos).length)),0)
+		update('up7cost',format(1e150,0))
 	}
-	for(i=1;i<7;i++) {
-		for(k=6;k>i;k--) {
+	for(i=1;i<8;i++) {
+		for(k=6;k>0;k--) {
+			if(i == k) return
 			var thing = 10 * i + k
 			update('syn'+thing+'cost',format(returnSynergyCost(thing),0))
 		}
@@ -763,7 +777,7 @@ function buyUp(num,tier) {
 	else if(tier === 7) {
 		if(game.number.gte(1e150) && !game.upgrades6.includes(num)) {
 			game.number = game.number.sub(1e150)
-			game.upgrades6.push('7')
+			game.upgrades1.push('7')
 			game.gen7.upgradeMult = Math.pow(2,32)
 		}
 	}
@@ -808,7 +822,7 @@ function buyDec(num) {
 	game.decimalize.upgrades.owned.push(num)
 	giveAchieve('ach63')
 	if(num == 4) giveAchieve('ach64')
-	if(num == 1) show('gen7')
+	if(num == 1) full('gen7')
 }
 function buyDim(num) {
 	if(game.decimalize.decimals.gte(game.prestigeDims['dim'+num].cost)) {
