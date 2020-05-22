@@ -133,6 +133,7 @@ function reset() {
 			},
 		},
 		prestigeDims:{
+			points:new Decimal(0),
 			dim1:{
 				cost:new Decimal(10),
 				upgradeMult:1,
@@ -146,13 +147,17 @@ function reset() {
 	}
 	return game
 }
-const news = ['Does anyone even read this?','Hi, guys!','Once upon a time...','Much Number!','Next update in 5 days!','Upgrades boost different gens!','Synergies boost gens based on the amount of another!','Negative Numbers boost all gens! There are also cool upgrades!','The Button gives a boost each time you click!','You can change the cooldown time of the Button, but it will also change the mult gained on click.','aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa']
-const newsTimes = [3,2,2.5,1.5,3,3,3,3,3,5,30]
+const news = ['nothing to see here','Buy Prestige Upgrades to unlock the full power of the Prestige Dimensions!','lol','FAKE NEWS','Prestige Dimensions boost all gens. Reach 1.79e308 Prestige Points to SuperPrestige.',
+	      'Decimal Upgrades give powerful boosts.','SEVENTH GENERATOR???','Does anyone even read this?','Hi, guys!',
+	      'Once upon a time...','Much Number!','Next update in 5 days!','Upgrades boost different gens!',
+	      'Synergies boost gens based on the amount of another!','Negative Numbers boost all gens! There are also cool upgrades!','The Button gives a boost each time you click!',
+	      'You can change the cooldown time of the Button, but it will also change the mult gained on click.','aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa']
+const newsTimes = [0.2,4,0.1,2,5,3,3,3,2,2.5,1.5,3,3,3,3,3,5,30]
 //initalizing
 var game = reset()
 var currentVer = 'v0.2A'
 function init() {
-	update('commit','v0.2A-29')
+	update('commit','v0.2A-30')
 	changeNews()
 	setInterval(tick,100)
 	setInterval(save,3000)
@@ -426,6 +431,7 @@ function displayUpdate() {
 		update('mult'+i,format(game['gen'+i].mult,4))
 		update('cost'+i,formatDecimal(game['gen'+i].cost))
 	}
+	update('prestige',formatDecimal(game.prestigeDims.points))
 }
 function increaseGens() {
 	for(i=1;i<8;i++) {
@@ -446,6 +452,7 @@ function increaseGens() {
 		else {
 			game['gen'+i].mult = game['gen'+i].baseMult * game['gen'+i].upgradeMult * game['gen'+i].synMult * game.negative.mult * game.negative.upgrades.twoPower * game.thebutton.mult
 		}
+		game['gen'+i].mult *= Math.pow(game.prestigeDims.points,0.125)
 	}
 	if(game.decimalize.upgrades.owned.includes(5)) {
 		for(i=1;i<8;i++) {
@@ -465,6 +472,9 @@ function increaseGens() {
 	if(game.gen6.mult >= 1e35) giveAchieve('ach58')
 	if(game.number >= 1e125) giveAchieve('ach35')
 }
+function increaseDims() {
+	game.prestigeDims.points = game.prestigeDims.points.add(game.prestigeDims.dim1.amt.mul(game.prestigeDims.dim1.mult))
+}
 function tick() {
 	game.timePlayed += 0.1
 	game.decimalize.currentTime += 0.1
@@ -473,6 +483,7 @@ function tick() {
 	if(game.standardTime >= 600) giveAchieve('ach47')
 	if(game.timePlayed-game.standardTime >= 600) giveAchieve('ach46')
 	increaseGens()
+	increaseDims()
 	displayUpdate()
 	if(game.activeTab === 'upgrades') checkIfUpgradesUnlocked()
 	if(game.activeTab === 'syn') checkIfSynergiesUnlocked()
@@ -1084,6 +1095,10 @@ function load(save) {
 	}
 	if(game.gen7 == undefined) game.gen7 = reset().gen7
 	if(game.prestigeDims == undefined) game.prestigeDims = reset().prestigeDims
+	if(game.prestigeDims.points == undefined) game.prestigeDims.points = new Decimal(0)
+	game.prestigeDims.points = new Decimal(game.prestigeDims.points)
+	game.prestigeDims.dim1.cost = new Decimal(game.prestigeDims.dim1.cost)
+	game.prestigeDims.dim1.amt = new Decimal(game.prestigeDims.dim1.amt)
 }
 function userImport() {
 	var save = window.prompt('Paste your save data here.')
