@@ -157,7 +157,7 @@ const newsTimes = [0.2,4,0.1,2,5,3,3,3,2,2.5,1.5,3,3,3,3,3,5,30]
 var game = reset()
 var currentVer = 'v0.2A'
 function init() {
-	update('commit','v0.2A-30')
+	update('commit','v0.2A-31')
 	changeNews()
 	setInterval(tick,100)
 	setInterval(save,3000)
@@ -174,7 +174,6 @@ function start() {
 	update('notation','Notation: '+game.notation)
 	update('theButton',format(game.thebutton.mult,4) + 'x')
 	update('negAmt',game.negative.amt)
-	update('negCost',formatDecimal(game.negative.cost))
 	update('negBoost',format(game.negative.mult,3))
 	if(game.decimalize.times > 0) {
 		show('nav2')
@@ -236,14 +235,23 @@ function giveSecret(num) {
 		document.getElementById('ach68').title = 'Click on this achievement\'s slot'
 	}
 }
-function changeTab(tab) {
-	hide('gens')
-	hide('upgrades')
-	hide('syn')
-	hide('negative')
-	hide('thebutton')
-	hide('options')
-	hide('achievs')
+function changeTab(tab,superTab) {
+	if(superTab == 0) {
+		hide('gens')
+		hide('upgrades')
+		hide('syn')
+		hide('negative')
+		hide('thebutton')
+		hide('options')
+		hide('achievs')
+	}
+	else if(superTab == 1) {
+		hide('decUpgrades')
+	}
+	else if(superTab == 2) {
+		hide('prestigeDims')
+		hide('prestigeUpgs')
+	}
 	game.activeTab = tab
 	show(tab)
 }
@@ -432,6 +440,7 @@ function displayUpdate() {
 		update('cost'+i,formatDecimal(game['gen'+i].cost))
 	}
 	update('prestige',formatDecimal(game.prestigeDims.points))
+	update('prestigeMult',Math.pow(game.prestigeDims.points,0.125))
 }
 function increaseGens() {
 	for(i=1;i<8;i++) {
