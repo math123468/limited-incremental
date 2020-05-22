@@ -157,7 +157,7 @@ const newsTimes = [0.2,4,0.1,2,5,3,3,3,2,2.5,1.5,3,3,3,3,3,5,30]
 var game = reset()
 var currentVer = 'v0.2A'
 function init() {
-	update('commit','v0.2A-31')
+	update('commit','v0.2A-32')
 	changeNews()
 	setInterval(tick,100)
 	setInterval(save,3000)
@@ -178,7 +178,8 @@ function start() {
 	if(game.decimalize.times > 0) {
 		show('nav2')
 	}
-	if(game.decimalize.upgrades.owned.includes(1)) show('gen7')
+	if(game.decimalize.upgrades.owned.includes(1)) full('gen7')
+	if(game.decimalize.upgrades.owned.includes(9)) show('navp3')
 }
 //generic updating functions	
 function update(what,withWhat) {
@@ -191,7 +192,7 @@ function show(what) {
 	document.getElementById(what).style.display = 'block'
 }
 function full(what) {
-	document.getElementById(what).style = 'width:1005a'
+	document.getElementById(what).style = 'width:100%'
 }
 function updateClass(what,whatClass) {
 	var element = document.getElementById(what)
@@ -299,7 +300,10 @@ function theme() {
 	updateClass('navopt','nav')
 	updateClass('navbut','nav')
 	updateClass('navp1','nav2')
+	updateClass('decUpgrades','nav')
 	updateClass('navp2','nav2')
+	updateClass('prestigeDims','nav')
+	updateClass('prestigeUpgs','nav')
 	updateClass('navp3','nav2')
 	updateClass('notation','button')
 	updateClass('theButton','button big')
@@ -318,7 +322,7 @@ function theme() {
 			updateClass('ach'+i+j,'achieve')
 		}
 	}
-	for(i=1;i<game.decimalize.upgrades.possible.length;i++) {
+	for(i=1;i<game.decimalize.upgrades.possible.length+1;i++) {
 		updateClass('dec'+i,'button')
 	}
 	for(i=1;i<7;i++) {
@@ -341,7 +345,7 @@ function notation() {
 	}
 	for(i=1;i<8;i++) {
 		for(k=6;k>0;k--) {
-			if(i == k) return
+			if(i == k) pass
 			var thing = 10 * i + k
 			update('syn'+thing+'cost',format(returnSynergyCost(thing),0))
 		}
@@ -461,7 +465,7 @@ function increaseGens() {
 		else {
 			game['gen'+i].mult = game['gen'+i].baseMult * game['gen'+i].upgradeMult * game['gen'+i].synMult * game.negative.mult * game.negative.upgrades.twoPower * game.thebutton.mult
 		}
-		game['gen'+i].mult *= Math.pow(game.prestigeDims.points,0.125)
+		game['gen'+i].mult *= Math.min(1,Math.pow(game.prestigeDims.points,0.125))
 	}
 	if(game.decimalize.upgrades.owned.includes(5)) {
 		for(i=1;i<8;i++) {
@@ -498,6 +502,7 @@ function tick() {
 	if(game.activeTab === 'syn') checkIfSynergiesUnlocked()
 	if(game.activeTab === 'negative') checkIfNegativesUnlocked()
 	if(game.activeTab === 'thebutton')checkIfButtonUnlocked()
+	if(game.activeTab === 'decUpgrades') decimalClasses()
 	checkIfDecimalizeUnlocked()
 	game.thebutton.cooldown -= 0.1
 	update('buttoncooldown',format(Math.max(game.thebutton.cooldown,0),1) + 's')
@@ -830,7 +835,7 @@ function buyNeg() {
 		game.negative.mult *= game.negative.upgrades.threePower
 	}
 	update('negAmt',format(game.negative.amt,0))
-	update('negCost',format(game.negative.cost,0))
+	update('negCost',formatDecimal(game.negative.cost))
 	update('negBoost',format(Math.pow(game.negative.upgrades.threePower,game.negative.amt),3))
 	checkForNegUpgrades()
 }
@@ -849,7 +854,7 @@ function buttonClick() {
 function buyDec(num) {
 	var cost = returnDecimalCost(num)
 	if(game.decimalize.decimals.lt(cost)) return
-	if(game.decimalize.upgrades.includes(num)) return
+	if(game.decimalize.upgrades.owned.includes(num)) return
 	game.decimalize.decimals = game.decimalize.decimals.sub(cost)
 	game.decimalize.upgrades.owned.push(num)
 	giveAchieve('ach63')
