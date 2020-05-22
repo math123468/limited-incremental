@@ -5,7 +5,7 @@
 </head>
 <body style = 'background-color:#000000'>
 	<div id = 'commit' style = 'color:black'>v0.2A-1</div>
-	<div id = 'htmlcommit' style = 'color:black'>HTML Commit 21</div><br>
+	<div id = 'htmlcommit' style = 'color:black'>HTML Commit 22</div><br>
 	<div id = 'info' style = 'color:white'><a href = ''>Discord: Coming Soon</a></div><br> 
 	<div id = 'news' style = 'color:white'></div>
 	<button id = 'secretach1' class = 'hiddendark' onclick = 'giveSecret(1)'></button>
@@ -21,53 +21,66 @@
 		<div id = 'dimensions' style = 'display:none'>
 			<h1>You have <div id = 'prestige'>0</div> Prestige Points.</h1>
 			<h3>They multiply all normal generators by <div id = 'prestigeMult'>1</div>x.</h3>
-			<table style = 'width:100%'>
-				<tr>
-					<td><h1>First Dimension</h1></td>
-					<td><h3>x<div id = 'pmult1'>1.0000</div></h3></td>
-					<td><h2><div id='p1amt'>0</div></h2></td>
-					<td><h2><div id='p1persec'>0</div> per second</h2></td>
-					<td><button class = 'dark button' id = 'pbuy1' onclick = 'buyDim(1)'>Cost: <div id = 'pcost1'>0.10</div> Decimals</button></td>
-				</tr>
-				<tr>
-					<td><h1>Second Dimension</h1></td>
-					<td><h3>x<div id = 'pmult2'>1.0000</div></h3></td>
-					<td><h2><div id='p2amt'>0</div></h2></td>
-					<td><h2><div id='p2persec'>0</div> per second</h2></td>
-					<td><button class = 'dark button' id = 'pbuy2' onclick = 'buyDim(2)'>Cost: <div id = 'pcost2'>10</div> ?????????</button></td>
-				</tr>
-				<tr>
-					<td><h1>Third Dimension</h1></td>
-					<td><h3>x<div id = 'pmult3'>1.0000</div></h3></td>
-					<td><h2><div id='p3amt'>0</div></h2></td>
-					<td><h2><div id='p3persec'>0</div> per second</h2></td>
-					<td><button class = 'dark button' id = 'pbuy3' onclick = 'buyDim(3)'>Cost: <div id = 'pcost3'>10</div> ?????</button></td>
-				</tr>
-				<tr>
-					<td><h1>Fourth Dimension</h1></td>
-					<td><h3>x<div id = 'pmult4'>1.0000</div></h3></td>
-					<td><h2><div id='p4amt'>0</div></h2></td>
-					<td><h2><div id='p4persec'>0</div> per second</h2></td>
-					<td><button class = 'dark button' id = 'pbuy4' onclick = 'buyDim(4)'>Cost: <div id = 'pcost4'>10</div> ?????</button></td>
-				</tr>
-				<tr>
-					<td><h1>Fifth Dimension</h1></td>
-					<td><h3>x<div id = 'pmult5'>1.0000</div></h3></td>
-					<td><h2><div id='p5amt'>0</div></h2></td>
-					<td><h2><div id='p5persec'>0</div> per second</h2></td>
-					<td><button class = 'dark button' id = 'pbuy5' onclick = 'buyDim(5)'>Cost: <div id = 'pcost5'>10</div> ?</button></td>
-				</tr>
-				<tr>
-					<td><h1>Sixth Dimension</h1></td>
-					<td><h3>x<div id = 'pmult6'>1.0000</div></h3></td>
-					<td><h2><div id='p6amt'>0</div></h2></td>
-					<td><h2><div id='p6persec'>0</div> per second</h2></td>
-					<td><button class = 'dark button' id = 'pbuy6' onclick = 'buyDim(6)'>Cost: <div id = 'pcost6'>10</div> ???????????</button></td>
-				</tr>
-			</table>
+			<button id = 'prdims' class = 'dark nav' onclick = 'changeTab("prestigeDims,2")'>Dimensions</button>
+			<button id = 'prupgs' class = 'dark nav' onclick = 'changeTab("prestigeUpgs,2")'>Upgrades</button>
+			<div id = 'prestigeDims'>
+				<table style = 'width:100%'>
+					<tr>
+						<td><h1>First Dimension</h1></td>
+						<td><h3>x<div id = 'pmult1'>1.0000</div></h3></td>
+						<td><h2><div id='p1amt'>0</div></h2></td>
+						<td><h2><div id='p1persec'>0</div> per second</h2></td>
+						<td><button class = 'dark button' id = 'pbuy1' onclick = 'buyDim(1)'>Cost: <div id = 'pcost1'>0.10</div> Decimals</button></td>
+					</tr>
+					<tr>
+						<td><h1>Second Dimension</h1></td>
+						<td><h3>x<div id = 'pmult2'>1.0000</div></h3></td>
+						<td><h2><div id='p2amt'>0</div></h2></td>
+						<td><h2><div id='p2persec'>0</div> per second</h2></td>
+						<td><button class = 'dark button' id = 'pbuy2' onclick = 'buyDim(2)'>Cost: <div id = 'pcost2'>10</div> ?????????</button></td>
+					</tr>
+					<tr>
+						<td><h1>Third Dimension</h1></td>
+						<td><h3>x<div id = 'pmult3'>1.0000</div></h3></td>
+						<td><h2><div id='p3amt'>0</div></h2></td>
+						<td><h2><div id='p3persec'>0</div> per second</h2></td>
+						<td><button class = 'dark button' id = 'pbuy3' onclick = 'buyDim(3)'>Cost: <div id = 'pcost3'>10</div> ?????</button></td>
+					</tr>
+					<tr>
+						<td><h1>Fourth Dimension</h1></td>
+						<td><h3>x<div id = 'pmult4'>1.0000</div></h3></td>
+						<td><h2><div id='p4amt'>0</div></h2></td>
+						<td><h2><div id='p4persec'>0</div> per second</h2></td>
+						<td><button class = 'dark button' id = 'pbuy4' onclick = 'buyDim(4)'>Cost: <div id = 'pcost4'>10</div> ?????</button></td>
+					</tr>
+					<tr>
+						<td><h1>Fifth Dimension</h1></td>
+						<td><h3>x<div id = 'pmult5'>1.0000</div></h3></td>
+						<td><h2><div id='p5amt'>0</div></h2></td>
+						<td><h2><div id='p5persec'>0</div> per second</h2></td>
+						<td><button class = 'dark button' id = 'pbuy5' onclick = 'buyDim(5)'>Cost: <div id = 'pcost5'>10</div> ?</button></td>
+					</tr>
+					<tr>
+						<td><h1>Sixth Dimension</h1></td>
+						<td><h3>x<div id = 'pmult6'>1.0000</div></h3></td>
+						<td><h2><div id='p6amt'>0</div></h2></td>
+						<td><h2><div id='p6persec'>0</div> per second</h2></td>
+						<td><button class = 'dark button' id = 'pbuy6' onclick = 'buyDim(6)'>Cost: <div id = 'pcost6'>10</div> ???????????</button></td>
+					</tr>
+				</table>
+			</div>
+			<div id = 'prestigeUpgs' style = 'display:none'>
+				<table style = 'width:100%'>
+					<tr>
+						<td><button id = 'dimUpg1' class = 'dark button' onclick = 'buyDimUpg(1)'>An Upgrade</button></td>
+						<td><button id = 'dimUpg1' class = 'dark button' onclick = 'buyDimUpg(1)'>Also an Upgrade</button></td>
+						<td><button id = 'dimUpg1' class = 'dark button' onclick = 'buyDimUpg(1)'>Another Upgrade</button></td>
+					</tr>
+				</table>
+			</div>
 		</div>
 		<div id = 'decimalize' style = 'display:none'>
-			<button id = 'decupg' class = 'dark nav' onclick = 'changeTab("decUpgrades")'>Upgrades</button>
+			<button id = 'decupg' class = 'dark nav' onclick = 'changeTab("decUpgrades,1")'>Upgrades</button>
 			<div id = 'decUpgrades'>
 				<h1>You have 0.<div id = 'decimals'>0</div> decimals.</h1>
 				<table style = 'width:100%'>
@@ -91,13 +104,13 @@
 			</div>
 		</div>
 		<div id = 'generators'>
-		<button id = 'navgen' class = 'dark nav' onclick = 'changeTab("gens")'>Generators</button>
-		<button id = 'navupg' class = 'dark nav' onclick = 'changeTab("upgrades")'>Upgrades</button>
-		<button id = 'navsyn' class = 'dark nav' onclick = 'changeTab("syn")'>Synergies</button>
-		<button id = 'navneg' class = 'dark nav' onclick = 'changeTab("negative")'>Negatives</button>
-		<button id = 'navbut' class = 'dark nav' onclick = 'changeTab("thebutton")'>The Button</button>
-		<button id = 'navach' class = 'dark nav' onclick = 'changeTab("achievs")'>Achievements</button>
-		<button id = 'navopt' class = 'dark nav' onclick = 'changeTab("options")'>Options</button>
+		<button id = 'navgen' class = 'dark nav' onclick = 'changeTab("gens,0")'>Generators</button>
+		<button id = 'navupg' class = 'dark nav' onclick = 'changeTab("upgrades,0")'>Upgrades</button>
+		<button id = 'navsyn' class = 'dark nav' onclick = 'changeTab("syn,0")'>Synergies</button>
+		<button id = 'navneg' class = 'dark nav' onclick = 'changeTab("negative,0")'>Negatives</button>
+		<button id = 'navbut' class = 'dark nav' onclick = 'changeTab("thebutton,0")'>The Button</button>
+		<button id = 'navach' class = 'dark nav' onclick = 'changeTab("achievs,0")'>Achievements</button>
+		<button id = 'navopt' class = 'dark nav' onclick = 'changeTab("options,0")'>Options</button>
 		<div id = 'achievs' style = 'display:none'>
 			<table>
 				<tr>
