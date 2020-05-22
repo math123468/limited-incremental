@@ -152,7 +152,7 @@ const newsTimes = [3,2,2.5,1.5,3,3,3,3,3,5,30]
 var game = reset()
 var currentVer = 'v0.2A'
 function init() {
-	update('commit','v0.2A-28')
+	update('commit','v0.2A-29')
 	changeNews()
 	setInterval(tick,100)
 	setInterval(save,3000)
@@ -683,6 +683,7 @@ function decimalClasses() {
 		}
 		else updateClass('dec'+i,'green')
 	}
+}
 //buying stuff
 function buyGen(i) {
 	if(game.number.gte(game['gen'+i].cost)) {
