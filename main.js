@@ -159,7 +159,7 @@ const newsTimes = [0.2,4,0.1,2,5,3,3,3,2,2.5,1.5,3,3,3,3,3,5,30]
 var game = reset()
 var currentVer = 'v0.2A'
 function init() {
-	update('commit','v0.2A-35')
+	update('commit','v0.2A-36')
 	changeNews()
 	setInterval(tick,100)
 	setInterval(save,3000)
@@ -874,4 +874,269 @@ function buyDec(num) {
 			game.thebutton.possibleCooldowns[i] /= 2
 		}
 	}
-	if(num == 9) 
+	if(num == 9) inline('navp3')
+}	
+function buyDim(num) {	
+	if(game.decimalize.decimals.gte(game.prestigeDims['dim'+num].cost)) {	
+		game.decimalize.decimals = game.decimalize.decimals.sub(game.prestigeDims['dim'+num].cost)	
+		game.prestigeDims['dim'+num].cost = game['dim'+num].cost.mul(game.prestigeDims['dim'+num].costInc)	
+		game.prestigeDims['dim'+num].mult *= 1.5	
+		game.prestigeDims['dim'+num].amt = game.prestigeDims['dim'+num].amt.add(1)	
+		update('pmult'+num,game.prestigeDims['dim'+num].mult)	
+		update('p'+num+'amt',game.prestigeDims['dim'+num].amt)	
+		update('pcost'+num,'0.'+game.prestigeDims['dim'+num].cost)	
+	}	
+}	
+//upgrade misc	
+function returnUpgradeCost(num,tier) {	
+	var t2 = [1e27,5e27,2.5e28,1.25e29,6.25e29,1e30,5e30,2.5e31,1.25e32,6.25e32,1e33,2e33,4e33,8e33,1.6e34]	
+	var t3 = [1e51,3e51,9e51,2.7e52,8.1e52,2.43e53,1e54,3e54,9e54,2.7e55,8.1e55,2.43e56,1e57,3e57,9e57,2.7e58,8.1e58,2.43e59,2e60,3e60]	
+	var t4 = [1e75,5e75,2.5e76,1.25e77,6.25e77,1e78,5e78,2.5e79,1.25e80,6.25e80,1e81,5e81,2.5e82,1.25e83,6.25e83]	
+	if(tier === 1) return 1e21 * Math.pow(2,num-1)	
+	if(tier === 2) return t2[[12,13,14,15,16,23,24,25,26,34,35,36,45,46,56].indexOf(num)]	
+	if(tier === 3) return t3[[123,124,125,126,134,135,136,145,146,156,234,235,236,245,246,256,345,346,356,456].indexOf(num)]	
+	if(tier === 4) return t4[[1234,1235,1236,1245,1246,1256,1345,1346,1356,1456,2345,2346,2356,2456,3456].indexOf(num)]	
+	if(tier === 5) return [1e96,1e97,1e98,1e99,1e100,1e101][[12345,12346,12356,12456,13456,23456].indexOf(num)]	
+	return 1e108	
+}	
+//synergy misc	
+function returnSynergyCost(synNum) {	
+	var pos = [12,13,14,15,16,23,24,25,26,34,35,36,45,46,56].indexOf(synNum)	
+	if(pos != -1) return 1e111 * Math.pow(10,pos)	
+	return 1e183 * Math.pow(10,[21,31,41,51,61,32,42,52,62,43,53,63,54,64,65,71,72,73,74,75,76].indexOf(synNum))	
+}	
+//negative misc	
+function checkForNegUpgrades() {	
+	if(game.negative.amt >= 150 && game.negative.upgrades.one === 0) {	
+		game.negative.upgrades.one = 1	
+		game.negative.upgrades.onePower = 10	
+		game.negative.upgrades.total ++	
+		for(i=1;i<8;i++) {	
+			game['gen'+i].cost = game['gen'+i].cost.div(10)	
+		}	
+		giveAchieve('ach42')	
+	}	
+	if(game.negative.amt >= 155 && game.negative.upgrades.two === 0) {	
+		game.negative.upgrades.two = 1	
+		game.negative.upgrades.twoPower = 5	
+		game.negative.upgrades.total ++	
+	}	
+	if(game.negative.amt >= 160 && game.negative.upgrades.three === 0) {	
+		game.negative.upgrades.three = 1	
+		game.negative.upgrades.threePower = 1.05	
+		update('negBoost',format(Math.pow(1.05,game.negative.amt),3))	
+		update('negMult',1.05)	
+		game.negative.mult = Math.pow(1.05,game.negative.amt)	
+		game.negative.upgrades.total ++	
+	}	
+	if(game.negative.amt >= 165 && game.negative.upgrades.four === 0) {	
+		game.negative.upgrades.four = 1	
+		game.negative.upgrades.fourPower = 2.2	
+		for(i=1;i<8;i++) {	
+			game['gen'+i].upgradeMult = Math.pow(2.2,32)	
+		}	
+		giveAchieve('ach43')	
+		game.negative.upgrades.total ++	
+	}	
+	if(game.negative.amt >= 175 && game.negative.upgrades.one === 1) {	
+		game.negative.upgrades.one = 2	
+		for(i=1;i<8;i++) {	
+			game['gen'+i].cost = game['gen'+i].cost.div(1000)	
+		}	
+		game.negative.upgrades.onePower = 10000	
+		game.negative.upgrades.total ++	
+	}	
+	if(game.negative.amt >= 190 && game.negative.upgrades.two === 1) {	
+		game.negative.upgrades.two = 2	
+		game.negative.upgrades.twoPower = 125	
+		game.negative.upgrades.total ++	
+	}	
+	if(game.negative.amt >= 250 && game.negative.upgrades.three === 1) {	
+		game.negative.upgrades.three = 2	
+		game.negative.upgrades.threePower = 1.1	
+		update('negBoost',format(Math.pow(1.1,game.negative.amt),3))	
+		game.negative.mult = Math.pow(1.1,game.negative.amt)	
+		update('negMult',1.1)	
+		game.negative.upgrades.total ++	
+	}	
+	if(game.negative.amt >= 305 && game.negative.upgrades.four === 1) {	
+		game.negative.upgrades.four = 2	
+		game.negative.upgrades.fourPower = 2.35	
+		for(i=1;i<8;i++) {	
+			game['gen'+i].upgradeMult = Math.pow(2.35,32)	
+		}	
+		giveAchieve('ach44')	
+		game.negative.upgrades.total ++	
+	}	
+	if(!game.decimalize.upgrades.owned.includes(4)) return	
+	if(game.negative.amt >= 325 && game.negative.upgrades.one === 2) {	
+		game.negative.upgrades.one = 3	
+		for(i=1;i<8;i++) {	
+			game['gen'+i].cost = game['gen'+i].cost.div(1e6)	
+		}	
+		game.negative.upgrades.onePower = 1e10	
+		game.negative.upgrades.total ++	
+	}	
+	if(game.negative.amt >= 375 && game.negative.upgrades.two === 2) {	
+		game.negative.upgrades.two = 3	
+		game.negative.upgrades.twoPower = 15625	
+		game.negative.upgrades.total ++	
+	}	
+	if(game.negative.amt >= 450 && game.negative.upgrades.three === 2) {	
+		game.negative.upgrades.three = 3	
+		game.negative.upgrades.threePower = 1.15	
+		update('negBoost',format(Math.pow(1.15,game.negative.amt),3))	
+		game.negative.mult = Math.pow(1.15,game.negative.amt)	
+		update('negMult',1.15)	
+		game.negative.upgrades.total ++	
+	}	
+	if(game.negative.amt >= 550 && game.negative.upgrades.four === 2) {	
+		game.negative.upgrades.four = 3	
+		game.negative.upgrades.fourPower = 2.5	
+		for(i=1;i<8;i++) {	
+			game['gen'+i].upgradeMult = Math.pow(2.5,32)	
+		}	
+		giveAchieve('ach44')	
+		game.negative.upgrades.total ++	
+	}	
+}	
+//button misc	
+function changeButtonCooldown() {	
+	var index = game.thebutton.possibleCooldowns.indexOf(game.thebutton.baseCooldown)	
+	index ++	
+	if(index === game.thebutton.possibleCooldowns.length)index = 0	
+	game.thebutton.baseCooldown = game.thebutton.possibleCooldowns[index]	
+	game.thebutton.baseMult = game.thebutton.possibleMults[index]	
+	update('buttontime',formatTime(game.thebutton.baseCooldown))	
+	update('buttonmult',format(game.thebutton.baseMult,2)+'x')	
+	giveAchieve('ach53')	
+}	
+//decUpgrades misc	
+function returnDecimalCost(num) {	
+	return [1,1,1,2,3,5,10,20,50][num-1]	
+}	
+//prestiges	
+function decimalize(confirm) {	
+	if(game.number.lt(1.79e308)) return	
+	if(confirm && window.confirm('Are you sure you want to decimalize? It will reset your previous progress!') || !confirm) {	
+		window.alert('Note: All Decimal Point values have a decimal point added in front of them.')	
+		var k = 256	
+		game.decimalize.times ++	
+		if(game.decimalize.currentTime <= 600) giveAchieve('ach65')	
+		game.decimalize.currentTime = 0	
+		game.decimalize.decimals = game.decimalize.decimals.add(Math.floor(Math.pow(2,game.number.log(2)/k - 3)))	
+		game.decimalize.totalDecimals = game.decimalize.totalDecimals.add(Math.floor(Math.pow(2,game.number.log(2)/k - 3)))	
+		game.number = new Decimal(1000)	
+		for(i=1;i<=6;i++) {	
+			game['upgrades'+i] = []	
+			game['gen'+i] = reset()['gen'+i]	
+		}	
+		game.synergies = []	
+		game.negative = reset().negative	
+		game.thebutton = reset().thebutton	
+		update('decimals',formatDecimal(game.decimalize.decimals))	
+		show('nav2')	
+	}	
+}	
+//saving stuff	
+function save() {	
+	localStorage.setItem('limitedIncrementalSave',btoa(JSON.stringify(game)))	
+}	
+function load(save) {	
+	game=JSON.parse(atob(save))	
+	if(game.upgrades1 === undefined) {	
+		game.upgrades1 = []	
+		game.upgrades2 = []	
+		game.upgrades3 = []	
+		game.upgrades4 = []	
+		game.upgrades5 = []	
+		game.upgrades6 = []	
+	}	
+	if(game.activeTab === undefined) {	
+		game.activeTab = 'gens'	
+		game.possibleUps = reset().possibleUps	
+	}	
+	if(game.version === undefined) game.version = currentVer	
+	if(game.synergies === undefined) game.synergies = []	
+	if(game.gen1.baseMult === undefined) {	
+		for(i=1;i<7;i++) {	
+			game['gen'+i].baseMult = 1	
+			game['gen'+i].upgradeMult = 1	
+		}	
+	}	
+	if(game.gen1.synMult === undefined) {	
+		for(i=1;i<7;i++) {	
+			game['gen'+i].synMult = 1	
+		}	
+	}	
+	if(game.negative === undefined) game.negative = reset().negative	
+	if(game.achievements === undefined) game.achievements = []	
+	if(game.timePlayed === undefined) game.timePlayed = 0	
+	if(game.newsSeen === undefined) game.newsSeen = 0	
+	if(game.theme === undefined) game.theme = 'dark'	
+	if(game.negative.upgrades === []) {	
+		game.negative.upgrades = {	
+			one:0,	
+			two:0,	
+			three:0,	
+			four:0,	
+		}	
+	}	
+	if(game.negative.upgrades.onePower === undefined) {	
+		game.negative.upgrades.onePower = 1	
+		game.negative.upgrades.twoPower = 1	
+	}	
+	if(game.negative.upgrades.threePower === undefined) {	
+		game.negative.upgrades.threePower = 1.025	
+		game.negative.upgrades.fourPower = 2	
+	}	
+	if(game.notation === undefined) game.notation = 'standard'	
+	if(game.thebutton === undefined) {	
+		game.thebutton = {	
+			mult:1,	
+			cooldown:0,	
+			baseCooldown:10,	
+			baseMult:1.1,	
+			clicks:0,	
+		}	
+	}	
+	if(game.standardTime === undefined) game.standardTime = 0	
+	game.number = new Decimal(game.number)	
+	for(i=1;i<8;i++) {	
+		game['gen'+i].cost = new Decimal(game['gen'+i].cost)	
+		game['gen'+i].actualCost = new Decimal(game['gen'+i].actualCost)	
+		game['gen'+i].amt = new Decimal(game['gen'+i].amt)	
+	}	
+	game.negative.cost = new Decimal(game.negative.cost)	
+	if(game.negative.upgrades.total == undefined) game.negative.upgrades.total = game.negative.upgrades.one + game.negative.upgrades.two + game.negative.upgrades.three + game.negative.upgrades.four	
+	if(game.decimalize == undefined) game.decimalize = reset().decimalize	
+	if(game.decimalize.currentTime == undefined) {	
+		game.decimalize.currentTime = 0	
+		game.decimalize.totalDecimals = game.decimalize.decimals	
+		game.decimalize.upgrades = reset().decimalize.upgrades	
+	}	
+	if(game.gen7 == undefined) game.gen7 = reset().gen7	
+	if(game.prestigeDims == undefined) game.prestigeDims = reset().prestigeDims	
+	if(game.prestigeDims.points == undefined) game.prestigeDims.points = new Decimal(0)	
+	game.prestigeDims.points = new Decimal(game.prestigeDims.points)	
+	game.prestigeDims.dim1.cost = new Decimal(game.prestigeDims.dim1.cost)	
+	game.prestigeDims.dim1.amt = new Decimal(game.prestigeDims.dim1.amt)	
+}	
+function userImport() {	
+	var save = window.prompt('Paste your save data here.')	
+	load(save)	
+}	
+function userExport() {	
+	window.alert(localStorage.getItem("limitedIncrementalSave"))	
+}	
+function hardreset() {	
+	if(window.confirm('Are you sure you want to reset?') && window.confirm('This will reset all of your progress!!!') && window.confirm('You will gain no bonus from doing this')) {	
+		game = reset()	
+	}	
+}	
+//secret dev stuff	
+function maxUpgrades() {	
+	for(i=0;i<game.possibleUps.length;i++) {	
+		buyUp(game.possibleUps[i],String(game.possibleUps[i]).length)	
+	}	
+}
