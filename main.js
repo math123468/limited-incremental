@@ -157,7 +157,7 @@ const newsTimes = [0.2,4,0.1,2,5,3,3,3,2,2.5,1.5,3,3,3,3,3,5,30]
 var game = reset()
 var currentVer = 'v0.2A'
 function init() {
-	update('commit','v0.2A-32')
+	update('commit','v0.2A-33')
 	changeNews()
 	setInterval(tick,100)
 	setInterval(save,3000)
@@ -300,10 +300,10 @@ function theme() {
 	updateClass('navopt','nav')
 	updateClass('navbut','nav')
 	updateClass('navp1','nav2')
-	updateClass('decUpgrades','nav')
+	updateClass('decupg','nav')
 	updateClass('navp2','nav2')
-	updateClass('prestigeDims','nav')
-	updateClass('prestigeUpgs','nav')
+	updateClass('prdims','nav')
+	updateClass('prups','nav')
 	updateClass('navp3','nav2')
 	updateClass('notation','button')
 	updateClass('theButton','button big')
@@ -465,7 +465,7 @@ function increaseGens() {
 		else {
 			game['gen'+i].mult = game['gen'+i].baseMult * game['gen'+i].upgradeMult * game['gen'+i].synMult * game.negative.mult * game.negative.upgrades.twoPower * game.thebutton.mult
 		}
-		game['gen'+i].mult *= Math.min(1,Math.pow(game.prestigeDims.points,0.125))
+		game['gen'+i].mult *= Math.max(1,Math.pow(game.prestigeDims.points,0.125))
 	}
 	if(game.decimalize.upgrades.owned.includes(5)) {
 		for(i=1;i<8;i++) {
