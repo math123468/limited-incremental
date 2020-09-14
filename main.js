@@ -8,7 +8,7 @@ function reset() {
 		standardTime:0,
 		notation:'standard',
 		theme:'dark',
-		lastUpdate:new Date.getTime(),
+		lastUpdate:new Date().getTime(),
 		possibleUps:[1,2,3,4,5,6,12,13,14,15,16,23,24,25,26,34,35,36,45,46,56,123,124,125,126,134,135,136,145,146,
 			     156,234,235,236,245,246,256,345,346,356,456,1234,1235,1236,1245,1246,1256,1345,1346,1356,1456,
 			     2345,2346,2356,2456,3456,12345,12346,12356,12456,13456,23456,123456,7],
@@ -160,7 +160,7 @@ const newsTimes = [0.2,4,0.1,2,5,3,3,3,2,2.5,1.5,3,3,3,3,3,5,30]
 var game = reset()
 var currentVer = 'v0.2A'
 function init() {
-	update('commit','v0.2A-37')
+	update('commit','v0.2A-38')
 	changeNews()
 	setInterval(tickCommand,100)
 	setInterval(save,3000)
@@ -515,7 +515,7 @@ function tick(time) {
 	update('buttoncooldown',format(Math.max(game.thebutton.cooldown,0),1) + 's')
 }
 function tickCommand() {
-	var now = new Date.getTime()
+	var now = new Date().getTime()
 	var time = now-game.lastUpdate
 	if(time < 10000) tick(time)
 	else simulateTime(time)
@@ -1041,6 +1041,7 @@ function decimalize(confirm) {
 	if(confirm && window.confirm('Are you sure you want to decimalize? It will reset your previous progress!') || !confirm) {	
 		window.alert('Note: All Decimal Point values have a decimal point added in front of them.')	
 		var k = 256	
+		if(game.decimalize.upgrades.owned.includes(6)) k=192
 		game.decimalize.times ++	
 		if(game.decimalize.currentTime <= 600) giveAchieve('ach65')	
 		game.decimalize.currentTime = 0	
