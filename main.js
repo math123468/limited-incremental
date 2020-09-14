@@ -145,6 +145,7 @@ function reset() {
 				amt:new Decimal(0),
 				costInc:Math.pow(10,0.5)
 			},
+			ownedUpgrades:[],
 		},
 			
 	}
@@ -160,7 +161,7 @@ const newsTimes = [0.2,4,0.1,2,5,3,3,3,2,2.5,1.5,3,3,3,3,3,5,30]
 var game = reset()
 var currentVer = 'v0.2A'
 function init() {
-	update('commit','v0.2A-38')
+	update('commit','v0.2A-39')
 	changeNews()
 	setInterval(tickCommand,100)
 	setInterval(save,3000)
@@ -907,6 +908,13 @@ function buyDim(num) {
 		update('pcost'+num,'0.'+game.prestigeDims['dim'+num].cost)	
 	}	
 }	
+function buyDimUpg(num,row) {
+	 var cost = returnDimCost(num)
+	 if(row == 1 && game.decimalize.decimals.gte(cost)) {
+		game.decimalize.decimals = game.decimalize.decimals.sub(cost)
+		game.prestigeDims.ownedUpgrades.push(num)
+	 }
+}
 //upgrade misc	
 function returnUpgradeCost(num,tier) {	
 	var t2 = [1e27,5e27,2.5e28,1.25e29,6.25e29,1e30,5e30,2.5e31,1.25e32,6.25e32,1e33,2e33,4e33,8e33,1.6e34]	
