@@ -8,6 +8,7 @@ function reset() {
 		standardTime:0,
 		notation:'standard',
 		theme:'dark',
+		lastUpdate:new Date.getTime(),
 		possibleUps:[1,2,3,4,5,6,12,13,14,15,16,23,24,25,26,34,35,36,45,46,56,123,124,125,126,134,135,136,145,146,
 			     156,234,235,236,245,246,256,345,346,356,456,1234,1235,1236,1245,1246,1256,1345,1346,1356,1456,
 			     2345,2346,2356,2456,3456,12345,12346,12356,12456,13456,23456,123456,7],
@@ -159,9 +160,9 @@ const newsTimes = [0.2,4,0.1,2,5,3,3,3,2,2.5,1.5,3,3,3,3,3,5,30]
 var game = reset()
 var currentVer = 'v0.2A'
 function init() {
-	update('commit','v0.2A-36')
+	update('commit','v0.2A-37')
 	changeNews()
-	setInterval(tick,100)
+	setInterval(tickCommand,100)
 	setInterval(save,3000)
 	if(localStorage.getItem('limitedIncrementalSave')!=null) load(localStorage.getItem('limitedIncrementalSave'))
 	for(i=1;i<8;i++) game['gen'+i].actualCost = new Decimal(game['gen'+i].cost)
@@ -451,7 +452,7 @@ function displayUpdate() {
 	update('prestige',formatDecimal(game.prestigeDims.points))
 	update('prestigeMult',Math.pow(game.prestigeDims.points,0.125))
 }
-function increaseGens() {
+function increaseGens(time) {
 	for(i=1;i<8;i++) {
 		game['gen'+i].synMult = 1
 	}
@@ -477,31 +478,32 @@ function increaseGens() {
 			game['gen'+i].mult *= game.decimalize.totalDecimals
 		}
 	}
-	game.number = game.number.add(game.gen1.amt.mul(game.gen1.mult / 10))
-	game.gen1.amt = game.gen1.amt.add(game.gen2.amt.mul(game.gen2.mult / 10))
-	game.gen2.amt = game.gen2.amt.add(game.gen3.amt.mul(game.gen3.mult / 10))
-	game.gen3.amt = game.gen3.amt.add(game.gen4.amt.mul(game.gen4.mult / 10))
-	game.gen4.amt = game.gen4.amt.add(game.gen5.amt.mul(game.gen5.mult / 10))
-	game.gen5.amt = game.gen5.amt.add(game.gen6.amt.mul(game.gen6.mult / 10))
-	game.gen6.amt = game.gen6.amt.add(game.gen7.amt.mul(game.gen7.mult / 10))
+	game.number = game.number.add(game.gen1.amt.mul(game.gen1.mult * time/1000))
+	game.gen1.amt = game.gen1.amt.add(game.gen2.amt.mul(game.gen2.mult * time/1000))
+	game.gen2.amt = game.gen2.amt.add(game.gen3.amt.mul(game.gen3.mult * time/1000))
+	game.gen3.amt = game.gen3.amt.add(game.gen4.amt.mul(game.gen4.mult * time/1000))
+	game.gen4.amt = game.gen4.amt.add(game.gen5.amt.mul(game.gen5.mult * time/1000))
+	game.gen5.amt = game.gen5.amt.add(game.gen6.amt.mul(game.gen6.mult * time/1000))
+	game.gen6.amt = game.gen6.amt.add(game.gen7.amt.mul(game.gen7.mult * time/1000))
 	if(game.gen1.amt.gte(1e100)) giveAchieve('ach33')
 	if(game.gen1.amt.gte(1e200)) giveAchieve('ach57')
 	if(game.gen6.mult >= 1e10) giveAchieve('ach34')
 	if(game.gen6.mult >= 1e35) giveAchieve('ach58')
 	if(game.number >= 1e125) giveAchieve('ach35')
 }
-function increaseDims() {
-	game.prestigeDims.points = game.prestigeDims.points.add(game.prestigeDims.dim1.amt.mul(game.prestigeDims.dim1.mult))
+function increaseDims(time) {
+	game.prestigeDims.points = game.prestigeDims.points.add(game.prestigeDims.dim1.amt.mul(game.prestigeDims.dim1.mult * time/1000))
 }
-function tick() {
-	game.timePlayed += 0.1
-	game.decimalize.currentTime += 0.1
-	if(game.notation === 'standard') game.standardTime += 0.1
+function tick(time) {
+	//time is time in milliseconds since last tick
+	game.timePlayed += time / 1000
+	game.decimalize.currentTime += time / 1000
+	if(game.notation === 'standard') game.standardTime += time / 1000
 	if(game.timePlayed >= 420) giveAchieve('ach28')
 	if(game.standardTime >= 600) giveAchieve('ach47')
 	if(game.timePlayed-game.standardTime >= 600) giveAchieve('ach46')
-	increaseGens()
-	increaseDims()
+	increaseGens(time)
+	increaseDims(time)
 	displayUpdate()
 	if(game.activeTab === 'upgrades') checkIfUpgradesUnlocked()
 	if(game.activeTab === 'syn') checkIfSynergiesUnlocked()
@@ -509,8 +511,26 @@ function tick() {
 	if(game.activeTab === 'thebutton')checkIfButtonUnlocked()
 	if(game.activeTab === 'decUpgrades') decimalClasses()
 	checkIfDecimalizeUnlocked()
-	game.thebutton.cooldown -= 0.1
+	game.thebutton.cooldown -= time / 1000
 	update('buttoncooldown',format(Math.max(game.thebutton.cooldown,0),1) + 's')
+}
+function tickCommand() {
+	var now = new Date.getTime()
+	var time = now-game.lastUpdate
+	if(time < 10000) tick(time)
+	else simulateTime(time)
+}
+function simulateTime(time) {
+	//time in ms
+	var tickTime
+	if(time < 1e6) tickTime = time/20
+	else if(time < 1e8) tickTime = time/50
+	else if(time < 1e10) tickTime = time/200
+	else tickTime = time/5000
+	var numTicks = time/tickTime
+	for(i=1;i<=numTicks;i++) {
+		tick(tickTime)
+	}
 }
 //checking if stuff is unlocked
 function checkIfUpgradesUnlocked() {
@@ -879,7 +899,7 @@ function buyDec(num) {
 function buyDim(num) {	
 	if(game.decimalize.decimals.gte(game.prestigeDims['dim'+num].cost)) {	
 		game.decimalize.decimals = game.decimalize.decimals.sub(game.prestigeDims['dim'+num].cost)	
-		game.prestigeDims['dim'+num].cost = game['dim'+num].cost.mul(game.prestigeDims['dim'+num].costInc)	
+		game.prestigeDims['dim'+num].cost = game.prestigeDims['dim'+num].cost.mul(game.prestigeDims['dim'+num].costInc)	
 		game.prestigeDims['dim'+num].mult *= 1.5	
 		game.prestigeDims['dim'+num].amt = game.prestigeDims['dim'+num].amt.add(1)	
 		update('pmult'+num,game.prestigeDims['dim'+num].mult)	
@@ -1132,6 +1152,7 @@ function userExport() {
 function hardreset() {	
 	if(window.confirm('Are you sure you want to reset?') && window.confirm('This will reset all of your progress!!!') && window.confirm('You will gain no bonus from doing this')) {	
 		game = reset()	
+		location.reload()
 	}	
 }	
 //secret dev stuff	
