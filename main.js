@@ -161,7 +161,7 @@ const newsTimes = [0.2,4,0.1,2,5,3,3,3,2,2.5,1.5,3,3,3,3,3,5,30]
 var game = reset()
 var currentVer = 'v0.2A'
 function init() {
-	update('commit','v0.2A-41')
+	update('commit','v0.2A-42')
 	changeNews()
 	setInterval(tickCommand,100)
 	setInterval(save,3000)
@@ -531,7 +531,7 @@ function simulateTime(time) {
 	else tickTime = time/500
 	var numTicks = time/tickTime
 	for(i=1;i<=numTicks;i++) {
-		tick(tickTime)
+		setInterval(function() {tick(tickTime)}, 10*i)
 	}
 }
 //checking if stuff is unlocked
