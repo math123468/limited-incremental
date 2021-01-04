@@ -161,7 +161,7 @@ const newsTimes = [0.2,4,0.1,2,5,3,3,3,2,2.5,1.5,3,3,3,3,3,5,30]
 var game = reset()
 var currentVer = 'v0.2A'
 function init() {
-	update('commit','v0.2A-40')
+	update('commit','v0.2A-41')
 	changeNews()
 	setInterval(tickCommand,100)
 	setInterval(save,3000)
@@ -518,10 +518,10 @@ function tick(time) {
 function tickCommand() {
 	var now = new Date().getTime()
 	var time = now-game.lastUpdate
+	game.lastUpdate = now
 	if(time < 10000) tick(time)
 	else simulateTime(time)
 }
-/**
 function simulateTime(time) {
 	//time in ms
 	var tickTime
@@ -534,7 +534,6 @@ function simulateTime(time) {
 		tick(tickTime)
 	}
 }
-*/
 //checking if stuff is unlocked
 function checkIfUpgradesUnlocked() {
 	if(game.decimalize.times != 0) {
